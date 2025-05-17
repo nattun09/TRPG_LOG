@@ -1,9 +1,9 @@
 
  :root { --bubble-max-width: 100%; --bubble-bg-color: #ffffff; --bubble-arrow-color: #ffffff; --icon-size: 55px; }
  body { font-family: 'Noto Sans JP', sans-serif; margin: 0; padding: 15px; background-color: rgb(253, 234, 28); font-size: 14px; line-height: 1.7; color: #333; }
- .log-export-container { max-width: 900px; margin: 20px auto; background-color: rgb(243, 244, 246); padding: 20px 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+ .log-export-container { max-width: 900px; margin: 20px auto; background-color: rgb(251, 250, 249); padding: 20px 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
  h1 { font-size: 1.7em; color: #111; border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 0 0 25px 0; text-align: center; }
- .filter-controls.export { background-color: #f8f9fa; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #dee2e6; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+ .filter-controls.export { background-color: #ffffff; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #dee2e6; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
  .filter-section { display: flex; align-items: center; gap: 8px; } .filter-section label { font-weight: bold; font-size: 0.9em; color: #495057; }
  .tab-nav.export { display: flex; flex-wrap: wrap; gap: 5px; padding-bottom: 5px; }
  .tab-button.export { background-color: #e9ecef; border: 1px solid #ced4da; color: #495057; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em; transition: background-color 0.2s, color 0.2s; white-space: nowrap; } .tab-button.export:hover { background-color: #dee2e6; } .tab-button.export.active { background-color: #0d6efd; border-color: #0d6efd; color: white; font-weight: bold; }
