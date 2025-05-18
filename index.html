@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRPGログ一覧</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Hiragino Maru Gothic ProN', 'Rounded Mplus 1c', sans-serif;
+      background: linear-gradient(to right, #fdfbfb, #ebedee);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      padding: 1.5em 1em;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #e26a89;
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2em auto;
+      padding: 0 1em;
+    }
+
+    ul#html-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2em;
+    }
+
+    ul#html-list li {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(4px);
+      padding: 1em 1.2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    ul#html-list li:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    ul#html-list a {
+      text-decoration: none;
+      color: #e26a89;
+      font-weight: 600;
+      font-size: 1.1em;
+      display: block;
+      word-break: break-all;
+    }
+
+    ul#html-list a:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      text-align: center;
+      font-size: 1em;
+      color: #aaa;
+      padding: 2em;
+    }
+
+    @media (min-width: 600px) {
+      ul#html-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 900px) {
+      ul#html-list {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TRPGログ一覧</h1>
+  </header>
+  <main>
+    <ul id="html-list" class="loading">読み込み中...</ul>
+  </main>
+
+  <script>
+    const user = 'nattun09';
+    const repo = 'TRPG_LOG';
+    const apiBase = `https://api.github.com/repos/${user}/${repo}/contents`;
+
+    async function fetchHTMLFiles(path = '') {
+      const res = await fetch(`${apiBase}/${path}`);
+      if (!res.ok) return [];
+
+      const data = await res.json();
+      let htmlFiles = [];
+
+      for (const item of data) {
+        if (item.type === 'file' && item.name.endsWith('.html')) {
+          htmlFiles.push({
+            name: item.name,
+            path: item.path,
+            url: `https://${user}.github.io/${repo}/${item.path}`,
+          });
+        } else if (item.type === 'dir') {
+          const subFiles = await fetchHTMLFiles(item.path);
+          htmlFiles = htmlFiles.concat(subFiles);
+        }
+      }
+
+      return htmlFiles;
+    }
+
+    async function displayHTMLList() {
+      const listEl = document.getElementById('html-list');
+      const files = await fetchHTMLFiles();
+
+      listEl.classList.remove('loading');
+      listEl.innerHTML = '';
+
+      if (files.length === 0) {
+        listEl.innerHTML = '<li>HTMLファイルが見つかりませんでした。</li>';
+        return;
+      }
+
+      for (const file of files) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = file.url;
+        a.textContent = file.path;
+        a.target = '_blank';
+        li.appendChild(a);
+        listEl.appendChild(li);
+      }
+    }
+
+    displayHTMLList();
+  </script>
+</body>
+</html>
