@@ -289,6 +289,48 @@
   .category-menu a:hover {
     text-decoration: underline;
   }
+.video-toc {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.video-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* 白い枠や線は消すので特に border はなし */
+}
+
+.video-toc li {
+  margin-bottom: 0.4rem; /* 少し詰めてコンパクトに */
+}
+
+.video-toc a {
+  display: inline-block;
+  background: #fce4ec;
+  color: #c2185b;
+  padding: 0.3rem 0.8rem; /* 少し小さめパディング */
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.75rem; /* 文字を小さく */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.video-toc a:hover {
+  background: #f8bbd0;
+  transform: translateY(-2px);
+}
+
+.video-toc a.active {
+  background: #f48fb1;
+  color: white;
+}
   </style>
 </head>
 <body>
@@ -372,6 +414,19 @@
       <button data-index="6">ハイフェッツをなぞる病</button>
       <button data-index="7">宇宙船ニル・ノート号の残響</button>
     </div>
+<div class="video-toc">
+  <ul>
+    <li><a href="#" data-index="0">レッツロシアンうどん</a></li>
+    <li><a href="#" data-index="1">捨てKPC</a></li>
+    <li><a href="#" data-index="2">慄け！因習村</a></li>
+    <li><a href="#" data-index="3">村ホラーRTA</a></li>
+    <li><a href="#" data-index="4">死にたがり電車</a></li>
+    <li><a href="#" data-index="5">ラーメンは乙女の嗜み</a></li>
+    <li><a href="#" data-index="6">ハイフェッツをなぞる病</a></li>
+    <li><a href="#" data-index="7">宇宙船ニル・ノート号の残響</a></li>
+  </ul>
+</div>
+
   </div>
 
   <div class="category" data-category="iwashi-asaharu">
@@ -456,59 +511,75 @@
   });
 
 document.querySelectorAll('.category').forEach(category => {
-    const videos = {
-      session: [
-        {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
-        {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
-        {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
-        {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
-        {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
-        {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
-        {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
-        {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
-      ],
-      'iwashi-asaharu': [
-        {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
-        {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
-      ],
-      'iwashi-syojomeme': [
-        {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
-        {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
-        {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
-      ],
-      haiyoka: [
-        {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"},
-        {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"}
-      ],
-      katasiro: [
-        {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
-        {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
-      ]
-    }[category.dataset.category];
+  const videos = {
+    session: [
+      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
+      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
+      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
+      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
+      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
+      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
+      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
+      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+    ],
+    'iwashi-asaharu': [
+      {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
+      {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
+    ],
+    'iwashi-syojomeme': [
+      {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
+    ],
+    haiyoka: [
+      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"},
+      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"}
+    ],
+    katasiro: [
+      {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
+      {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
+    ]
+  }[category.dataset.category];
 
-    const iframe = category.querySelector('iframe');
-    const prevBtn = category.querySelector('.prev');
-    const nextBtn = category.querySelector('.next');
-    const videoButtons = category.querySelectorAll('.video-links button');
-    let currentIndex = 0;
+  const iframe = category.querySelector('iframe');
+  const prevBtn = category.querySelector('.prev');
+  const nextBtn = category.querySelector('.next');
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a'); // ←追加
 
-    function updateVideo(index) {
-      if(index < 0) index = videos.length - 1;
-      if(index >= videos.length) index = 0;
-      currentIndex = index;
-      iframe.src = videos[currentIndex].src;
-      videoButtons.forEach(btn => btn.classList.remove('active'));
-      if(videoButtons[currentIndex]) videoButtons[currentIndex].classList.add('active');
-    }
+  let currentIndex = 0;
 
-    prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
-    nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
-    videoButtons.forEach(btn => {
-      btn.addEventListener('click', () => updateVideo(parseInt(btn.dataset.index, 10)));
-    });
+  function updateVideo(index) {
+    if(index < 0) index = videos.length - 1;
+    if(index >= videos.length) index = 0;
+    currentIndex = index;
+    iframe.src = videos[currentIndex].src;
 
-    updateVideo(0);
+    videoButtons.forEach(btn => btn.classList.remove('active'));
+    if(videoButtons[currentIndex]) videoButtons[currentIndex].classList.add('active');
+  }
+
+  prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
+  nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
+
+  videoButtons.forEach(btn => {
+    btn.addEventListener('click', () => updateVideo(parseInt(btn.dataset.index, 10)));
   });
+
+  // 🔽 新しく追加：目次リンクにも同様のイベント処理を設定
+  tocLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const index = parseInt(link.dataset.index, 10);
+      if (!isNaN(index)) {
+        updateVideo(index);
+      }
+    });
+  });
+
+  updateVideo(0);
+});
+
 
 const menuToggle = document.querySelector('.menu-toggle');
   const categoryMenu = document.querySelector('.category-menu');
