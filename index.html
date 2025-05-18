@@ -252,19 +252,19 @@
     cursor: pointer;
   }
 
-  .category-menu {
-    position: fixed;
-    top: 48px;
-    right: 0;
-    width: 250px;
-    background: #fff;
-    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
-    max-height: calc(100vh - 48px);
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 99;
-  }
+.category-menu {
+  position: fixed;
+  top: 48px;
+  right: 0;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.9); /* ← 透明度80%に変更 */
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 99;
+}
 
   .category-menu.open {
     transform: translateX(0);
@@ -340,7 +340,7 @@
     <button class="menu-toggle" aria-label="カテゴリメニュー">☰</button>
   </header>
 
-<nav class="category-menu">
+<nav class="category-menu" style="padding-top: 1.5em;">
   <ul></ul>
 </nav>
 
@@ -633,24 +633,57 @@ document.querySelectorAll('.category').forEach(category => {
 
 
 const menuToggle = document.querySelector('.menu-toggle');
-  const categoryMenu = document.querySelector('.category-menu');
-  const categoryList = document.querySelector('.category-menu ul');
+const categoryMenu = document.querySelector('.category-menu');
+const categoryList = document.querySelector('.category-menu ul');
 
-  menuToggle.addEventListener('click', () => {
-    categoryMenu.classList.toggle('open');
-  });
+// ハンバーガーメニューの開閉
+menuToggle.addEventListener('click', () => {
+  categoryMenu.classList.toggle('open');
+});
 
-  // 各カテゴリタイトルを取得し、メニューリストとして追加
-  document.querySelectorAll('.category-title').forEach(title => {
+// カテゴリリストを再生成する関数
+function updateCategoryList() {
+  // 一度リストをクリア
+  categoryList.innerHTML = '';
+
+  // 現在表示されているタブコンテンツを取得
+  const activeTabContent = document.querySelector('.tab-content.active');
+  if (!activeTabContent) return;
+
+  // その中のカテゴリタイトルだけ取得
+  activeTabContent.querySelectorAll('.category-title').forEach(title => {
     const id = title.textContent.trim().replace(/\s+/g, '-');
     title.id = id;
+
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = `#${id}`;
     a.textContent = title.textContent.trim();
+
     li.appendChild(a);
     categoryList.appendChild(li);
   });
+}
+
+// タブが切り替わったときに呼ばれるようにする
+document.querySelectorAll('.tabs button').forEach(button => {
+  button.addEventListener('click', () => {
+    const target = button.getAttribute('data-tab');
+
+    // タブ切り替え
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.toggle('active', tab.id === target);
+    });
+
+    // 遅延でカテゴリ更新
+    setTimeout(() => {
+      console.log("Running updateCategoryList");
+      updateCategoryList();
+    }, 0);
+  });
+});
+// 初期表示時にも実行
+updateCategoryList();
 </script>
 
 </body>
