@@ -1,12 +1,102 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>session_log</title><link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet"></head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("image-selector");
+    
+    // 画像コンテナとテキストメッセージの両方を対象にする
+    const elements = document.querySelectorAll(".inserted-image-container img, .message-item[data-label]");
+
+    elements.forEach((el) => {
+      let container, label, id;
+
+      if (el.tagName.toLowerCase() === "img") {
+        // 画像の場合
+        container = el.closest(".inserted-image-container");
+        const src = el.getAttribute("src");
+        id = "img-" + src.split("/").pop().split(".")[0];
+        label = el.getAttribute("data-label") || el.getAttribute("alt") || src;
+      } else {
+        // テキストメッセージの場合
+        container = el;
+        id = "msg-" + Math.random().toString(36).substr(2, 9); // 一意なIDを生成
+        label = el.getAttribute("data-label");
+      }
+
+      // IDを付与（すでにある場合はスキップ）
+      if (!container.id) {
+        container.id = id;
+      }
+
+      // セレクトに追加
+      const option = document.createElement("option");
+      option.value = container.id;
+      option.textContent = label;
+      select.appendChild(option);
+    });
+
+    // 選択時に対象の要素へスクロール
+    select.addEventListener("change", function () {
+      const targetId = this.value;
+      if (targetId) {
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    });
+  });
+</script>
+
+
+<style>
+  /* 上部固定ヘッダー */
+  #image-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  /* セレクトボックスの見た目 */
+.image-selector {
+  padding: 2px 6px;      /* 縦: 2px、横: 6px に調整 */
+  font-size: 12px;       /* 少し小さめの文字 */
+  min-width: 220px;
+  height: auto;          /* 明示的に高さをautoにする（必要に応じて） */
+  line-height: 1.2;      /* 行の高さを詰めることでさらに細くできる */
+}
+
+  /* ヘッダーと被らないように本文に余白追加 */
+  body {
+    padding-top: 60px; /* ヘッダーの高さ + 少し余裕 */
+  }
+</style>
+
+<header id="image-header">
+  <label for="image-selector" style="margin-right: 10px;">シーンを選択 : </label>
+  <select id="image-selector" class="image-selector export">
+    <option value="">-- シーン一覧 --</option>
+  </select>
+</header>
+
+
 <body class=" font-noto-sans"><div class="log-export-container"><h1>媚バレックス_やぶかな</h1>
 <div class="filter-controls export">
     <div class="filter-section"> <label for="export-tab-filter">タブ:</label> <nav id="export-log-tabs" class="tab-nav export" aria-label="Log Tabs"><span class="placeholder">読み込み中...</span></nav> </div>
     <div class="filter-section"> <label for="export-speaker-filter">発言者:</label> <select id="export-speaker-filter" class="speaker-filter export"><option value="all">すべての発言者</option></select> </div>
 </div><div id="export-log-display" class="log-display export">
 <div class="inserted-image-container export log-item" data-tab="header" data-speaker="header">
-    <img src="images/img_1748.png" alt="挿入画像 img_1748" class="inserted-image export"  onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-error-placeholder export'; p.textContent='[画像 img_1748 読込失敗]'; this.parentNode.appendChild(p);">
+    <img src="images/img_1748.png" alt="挿入画像 img_1748" data-label="トップ" class="inserted-image export"  onerror="this.style.display='none'; const p=document.createElement('p'); p.className='image-error-placeholder export'; p.textContent='[画像 img_1748 読込失敗]'; this.parentNode.appendChild(p);">
     
 </div>
 
@@ -1632,7 +1722,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="白い部屋A">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -5030,7 +5120,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="白い部屋B">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -5396,7 +5486,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="ロッカー">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -10302,7 +10392,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="廃棄薬品庫">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -15710,7 +15800,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="実験室">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -19536,7 +19626,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="イースの研究室">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -25462,7 +25552,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="ティンダロス">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -29764,7 +29854,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="チョウの研修室">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
@@ -33792,7 +33882,7 @@
     </div>
 </div>
 
-<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble">
+<div class="message-item export log-item" data-tab="main" data-speaker="KP" data-display-mode="bubble" data-label="エンディング">
     <div class="message-container export">
         <div class="icon-container export" style="width: 55px; height: 55px;">
             <img src="images/KP_icon.png" alt="KP (default)" class="icon export" style="border-color: #888888; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
