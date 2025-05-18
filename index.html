@@ -103,10 +103,16 @@
   <script>
     const user = 'nattun09';
     const repo = 'TRPG_LOG';
+    const token = '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'; // ← トークンをここに入力
     const apiBase = `https://api.github.com/repos/${user}/${repo}/contents`;
 
     async function fetchHTMLFiles(path = '') {
-      const res = await fetch(`${apiBase}/${path}`);
+      const res = await fetch(`${apiBase}/${path}`, {
+        headers: {
+          Authorization: `token ${token}`
+        }
+      });
+
       if (!res.ok) return [];
 
       const data = await res.json();
