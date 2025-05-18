@@ -2,32 +2,31 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRPGログ一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRPGログ</title>
   <style>
     body {
-      font-family: 'Segoe UI', 'Hiragino Maru Gothic ProN', 'Rounded Mplus 1c', sans-serif;
-      background: linear-gradient(to right, #fdfbfb, #ebedee);
-      color: #333;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f9;
+      color: #333;
     }
 
     header {
-      background-color: #fff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      padding: 1.5em 1em;
-      text-align: center;
+      height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-      color: #e26a89;
-      letter-spacing: 0.05em;
+    header h1{
+      font-size: 1.4rem;
     }
 
     main {
@@ -36,17 +35,142 @@
       padding: 0 1em;
     }
 
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .tab-button {
+      background: #eaeaea;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      margin: 0 0.3rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .tab-button.active {
+      background: #e26a89;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
     .category {
-      margin-bottom: 2.5em;
+      margin-bottom: 3rem;
     }
 
     .category-title {
-      font-weight: bold;
-      font-size: 1.3em;
-      color: #e26a89;
-      margin-bottom: 1em;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
       border-left: 5px solid #e26a89;
-      padding-left: 0.5em;
+      padding-left: 0.5rem;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .carousel iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 1rem;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .carousel-controls button {
+      pointer-events: auto;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+    }
+
+    .carousel-controls button:hover {
+      background: #e26a89;
+      color: white;
+    }
+
+    .video-links {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .video-links button {
+      flex-shrink: 0;
+      background: #eaeaea;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .video-links button.active,
+    .video-links button:hover {
+      background: #e26a89;
+      color: white;
+    }
+
+    .text-log {
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .text-log p {
+      margin: 0.5rem 0;
+    }
+
+    .text-log span:nth-child(1) {
+      font-weight: bold;
+      color: #888;
+      margin-right: 0.5rem;
+    }
+
+    .text-log span:nth-child(2) {
+      font-weight: bold;
+      color: #e26a89;
+      margin-right: 0.5rem;
+    }
+
+    .text-log span:nth-child(3) {
+      color: #333;
     }
 
     .link-list {
@@ -85,6 +209,13 @@
       text-decoration: underline;
     }
 
+    .link-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
     @media (min-width: 600px) {
       .link-list {
         grid-template-columns: 1fr 1fr;
@@ -96,38 +227,309 @@
         grid-template-columns: 1fr 1fr 1fr;
       }
     }
+    .category {
+      margin-bottom: 2.5em;
+    }
+
+    .category-title {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      border-left: 5px solid #e26a89;
+      padding-left: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+      gap: 1rem;
+    }
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .category-menu {
+    position: fixed;
+    top: 48px;
+    right: 0;
+    width: 250px;
+    background: #fff;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+
+  .category-menu.open {
+    transform: translateX(0);
+  }
+
+  .category-menu ul {
+    list-style: none;
+    padding: 1em;
+    margin: 0;
+  }
+
+  .category-menu li {
+    margin-bottom: 1em;
+  }
+
+  .category-menu a {
+    color: #e26a89;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .category-menu a:hover {
+    text-decoration: underline;
+  }
   </style>
 </head>
 <body>
+
   <header>
     <h1>TRPGログ一覧</h1>
+    <button class="menu-toggle" aria-label="カテゴリメニュー">☰</button>
   </header>
-  <main>
-    <section class="category">
-      <div class="category-title">単発</div>
-      <ul class="link-list">
-        <li><a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank">わたしたち、入れ替わってる～！？ ―俺がお前でお前が俺―</a></li>
-        <li><a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank">仲良くしないと死ぬ部屋_やぶかな</a></li>
-      </ul>
-    </section>
 
-    <section class="category">
-      <div class="category-title">エロ</div>
-      <ul class="link-list">
-        <li><a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank">レタスサラダ_薮井</a></li>
-      </ul>
-    </section>
+<nav class="category-menu">
+  <ul></ul>
+</nav>
 
-    <section class="category">
-      <div class="category-title">媚バレックス</div>
-      <ul class="link-list">
-        <li><a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank">媚バレックス_あさはる</a></li>
-        <li><a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank">媚バレックス_はるさく</a></li>
-        <li><a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank">媚バレックス_やぶかな</a></li>
-      </ul>
-    </section>
+<div class="tabs">
+  <button class="tab-button active" data-tab="text">テキストログ</button>
+  <button class="tab-button" data-tab="youtube">YouTubeログ</button>
+</div>
 
-    <!-- ここに新しいカテゴリとURLを追加していけます -->
-  </main>
+<main>
+<div id="text" class="tab-content active">
+  <div class="category-title">単発</div>
+  <div class="link-list">
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank">
+        わたしたち、入れ替わってる～！？_やぶかな
+      </a>
+    </div>
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank">
+        仲良くしないと死ぬ部屋_やぶかな
+      </a>
+    </div>
+  </div>
+
+  <div class="category-title">エロ</div>
+  <div class="link-list">
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank">
+        レタスサラダ_薮井
+      </a>
+    </div>
+  </div>
+
+  <div class="category-title">媚バレックス</div>
+  <div class="link-list">
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank">
+        媚バレックス_あさはる
+      </a>
+    </div>
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank">
+        媚バレックス_はるさく
+      </a>
+    </div>
+    <div class="link-card">
+      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank">
+        媚バレックス_やぶかな
+      </a>
+    </div>
+  </div>
+</div>
+<div id="youtube" class="tab-content">
+  <!-- 各カテゴリ -->
+  <div class="category" data-category="session">
+    <div class="category-title">単発</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev" aria-label="前の動画">&lt;</button>
+        <button class="next" aria-label="次の動画">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-index="0" class="active">レッツロシアンうどん</button>
+      <button data-index="1">捨てKPC</button>
+      <button data-index="2">慄け！因習村</button>
+      <button data-index="3">村ホラーRTA</button>
+      <button data-index="4">死にたがり電車</button>
+      <button data-index="5">ラーメンは乙女の嗜み</button>
+      <button data-index="6">ハイフェッツをなぞる病</button>
+      <button data-index="7">宇宙船ニル・ノート号の残響</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="iwashi-asaharu">
+    <div class="category-title">鰯と柊_あさはる</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-index="0" class="active">鰯と柊（前編）_あさはる</button>
+      <button data-index="1">鰯と柊（後編）_あさはる</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="iwashi-syojomeme">
+    <div class="category-title">鰯と柊_しょじょめめ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-index="0" class="active">鰯と柊（前編）_しょじょめめ</button>
+      <button data-index="1">鰯と柊（中編）_しょじょめめ</button>
+      <button data-index="2">鰯と柊（後編）_しょじょめめ</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="haiyoka">
+    <div class="category-title">灰になってよかった</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-index="0" class="active">灰になってよかった_うたたね</button>
+      <button data-index="1">灰になってよかった_灰咲白</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="katasiro">
+    <div class="category-title">カタシロ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-index="0" class="active">カタシロ_蝿島叶</button>
+      <button data-index="1">カタシロ_元目開</button>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+  // タブ切り替え
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+document.querySelectorAll('.category').forEach(category => {
+    const videos = {
+      session: [
+        {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
+        {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
+        {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
+        {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
+        {src:"https://www.youtube.com/embed/T2g13mmZvA", title:"死にたがり電車"},
+        {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
+        {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
+        {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+      ],
+      'iwashi-asaharu': [
+        {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
+        {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
+      ],
+      'iwashi-syojomeme': [
+        {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
+        {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
+        {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
+      ],
+      haiyoka: [
+        {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"},
+        {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"}
+      ],
+      katasiro: [
+        {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
+        {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
+      ]
+    }[category.dataset.category];
+
+    const iframe = category.querySelector('iframe');
+    const prevBtn = category.querySelector('.prev');
+    const nextBtn = category.querySelector('.next');
+    const videoButtons = category.querySelectorAll('.video-links button');
+    let currentIndex = 0;
+
+    function updateVideo(index) {
+      if(index < 0) index = videos.length - 1;
+      if(index >= videos.length) index = 0;
+      currentIndex = index;
+      iframe.src = videos[currentIndex].src;
+      videoButtons.forEach(btn => btn.classList.remove('active'));
+      if(videoButtons[currentIndex]) videoButtons[currentIndex].classList.add('active');
+    }
+
+    prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
+    nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
+    videoButtons.forEach(btn => {
+      btn.addEventListener('click', () => updateVideo(parseInt(btn.dataset.index, 10)));
+    });
+
+    updateVideo(0);
+  });
+
+const menuToggle = document.querySelector('.menu-toggle');
+  const categoryMenu = document.querySelector('.category-menu');
+  const categoryList = document.querySelector('.category-menu ul');
+
+  menuToggle.addEventListener('click', () => {
+    categoryMenu.classList.toggle('open');
+  });
+
+  // 各カテゴリタイトルを取得し、メニューリストとして追加
+  document.querySelectorAll('.category-title').forEach(title => {
+    const id = title.textContent.trim().replace(/\s+/g, '-');
+    title.id = id;
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${id}`;
+    a.textContent = title.textContent.trim();
+    li.appendChild(a);
+    categoryList.appendChild(li);
+  });
+</script>
+
 </body>
 </html>
