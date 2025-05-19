@@ -82,7 +82,15 @@
       border-radius: 1rem;
       background: #fff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
     }
+
+.carousel.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
     .carousel iframe {
       width: 100%;
@@ -331,6 +339,48 @@
   background: #f48fb1;
   color: white;
 }
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 常に3列 */
+  gap: 1em;
+  margin-bottom: 2em;
+}
+
+.image-link {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.image-link img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.image-link img:hover {
+  transform: scale(1.04);
+}
+
+.image-link span {
+  display: block;
+  margin-top: 0.4em;
+  font-size: 0.85em;
+  line-height: 1.2;
+}
+
+.image-link.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
   </style>
 </head>
 <body>
@@ -345,103 +395,86 @@
 </nav>
 
 <div class="tabs">
-  <button class="tab-button active" data-tab="text">テキストログ</button>
+  <button class="tab-button active" data-tab="text">テキセログ</button>
   <button class="tab-button" data-tab="youtube">YouTubeログ</button>
 </div>
 
 <main>
 <div id="text" class="tab-content active">
-  <div class="category-title">テキセ</div>
-  <div class="link-list">
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank">
-        わたしたち、入れ替わってる～！？_やぶかな
-      </a>
-    </div>
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank">
-        仲良くしないと死ぬ部屋_やぶかな
-      </a>
-    </div>
-  </div>
 
-  <div class="category-title">暴走！妄想！ナマモノノート！</div>
-  <div class="link-list">
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/あさはるのーと.html" target="_blank">
-        あさはるのーと
-      </a>
-    </div>
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/【副音声】あさはるのーと.html" target="_blank">
-        【副音声】あさはるのーと
-      </a>
-    </div>
-    <div class="link-card">
-      <a href=" https://privatter.net/p/11525772" target="_blank">
-        あさはるのーと小説
-      </a>
-    </div>
-  </div>
+<div class="category-title">テキセ単発</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank" class="image-link">
+    <img src="image/入れ替わり.jpg" alt="わたしたち、入れ替わってる～！？_やぶかな">
+    <span>わたしたち、入れ替わってる～！？<br>やぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank" class="image-link">
+    <img src="image/仲良くしないと死ぬ部屋.png" alt="仲良くしないと死ぬ部屋_やぶかな">
+    <span>仲良くしないと死ぬ部屋<br>やぶかな</span>
+  </a>
+</div>
 
-  <div class="category-title">媚バレックス</div>
-  <div class="link-list">
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank">
-        媚バレックス_あさはる
-      </a>
-    </div>
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank">
-        媚バレックス_はるさく
-      </a>
-    </div>
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank">
-        媚バレックス_やぶかな
-      </a>
-    </div>
-  </div>
+<div class="category-title">暴走！妄想！ナマモノノート！</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/あさはるのーと.html" target="_blank" class="image-link">
+    <img src="image/ナマモノ.jpg" alt="あさはるのーと">
+    <span>あさはるのーと</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/【副音声】あさはるのーと.html" target="_blank" class="image-link">
+    <img src="image/ナマモノ.jpg" alt="【副音声】あさはるのーと">
+    <span>【副音声】あさはるのーと</span>
+  </a>
+  <a href="https://privatter.net/p/11525772" target="_blank" class="image-link">
+    <img src="image/ナマモノ.jpg" alt="あさはるのーと小説">
+    <span>あさはるのーと小説</span>
+  </a>
+</div>
 
-  <div class="category-title">KPレス</div>
-  <div class="link-list">
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_叶.html" target="_blank">
-        レタスサラダ_叶
-      </a>
-    </div>
+<div class="category-title">媚バレックス</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank" class="image-link">
+    <img src="image/媚バレ.jpg" alt="媚バレックス_あさはる">
+    <span>媚バレックス<br>あさはる</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank" class="image-link">
+    <img src="image/媚バレ.jpg" alt="媚バレックス_はるさく">
+    <span>媚バレックス<br>はるさく</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank" class="image-link">
+    <img src="image/媚バレ.jpg" alt="媚バレックス_やぶかな">
+    <span>媚バレックス<br>やぶかな</span>
+  </a>
+</div>
 
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_遥啓.html" target="_blank">
-        レタスサラダ_遥啓
-      </a>
-    </div>
 
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank">
-        レタスサラダ_薮井
-      </a>
-    </div>
-
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_薮井.html" target="_blank">
-        くつくつ_薮井
-      </a>
-    </div>
-
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_猩猩.html" target="_blank">
-        くつくつ_猩猩
-      </a>
-    </div>
-
-    <div class="link-card">
-      <a href="https://nattun09.github.io/TRPG_LOG/KPレス/kana.html" target="_blank">
-        プリズナートレーニング_叶
-      </a>
-    </div>
-
-  </div>
+<div class="category-title">KPレス</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_叶.html" target="_blank" class="image-link">
+    <img src="image/レタスサラダ.png" alt="レタスサラダ_叶">
+    <span>レタスサラダ_叶</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_遥啓.html" target="_blank" class="image-link">
+    <img src="image/レタスサラダ.png" alt="レタスサラダ_遥啓">
+    <span>レタスサラダ_遥啓</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_薮井/log_export.html" target="_blank" class="image-link">
+    <img src="image/レタスサラダ.png" alt="レタスサラダ_薮井">
+    <span>レタスサラダ_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_薮井.html" target="_blank" class="image-link">
+    <img src="image/くつくつ.jpg" alt="くつくつ_薮井">
+    <span>くつくつ_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_猩猩.html" target="_blank" class="image-link">
+    <img src="image/くつくつ.jpg" alt="くつくつ_猩猩">
+    <span>くつくつ_猩猩</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/kana.html" target="_blank" class="image-link">
+    <img src="image/プリトレ.jpg" alt="プリズナートレーニング_叶">
+    <span>プリズナートレーニング_叶</span>
+  </a>
+</div>
+</div>
 
 </div>
 <div id="youtube" class="tab-content">
@@ -684,6 +717,19 @@ document.querySelectorAll('.tabs button').forEach(button => {
 });
 // 初期表示時にも実行
 updateCategoryList();
+
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('.image-link, .carousel').forEach(el => observer.observe(el));
 </script>
 
 </body>
