@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f7f7f9;
+      background: #ffffff;
       color: #333;
     }
 
@@ -50,6 +50,7 @@
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s;
+color:#333333;
     }
 
     .tab-button.active {
@@ -123,6 +124,7 @@
       user-select: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.2);
       transition: background-color 0.3s;
+color:#333333;
     }
 
     .carousel-controls button:hover {
@@ -146,6 +148,7 @@
       cursor: pointer;
       font-weight: bold;
       transition: background-color 0.3s;
+color:#333333;
     }
 
     .video-links button.active,
@@ -258,6 +261,7 @@
     border: none;
     font-size: 1.8rem;
     cursor: pointer;
+    color:#333333;
   }
 
 .category-menu {
@@ -381,12 +385,17 @@
   transform: translateY(0);
 }
 
+.scroll-to-top {
+  text-decoration: none;
+  color: inherit;
+}
+
   </style>
 </head>
 <body>
 
   <header>
-    <h1>TRPGログ一覧</h1>
+    <h1><a href="#" class="scroll-to-top">TRPGログ一覧</a></h1>
     <button class="menu-toggle" aria-label="カテゴリメニュー">☰</button>
   </header>
 
@@ -730,6 +739,14 @@ updateCategoryList();
   });
 
   document.querySelectorAll('.image-link, .carousel').forEach(el => observer.observe(el));
+
+document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
 </script>
 
 </body>
