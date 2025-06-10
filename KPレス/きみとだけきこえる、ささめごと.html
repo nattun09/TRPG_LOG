@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>Ccfolia Log</title>
+    <style data-meta="layout">
+
+        :root {
+            --body-background: #424242;
+            --side-bar-background: #424242;
+            --header-background: #4d4d4d;
+            --strong-text-color: #FFF;
+            --rgb-text: 255;
+            --rgb-shadow: 0;
+            --tab-items-height: 150px;
+            --user-items-height: 250px;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            background-color: var(--body-background);
+            overflow-x: hidden;
+            height: 100%;
+            width: 100%;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box
+        }
+
+        .root {
+            display: flex;
+            height: 100%;
+        }
+
+        .side-bar {
+            width: 300px;
+            height: 100%;
+            position: fixed;
+            z-index: 100;
+            background-color: var(--side-bar-background);
+            border-right: 1px solid rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.12);
+            overflow-y: auto;
+        }
+
+        .side-bar hr {
+            border: none;
+            height: 1px;
+            margin: 0;
+            flex-shrink: 0;
+            background-color: rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.12);
+        }
+
+        header {
+            background-color: var(--header-background);
+            height: 64px;
+            position: fixed;
+            padding-left: 24px;
+            box-shadow: 0px 2px 4px -1px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.2), 0px 4px 5px 0px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.14), 0px 1px 10px 0px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.12);
+            display: flex;
+            align-items: center;
+        }
+
+        header h1 {
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-size: 1.17em;
+            font-weight: 300;
+            color: var(--strong-text-color);
+            margin: 0;
+        }
+
+        main {
+            position: absolute;
+        }
+
+        .messages-list {
+            margin-top: 64px;
+            margin-bottom: 0px;
+            padding: 8px 0px;
+        }
+
+        /* mobile */
+        @media (max-width: 960px) {
+            .side-bar {
+                left: 0;
+                transform: translateX(-300px);
+                visibility: hidden;
+                transition: 225ms;
+                border-right: none;
+                box-shadow: 0px 8px 10px -5px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.20), 0px 16px 24px 2px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.14), 0px 6px 30px 5px rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.12);
+            }
+
+            header {
+                width: 100%;
+            }
+
+            main {
+                width: 100%;
+            }
+
+            .messages-list {
+                width: 100%;
+            }
+
+            #drawer-open:checked ~ .side-bar {
+                transform: none;
+                visibility: visible;
+            }
+
+            .main-cover {
+                transition: 225ms;
+            }
+
+            #drawer-open:checked ~ .main-cover {
+                height: 100%;
+                width: 100%;
+                position: fixed;
+                z-index: 1;
+                background-color: rgba(var(--rgb-shadow), var(--rgb-shadow), var(--rgb-shadow), 0.5);
+            }
+        }
+
+        /* pc */
+        @media (min-width: 960px) {
+            header {
+                width: calc(100% - 300px);
+            }
+
+            main {
+                width: calc(100% - 300px);
+                margin-left: 300px;
+            }
+        }
+    </style>
+    <style data-meta="menu">
+        .menu-root {
+            padding: 8px 0px;
+        }
+
+        .accordion-input {
+            display: none;
+        }
+
+        .accordion-label {
+            padding: 8px 16px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .accordion-label-fonts {
+            font-size: 1rem;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-weight: 300;
+            line-height: 1.5;
+            letter-spacing: 0.00938em;
+            color: var(--strong-text-color);
+            margin: 0;
+            width: 243px;
+        }
+
+        .accordion-items:not(:checked) {
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: 300ms;
+        }
+
+        #accordion-menu-tab:checked ~ #tab-items {
+            height: var(--tab-items-height);
+            overflow: visible;
+            opacity: 1;
+        }
+
+        #accordion-menu-user:checked ~ #user-items {
+            height: var(--user-items-height);
+            overflow: visible;
+            opacity: 1;
+        }
+
+        #accordion-menu-tab:checked ~ #tab-items {
+            height: var(--tab-items-height);
+            overflow: visible;
+            opacity: 1;
+        }
+
+        .accordion-item {
+            padding: 4px 16px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .accordion-item-fonts {
+            font-size: 0.875rem;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-weight: 300;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            color: var(--strong-text-color);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .button-elements {
+            transition: 150ms;
+            cursor: pointer;
+        }
+
+        .button-elements:hover {
+            background-color: rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.08);
+        }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            height: 64px;
+            padding-left: 24px;
+        }
+    </style>
+    <style data-meta="checkbox">
+        .accordion-items input[type="checkbox"] {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            padding-left: 25px;
+            padding-right: 10px;
+        }
+
+        .accordion-items input[type="checkbox"]::before {
+            content: "";
+            position: absolute;
+            box-sizing: border-box;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            left: 0;
+            top: 50%;
+            border: 2px solid;
+            border-color: rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.7); /* 枠の色変更 お好きな色を */
+            border-radius: 3px;
+            background-color: var(--side-bar-background);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1), 0 0 0 rgba(203, 34, 237, .2);
+            -webkit-transition: all .275s;
+            transition: all .275s;
+        }
+
+        .accordion-items input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            display: block;
+            box-sizing: border-box;
+            width: 15px;
+            height: 7px;
+            margin-top: -6px;
+            top: 50%;
+            left: 3px;
+            transform: rotate(-45deg);
+            border-bottom: 3px solid;
+            border-left: 3px solid;
+            border-color: rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.7);
+        }
+    </style>
+    <style data-meta="icons">
+        .hamburger-icon {
+            display: flex;
+            height: 48px;
+            width: 48px;
+            justify-content: center;
+            align-items: center;
+            z-index: 90;
+            cursor: pointer;
+            padding: 12px;
+            margin-left: -12px;
+            margin-right: 16px;
+            border-radius: 24px;
+        }
+
+        .hamburger-icon span,
+        .hamburger-icon span:before,
+        .hamburger-icon span:after {
+            content: '';
+            display: block;
+            height: 2px;
+            width: 18px;
+            background-color: var(--strong-text-color);
+            position: absolute;
+        }
+
+        .hamburger-icon span:before {
+            bottom: 5px;
+        }
+
+        .hamburger-icon span:after {
+            top: 5px;
+        }
+
+        .cancel-icon {
+            display: flex;
+            height: 48px;
+            width: 48px;
+            justify-content: center;
+            align-items: center;
+            z-index: 110;
+            cursor: pointer;
+            padding: 12px;
+            margin-left: -12px;
+            margin-right: 16px;
+            border-radius: 24px;
+        }
+
+        .cancel-icon span,
+        .cancel-icon span:before {
+            content: '';
+            height: 2px;
+            width: 18px;
+            background-color: var(--strong-text-color);
+            position: absolute;
+            transform: rotate(45deg);
+        }
+
+        .cancel-icon span:before {
+            transform: rotate(-90deg);
+        }
+
+        @media (min-width: 960px) {
+            .hamburger-icon {
+                display: none;
+            }
+
+            .cancel-icon {
+                display: none;
+            }
+        }
+    </style>
+    <style data-meta="message-item">
+        .message-item {
+            border-bottom: 1px solid rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.12);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .message-item .tab-area {
+            width: 56px;
+            min-width: 56px;
+        }
+
+        .message-item .tab-area .tab-text {
+            font-size: 0.75rem;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-weight: 300;
+            line-height: 1.66;
+            letter-spacing: 0.03333em;
+            color: #888888;
+            max-width: 50px;
+            word-break: break-word;
+        }
+
+        .message-item .message-area {
+            margin: 6px 0px;
+        }
+
+        .message-item .message-area .message-user-text {
+            font-size: 1rem;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-weight: 300;
+            line-height: 1.5;
+            letter-spacing: 0.00938em;
+            word-break: break-word;
+            margin: 0;
+        }
+
+        .message-item .message-area .message-content-text {
+            font-size: 0.85rem;
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            font-weight: 300;
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            color: rgba(var(--rgb-text), var(--rgb-text), var(--rgb-text), 0.9);
+            word-break: break-word;
+            margin: 0;
+        }
+    </style>
+
+    <script>
+        const showHide = (checkbox) => {
+            const targetMessages = document.getElementsByClassName(checkbox.id)
+            for (let i = 0; i < targetMessages.length; i++) {
+                const message = targetMessages[i]
+                const contexts = message.className.split(' ')
+                let checked = checkbox.checked
+                contexts.forEach((context) => {
+                    const contextCheckbox = document.getElementById(context)
+                    if (contextCheckbox) {
+                        checked &= contextCheckbox.checked
+                    }
+                })
+                message.style.display = checked ? '' : 'none'
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="root">
+    <input id="drawer-open" class="accordion-input" type="checkbox">
+    <nav class="side-bar">
+        <div class="menu-header">
+            <label for="drawer-open" class="cancel-icon button-elements">
+                <span></span>
+            </label>
+        </div>
+        <hr>
+        <div class="menu-root">
+            <!-- tabs -->
+            <input id="accordion-menu-tab" class="accordion-input" type="checkbox" checked="checked">
+            <label for="accordion-menu-tab" class="accordion-label button-elements">
+                <span class="accordion-label-fonts">Tabs</span>
+            </label>
+            <div id="tab-items" class="accordion-items">
+                <label for="tab-main" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="tab-main" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">main</span>
+                </label>
+                <label for="tab-info" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="tab-info" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">info</span>
+                </label>
+                <label for="tab-other" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="tab-other" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">other</span>
+                </label>
+
+            </div>
+
+            <!-- users -->
+            <input id="accordion-menu-user" class="accordion-input" type="checkbox" checked="checked">
+            <label for="accordion-menu-user" class="accordion-label button-elements">
+                <span class="accordion-label-fonts">Users</span>
+            </label>
+            <div id="user-items" class="accordion-items">
+                <label for="user-シナリオ" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="user-シナリオ" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">シナリオ</span>
+                </label>
+                <label for="user-片喰 旭 (かたばみ あさひ)" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="user-片喰 旭 (かたばみ あさひ)" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">片喰 旭 (かたばみ あさひ)</span>
+                </label>
+                <label for="user-system" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="user-system" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">system</span>
+                </label>
+                <label for="user-PL" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="user-PL" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">PL</span>
+                </label>
+                <label for="user-八染 遥啓" class="accordion-item button-elements">
+                    <div style="width: 56px;">
+                        <input id="user-八染 遥啓" onclick="showHide(this)" type="checkbox" checked="checked">
+                    </div>
+                    <span class="accordion-item-fonts">八染 遥啓</span>
+                </label>
+
+            </div>
+        </div>
+    </nav>
+    <label for="drawer-open" class="main-cover"></label>
+    <main>
+        <header>
+            <!-- hamburger button -->
+            <label for="drawer-open" class="hamburger-icon button-elements">
+                <span></span>
+            </label>
+            <h1>Ccfolia Log</h1>
+        </header>
+        <div class="messages-list">
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            ＿＿鳥の鳴き声がする。<br>布団をすっかり剥いでしまっていたようで、横抱きにしていた掛布団はくしゃくしゃだ。苦笑しながらあなたは起き上がる。<br>カーテンを開ければ、薄水色の端にはいまだ黄色がたなびいており、今が早朝であることが理解できる。<br>窓を開ければ、朝の空気が肺に雪崩れ込んでくる。思ったよりも澄んでいて、大きく吸い込めばすこし冷たい。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            世界は静かだ。<br>時がとまったようにすら思えてしまう。きっと、そのうち車が走り出す頃合いになればそんなうら寂しさは消えていくのだろうけれど。<br>と、思っていたら救急車のサイレンである。静寂とはなんとはかなきかな。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            今日は休日だ。<br>随分と早く起きてしまったことに気付いたのはそれからしばらくして。遥啓はまだ眠っているだろうか？二度寝するか、このままキッチンで食事でも作ってあげるか迷うところである。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            聞き耳を振ってください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            CCB<=80 【聞き耳】 (1D100<=80) ＞ 100 ＞ 致命的失敗
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            なんにも聞こえないですね！<br>しかも、起き上がる時に何故か転けて頭を打ちますね！！<br>HP-1してください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 片喰 旭 (かたばみ あさひ) ] HP : 15 → 14
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢痛ってぇ…ツイてねえな朝から…｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            さて、ベッドから出たわけですがどうしますか？
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            とりあえず部屋から出ます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            部屋から出てリビングに向かえば、遥啓は何やら窓を見て立ち尽くしていた。<br>片手に新聞を持っていることから、朝刊をとりに玄関から戻った後なのだろうが。<br>視線は外にいるのだろう何かに釘付けでる。猫でもいるのだろうか？/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢おはよ、遥啓…って、どうした？外になんか居んのか？｣と話しかけながら旭も窓の外をみます /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            では、一先ずちらと見た窓の情報からお渡ししますね。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            遥啓の視線の先には何も無く、彼が何を見ているのかあなたには分からない。体調でも悪いのだろうか？
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-シナリオ">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            シナリオ
+                        </p>
+                        <p class="message-content-text">
+                            また、あなたが遥啓に声をかけると、大げさで＿＿いっそ可哀相なくらいに大きく肩を揺らして振り返る。<br>顔色は傍目からみてすぐ分かるほどに青褪めており、どこかうつろな視線があなたに合わさると安堵したように眇められる。<br><br>「旭、よかった…」<br><br>遥啓はあなたに駆け寄ると、あなたの背中をふわりと両手で包み込む。<br>そういったスキンシップをしない間柄であれば、やや驚くかもしれない。不快ではない程度の強さであるので、逃れるのは容易だろう。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…どうした？顔色も悪いし、なんか嫌な夢でも見たのか？｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            と言いながら、遥啓の背中に優しく手を回してさすります /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「悪い。そう、怖い夢をみた。ガキみたいだよな…」<br>罰が悪そうに視線を合わせようとはしませんが、旭に背中をさすられて安心したようにほんの少し目元を緩ませます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢別に、そういう日だってあんだろ。そんな申し訳なさそうな顔すんなって。｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……ありがとう。もう、大丈夫だから」<br><br>そう言うと、遥啓は抱きしめていた手を弛め、あなたから離れていきます。<br>＿＿やっぱり、どこか無理をしてるように見えて痛々しい。昨日までこのような素振りは一切なかったかもしれないし、予兆はあったかもしれない。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            なんにせよ、起きてしまったからには朝食をとり、ゆっくり遥啓に話を聞くべきだろう。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            遥啓はあなたの傍にぴったりついて離れないため、協力して朝食を作ることになる。<br>どうしたのかと思うかもしれないが、まあこういった休日も悪くはないと思うかもしれない。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「今日の朝飯は何がいい？」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢そうだな…普通にトースト、いや、まだ冷蔵庫に牛乳残ってたよな？フレンチトーストとか、ちょっと洒落たもんでも作ってみるか？今日は休みだし、時間あんだろ｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「そうだな。時間あるし、たまにはな」<br>と言いながら、準備するかな。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            DEX×5を振ってください。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            CCB<=14*5 【DEX × 5】 (1D100<=70) ＞ 80 ＞ 失敗
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            CCB<=13*5 【DEX × 5】 (1D100<=65) ＞ 38 ＞ 成功
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢お前本当に大丈夫かよ？フレンチトーストくらいならおれだって準備できるから、席で待っててもいいぞ？持っていってやるから｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……いや、なんかわるい、し。ここにいる」<br>使ったものを片付けたり、皿を洗うなどしてここに残る気です。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…そうか。じゃあそうだな、飲み物とか、ヨーグルトとか、そっちの準備しといて貰えるか？｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            なんとなくここ１ヶ月の遥啓の挙動から、キッチンから出たくないのかなと察していくつか手伝いを任せて一緒に準備を進めます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「わかった」色々準備しますね！
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            あなたたちは準備を終えるとそのまま食卓につき、「いただきます」と手を合わせてフレンチトーストをたべるでしょう。<br>見た目も味も美味しい。良い朝食になった！<br>正気度回復1d3
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            1D3 (1D3) ＞ 2
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 八染 遥啓 ] SAN : 64 → 66
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            1D3 (1D3) ＞ 3
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 片喰 旭 (かたばみ あさひ) ] SAN : 56 → 59
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「美味いな。ありがとう」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢な、我ながら上手く焼けた気がする。…顔色戻ってきたな。ちょっとは落ち着いたか？｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「あぁ、心配させて悪かったな」<br>そういいながら、ほんの少し弱々しさを感じさせる笑みを浮かべます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            視線を一度床に落として、貴方の目を真っ直ぐに見つめます。<br><br>「あの、さ。旭」<br><br>遥啓がおずおずと口を開く。どこか重く、迷っているような暗い表情に、何かあったのではないかとあなたも佇まいを正すことになるかもしれない。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「こうして一緒にご飯食べたり、寝起きしてさ……、お前と、お前らと過ごす今がすごく幸せだって、思ったんだ。突然何を言い出すんだって思うかもしれないけどさ」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「なぁ、旭。俺とずっと一緒にいてくれるか……？」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「俺は……、今の生活が居心地がよくて、なんだか。お前に、依存してるのかもしれないって。考えてたんだ」<br><br>遥啓の話す言葉は、あなたにとって意外かもしれないしそうでもないかもしれない。あなたにとって彼との生活が好ましいか、それとも仕方なくなのか。平穏な休日に差し込まれた一抹の不安に、あなたは少しだけ困惑するかもしれない。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…そう不安がるなよ。第一、お前の傍に居させてくれって、そうわがまま言い始めたのはおれの方なんだから。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢今ある幸せを疑うな。そう言ってくれたのもお前だろうが。少なくとも、おれはお前から離れようとは一度も思ったこと、ねえよ。だからそんな顔すんな。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            そういいながら、遥啓の頭を撫でようかなと思います /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……そう、か」<br>珍しく素直に頭を撫でられていますが、なんだか納得はいっていないらしい。<br>納得できない理由が自分でもわからないのか、困ったように首を傾げている。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            アイデアを振ってください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            CCB<=45 【アイデア】 (1D100<=45) ＞ 37 ＞ 成功
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            何を不安がっているのかわからないが、言葉で理解して貰えないのであれば体で表せばいいのではないか、とあなたは考える。<br>例えば、甘えて貰うとか、スキンシップを計るとか。安心して貰うために出来ることはたくさんある。そう思えるほど、彼の事が大切であれば、だが。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢そうだな…よし、遥啓。ちょっと立ち上がってくれないか？｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            遥啓に椅子から立ち上がるように促します /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……？わかった」<br>素直に立ちます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            旭も立ち上がって、そのまま遥啓の横に回り込んで抱えるように抱きしめます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢お前はいつも昔から頑張りすぎなんだよ。少しくらい、ガキみたいに振舞ったって誰も文句いわねえし、もうそれをとやかく言うような連中だって居ねえよ。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢だからさ。お前はもっと、誰かに寄りかかったっていいと思うぞ？それとも、そうやって寄りかかるのに、おれ、そんなに頼りないか？｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            抱きしめられて、びっくりして身体を硬直させますが、すぐに力を緩めてあなたに抱かれるままですね。<br>「…別に、お前が頼りないなんて思ってる訳じゃねぇよ」と旭の腕に触れながら言います。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「なんだよ、まるで自分に甘えて欲しいみたいなこと言いやがって」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢そう言ってんだよ。よく分かってんじゃねえか｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「え、」<br><br>遥啓は大きく目を瞠ったあとで唇を何度か開閉させてひゅう、と息を吸った。静かな食卓、二人きりの部屋ではその小さな音ですら大きく聞こえる。<br><br>ふと、ふたりぼっちのようだな。<br>と、あなたの頭の中で感傷的な考えが浮かぶ。<br><br>「お、お前に甘えろって……？」<br><br>思わず聞き返してしまいます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢そのまんまの意味だよ。何を不安がってるのか知らねえけど、そしたらちょっとくらいは安心できるかもしれないだろ？｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            遥啓は心底恥ずかしくて、照れくさいのだというように顔を背けた。しかしどこか嬉しそうに見えるのはなぜだろうか。<br>どうやら正回答だったらしい。<br>さて、この陰鬱に沈む同居人をどう甘やかしたらいいだろうか。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            遥啓を甘やかそう！<br>情報タブに甘やかし表を貼るぜぇ！！
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            お好きに甘やかしてあげてください…♫/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            遥啓をそのまま抱きかかえ、旭の部屋まで連れていきます。ベッドに腰掛けて、遥啓を横たえて一緒に寝転びます
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢どうせ今日は休みなんだし、1日くらい、こうやってゴロゴロ過ごしたってバチは当たんねえだろ。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            そういいながら、遥啓の頭を胸に抱えるようにして抱きしめます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢こうやって同じ布団で寝っ転がるの、何年ぶりだろうな。覚えてるか？昔はよくこうやってお前の方がおれの頭撫でてくれてたもんな｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……はは、そうだな。たしかに」<br><br>突然連れてこられて驚いてたけど、そう言われればなんだかおかしくて、優しく笑います。<br><br>「懐かしいな…。昔はそこまで身長差がデカかった訳でもないのに、随分と大きくなっちまって」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢おれだって別にこうなりたくてなった訳じゃねえからな？…でも、そうだな。こうやってお前のこと守ってやれるくらい、大きくなれて良かったって思ってるよ｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢お前はおれのこと弟みたいに可愛がってくれてるかもしれねえけど。おれだってお前にかっこいいとこ、見せたいって思うし、頼られたいよ、おれは｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            そう続けながら、遥啓の背中を撫でます /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「馬鹿だなぁ、お前。お前はちゃんとかっこいいよ」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「いつも俺のために無茶苦茶しやがって。……でも、お前に助けられてるのは事実なんだよな。ありがとうな」<br><br>旭の腕の中で、小さく笑ってそう言います。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…あー、自分で言い出しといてなんだけどさ…そうやってお前に褒められんの、やっぱなんか照れるわ…｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢おれだって、お前に助けられてばっかだよ。出会ったあの日から、ずっとそうだ。お前が今こうして生きていてくれてるから、おれも幸せだって、そう思える。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢こうやっておれみたいな奴まで拾ってさ…お前のそういうお人好し過ぎるところ、たまに心配にはなるけど、おれはお前のそういう所、好きだよ｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            頭を撫でながら遥啓の顔を覗き込み、真っ直ぐ目を見つめて話します /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「なんだよ、仕返しのつもりか？熱烈だな」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「俺は別にお前を拾ってやったつもりはない、お前が勝手に俺に着いてきたんだろ」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢はは、お前ももしかしてちょっと照れてんのか？可愛いやつだな｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            と言いながら、髪の隙間に指を差し入れ、ほんの少し赤くなった遥啓の耳をくすぐります /
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「っ、馬鹿やめろ」<br><br>と言って旭の手を退けようとします。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢悪い悪い、お前の反応が見たくなってつい、な。怒んなよ｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-PL">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #ffeb3b;" class="message-user-text">
+                            PL
+                        </p>
+                        <p class="message-content-text">
+                            遥啓の頭付近を行ったり来たりさせていた手を腰に戻し、強く抱きしめ直します。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…ああ、なんだかこうしてると全部思ってること口に出しそうになって、ダメだな…｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…おれは好きだよ、お前のこと。今朝からずっと、お前はなんか余計な心配してるみたいだけど。何度でも言うが、おれはお前から離れる気なんてさらさらないからな。｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……俺の事を安心させようとしてくれてるんだなぁ、お前。可愛いやつ」<br><br>といいながら頭を撫でます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「お前には俺に縛られて生きて欲しくなんてないのに、なんだろうな。なんか今日は、嬉しいわ。それ」/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 片喰 旭 (かたばみ あさひ) ] SAN : 59 → 90
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 片喰 旭 (かたばみ あさひ) ] SAN : 90 → 91
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢そうかよ。いつもそのくらい、素直に喜んでくれたっていいんだぜ？｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢お前はおれを"縛っている"っていつも考えてるようだけど。おれはお前が居てくれるおかげで、毎日飯が美味いな、とか、今日は天気がいいな、とか、そんなクソどうでもいい事だって、幸せだなって思うんだよ。｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢お前のおかげで、おれはおれの生きる世界をまだ捨てたもんじゃないなって、そう思える。だからさ、そんな風に思わないでくれよ。少なくとも、今日ぐらいはさ｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「俺のおかげで幸せだなんて、言ってくれるんだな」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「いつもお前は、俺のせいで……」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……いや。でも、そうだな。今日くらいは、この心地良さに身を任せたって、いいか」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            遥啓はふんわりと笑ってあなたの頬を撫でる。<br>朝より随分顔色がいい。常よりも蕩けた様な、ふにゃりとした笑顔を浮かべた遥啓は、そのままあなたの腕の中でその温もりに身を任せるように目を閉じるだろう。<br><br>きっと、ふたりぼっちのこの空間にいたからこそ、彼は安心することが出来たのだ。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            あなたたちがそうして過ごして、もう何時間が経ったのだろう。<br>平穏で幸福な休日というのは過ぎるのが早く、甘やかす立場であったはずのあなたですらさみしいという気持ちが胸の奥からむらむらと湧いてくる。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            永遠に平和であればいいのに、とあなたは思う。きっと彼もそう思っている。<br>身近にある危機も異常も知っているからこそ、この時間が大切で大切で仕方がないのだということも。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            最後のRPが出来ます。/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢…はは、なんか、結局おれの方が甘やかされてたんじゃねえかなって思っちまうな｣
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            ｢なあ、遥啓。おれはな、昔からずっと、お前の横に居たいだけだ。そんでそのお前が、元気に笑ってくれてたんなら、おれにとってはそれが一番の幸せだ。そのこと、忘れないでいてくれよ。｣/
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「……あぁ。俺も、お前が俺の横で笑っていてくれるのが、いちばん、いいな」<br><br>ぎゅう、と珍しく旭を抱きしめると遥啓はその胸に1度だけ頬を擦り寄せるように、心地よさそうにしてそう言った。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「なんだか、眠くなっちまった。なぁ、このまま……」<br>お前に抱かれたまま、寝ていいだろうか。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            そんな野暮なことをいうのもなんだか気が引けて、遥啓は1度口を引き結ぶと、目を閉じたまま、ただ旭の心臓の音に耳を傾けながら<br><br>「＿＿また明日」<br><br>と、ただそう一言口にした。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            眠りに落ちるその寸前、遥啓が囁いた言葉。<br>あなたは彼に抱きしめられて、背中に腕を回して、心から安らぐことが出来ていることに気付くだろう。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            また明日。<br>それが何度叶うものだろうか？<br>頭の隅でそんなことを考えてしまいながら、あなたの意識もまた眠りの底へと沈んでいく。<br><br>これはあくまで、もしかしたらの話。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            それから数週間して。<br><br>旭の知り合いが変死し、その直前旭と一緒にいた様子をみたものがいる、と警察があなたの自宅に訪れる。その日は確かに、遥啓と共にいたからそんなわけはないのだが。<br>遥啓はもしかして、といった顔をしてあなたを見る。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            「＿＿あの日の朝、お前によく似た人が外で歩いているの見かけたんだ。そのあとすぐお前が起きて来たから。……似てるだけか、と思ったんだか」
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            それを早く言え！！<br><br>＿＿と、あなたは思うかもしれない。<br>そしてそのまま、己の容疑を晴らすためいつも通り、遥啓と共に東奔西走することになるのかもしれない。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            ＿＿＿＿あくまで、もしかしたら、の話。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            エンド「ささやかなる」<br><br>生還報酬 1d5<br>PCは精神分析に1d10の成長<br>KPCは心理学に1d10の成長
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-八染 遥啓">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #e0e0e0;" class="message-user-text">
+                            八染 遥啓
+                        </p>
+                        <p class="message-content-text">
+                            1D10  (1D10) ＞ 2
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-片喰 旭 (かたばみ あさひ)">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #6e5a77;" class="message-user-text">
+                            片喰 旭 (かたばみ あさひ)
+                        </p>
+                        <p class="message-content-text">
+                            1D10  (1D10) ＞ 1
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-main user-system">
+                <div class="message-item">
+                    <div class="tab-area">
+                        <span class="tab-text">main</span>
+                    </div>
+                    <div class="message-area">
+                        <p style="color: #888888;" class="message-user-text">
+                            system
+                        </p>
+                        <p class="message-content-text">
+                            [ 片喰 旭 (かたばみ あさひ) ] SAN : 91 → 90
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+</body>
+</html>
