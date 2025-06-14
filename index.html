@@ -428,6 +428,27 @@ color:#333333;
   outline: none;
 }
 
+#clearButton {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+#clearButton:hover,
+#clearButton:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
+
   </style>
 </head>
 <body>
@@ -449,10 +470,10 @@ color:#333333;
 <main>
 
 <div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
-  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:70%;">
-  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;"> タグ </button>
-  <ul id="tagList">
-  </ul>
+  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:60%;">
+  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">タグ</button>
+  <button id="clearButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">削除</button>
+  <ul id="tagList"></ul>
 </div>
 
 
@@ -841,6 +862,8 @@ document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
   });
 });
 
+// kennsakusyori 
+
 document.getElementById('searchBox').addEventListener('input', function(e) {
   const keyword = e.target.value.toLowerCase();
 
@@ -938,6 +961,13 @@ function setupTagList() {
     tagList.appendChild(li);
   });
 
+
+  document.getElementById('clearButton').addEventListener('click', () => {
+  const searchBox = document.getElementById('searchBox');
+  searchBox.value = ''; // 検索ボックスの中身を空にする
+  searchBox.dispatchEvent(new Event('input')); // inputイベントを発火させて全表示
+});
+
   // ボタンで表示/非表示切替
   tagButton.addEventListener('click', () => {
     if (tagList.style.display === 'none') {
@@ -957,6 +987,8 @@ function setupTagList() {
 
 // ページ読み込み時にセットアップ
 window.addEventListener('DOMContentLoaded', setupTagList);
+
+
 
 </script>
 
