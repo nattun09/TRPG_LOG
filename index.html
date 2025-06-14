@@ -391,6 +391,42 @@ color:#333333;
   text-decoration: none;
   color: inherit;
 }
+  #tagList {
+    display: none;
+    position: absolute;
+    top: 42px;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 1000;
+  }
+
+#tagButton {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+#tagButton:hover,
+#tagButton:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
 
   </style>
 </head>
@@ -412,26 +448,33 @@ color:#333333;
 
 <main>
 
-<input type="text" id="searchBox" placeholder="キーワード検索..." style="display:block;margin:20px auto;padding:10px;width:80%;max-width:400px;">
+<div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
+  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:70%;">
+  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;"> タグ </button>
+  <ul id="tagList">
+  </ul>
+</div>
+
+
 
 
 <div id="text" class="tab-content active">
 
 <div class="category-title">テキセ単発</div>
 <div class="link-grid">
-  <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶">
     <img src="image/入れ替わり.jpg" alt="わたしたち、入れ替わってる～！？_やぶかな">
     <span>わたしたち、入れ替わってる～！？<br>やぶかな</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶">
     <img src="image/仲良くしないと死ぬ部屋.png" alt="仲良くしないと死ぬ部屋_やぶかな">
     <span>仲良くしないと死ぬ部屋<br>やぶかな</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/きみとだけきこえる、ささめごと.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/きみとだけきこえる、ささめごと.html" target="_blank" class="image-link" data-tags="旭,遥啓">
     <img src="image/きみささ.png" alt="きみとだけきこえる、ささめごと_あさはる">
     <span>きみとだけきこえる、ささめごと<br>あさはる</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/転がるおじさんとジャスミンティー/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/転がるおじさんとジャスミンティー/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶">
     <img src="image/ころおじ.png" alt="転がるおじさんとジャスミンティー_やぶかな">
     <span>転がるおじさんとジャスミンティー<br>やぶかな</span>
   </a>
@@ -439,15 +482,15 @@ color:#333333;
 
 <div class="category-title">暴走！妄想！ナマモノノート！</div>
 <div class="link-grid">
-  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/あさはるのーと.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/あさはるのーと.html" target="_blank" class="image-link" data-tags="旭,遥啓">
     <img src="image/ナマモノ.jpg" alt="あさはるのーと">
     <span>あさはるのーと</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/【副音声】あさはるのーと.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/【副音声】あさはるのーと.html" target="_blank" class="image-link" data-tags="旭,遥啓">
     <img src="image/ナマモノ.jpg" alt="【副音声】あさはるのーと">
     <span>【副音声】あさはるのーと</span>
   </a>
-  <a href="https://privatter.net/p/11525772" target="_blank" class="image-link">
+  <a href="https://privatter.net/p/11525772" target="_blank" class="image-link" data-tags="旭,遥啓">
     <img src="image/ナマモノ.jpg" alt="あさはるのーと小説">
     <span>あさはるのーと小説</span>
   </a>
@@ -455,15 +498,15 @@ color:#333333;
 
 <div class="category-title">媚バレックス</div>
 <div class="link-grid">
-  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank" class="image-link" data-tags="旭,遥啓">
     <img src="image/媚バレ.jpg" alt="媚バレックス_あさはる">
     <span>媚バレックス<br>あさはる</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank" class="image-link" data-tags="晴,朔">
     <img src="image/媚バレ.jpg" alt="媚バレックス_はるさく">
     <span>媚バレックス<br>はるさく</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶">
     <img src="image/媚バレ.jpg" alt="媚バレックス_やぶかな">
     <span>媚バレックス<br>やぶかな</span>
   </a>
@@ -472,27 +515,27 @@ color:#333333;
 
 <div class="category-title">KPレス</div>
 <div class="link-grid">
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_叶.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_叶.html" target="_blank" class="image-link" data-tags="叶">
     <img src="image/レタスサラダ.png" alt="レタスサラダ_叶">
     <span>レタスサラダ_叶</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_遥啓.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_遥啓.html" target="_blank" class="image-link" data-tags="遥啓">
     <img src="image/レタスサラダ.png" alt="レタスサラダ_遥啓">
     <span>レタスサラダ_遥啓</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank" class="image-link" data-tags="薮井">
     <img src="image/レタスサラダ.png" alt="レタスサラダ_薮井">
     <span>レタスサラダ_薮井</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_薮井.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_薮井.html" target="_blank" class="image-link" data-tags="薮井">
     <img src="image/くつくつ.jpg" alt="くつくつ_薮井">
     <span>くつくつ_薮井</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_猩猩.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_猩猩.html" target="_blank" class="image-link" data-tags="猩猩">
     <img src="image/くつくつ.jpg" alt="くつくつ_猩猩">
     <span>くつくつ_猩猩</span>
   </a>
-  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/kana.html" target="_blank" class="image-link">
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/kana.html" target="_blank" class="image-link" data-tags="叶">
     <img src="image/プリトレ.jpg" alt="プリズナートレーニング_叶">
     <span>プリズナートレーニング_叶</span>
   </a>
@@ -512,14 +555,14 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button class="active">ラブレターフロムロラン</button>
-      <button>レッツロシアンうどん</button>
-      <button>捨てKPC</button>
-      <button>慄け！因習村</button>
-      <button>村ホラーRTA</button>
-      <button>死にたがり電車</button>
-      <button>ラーメンは乙女の嗜み</button>
-      <button>ハイフェッツをなぞる病</button>
+      <button  data-tags="開" class="active">ラブレターフロムロラン</button>
+      <button data-tags="うたたね,白,仁木">レッツロシアンうどん</button>
+      <button data-tags="せいな,いのり">捨てKPC</button>
+      <button data-tags="薮井,叶">慄け！因習村</button>
+      <button data-tags="うたたね,きみこ">村ホラーRTA</button>
+      <button data-tags="葉">死にたがり電車</button>
+      <button data-tags="せいな,まり,いのり">ラーメンは乙女の嗜み</button>
+      <button data-tags="晴,朔">ハイフェッツをなぞる病</button>
       <button>宇宙船ニル・ノート号の残響</button>
     </div>
 <div class="video-toc">
@@ -548,7 +591,7 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button class="active">初恋性_おりゆう</button>
+      <button data-tags="折,悠" class="active">初恋性_おりゆう</button>
     </div>
   </div>
 
@@ -562,8 +605,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">鰯と柊（前編）_あさはる</button>
-      <button data-index="1">鰯と柊（後編）_あさはる</button>
+      <button data-tags="旭,遥啓" class="active">鰯と柊（前編）_あさはる</button>
+      <button data-tags="旭,遥啓">鰯と柊（後編）_あさはる</button>
     </div>
   </div>
 
@@ -577,9 +620,9 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button class="active">鰯と柊（前編）_しょじょめめ</button>
-      <button>鰯と柊（中編）_しょじょめめ</button>
-      <button>鰯と柊（後編）_しょじょめめ</button>
+      <button data-tags="猩猩,恵々" class="active">鰯と柊（前編）_しょじょめめ</button>
+      <button "猩猩,恵々">鰯と柊（中編）_しょじょめめ</button>
+      <button "猩猩,恵々">鰯と柊（後編）_しょじょめめ</button>
     </div>
   </div>
 
@@ -593,8 +636,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button class="active">灰よか_灰咲白</button>
-      <button >灰よか_うたたね</button>
+      <button "白,仁木" class="active">灰よか_灰咲白</button>
+      <button "うたたね,仁木">灰よか_うたたね</button>
     </div>
   </div>
 
@@ -608,8 +651,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button class="active">カタシロ_蝿島叶</button>
-      <button >カタシロ_元目開</button>
+      <button "叶" class="active">カタシロ_蝿島叶</button>
+      <button "開">カタシロ_元目開</button>
     </div>
   </div>
 
@@ -813,7 +856,8 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
     // 各リンクで検索
     linkGrid.querySelectorAll('.image-link').forEach(link => {
       const text = link.textContent.toLowerCase();
-      const match = text.includes(keyword);
+      const tags = (link.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
       link.style.display = match ? '' : 'none';
       if (match) isHit = true;
     });
@@ -824,25 +868,26 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
   });
 
   // --- YouTubeログ ---
-  document.querySelectorAll('#youtube .category').forEach(category => {
-    const titleEl = category.querySelector('.category-title');
-    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
-    const carousel = category.querySelector('.carousel');
-    let isHit = title.includes(keyword);
+document.querySelectorAll('#youtube .category').forEach(category => {
+  const titleEl = category.querySelector('.category-title');
+  const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+  const carousel = category.querySelector('.carousel');
+  let isHit = title.includes(keyword);
 
-    const videoButtons = category.querySelectorAll('.video-links button');
-    videoButtons.forEach(btn => {
-      const text = btn.textContent.toLowerCase();
-      const match = text.includes(keyword);
-      btn.style.display = match ? '' : 'none';
-      if (match) isHit = true;
-    });
-
-    category.style.display = isHit ? '' : 'none';
-    if (carousel) {
-      carousel.style.display = isHit ? '' : 'none';
-    }
+  const videoButtons = category.querySelectorAll('.video-links button');
+  videoButtons.forEach(btn => {
+    const text = btn.textContent.toLowerCase();
+    const tags = (btn.dataset.tags || '').toLowerCase();  // 追加
+    const match = text.includes(keyword) || tags.includes(keyword);  // 変更
+    btn.style.display = match ? '' : 'none';
+    if (match) isHit = true;
   });
+
+  category.style.display = isHit ? '' : 'none';
+  if (carousel) {
+    carousel.style.display = isHit ? '' : 'none';
+  }
+});
 
   // --- YouTube目次（オマケ） ---
   document.querySelectorAll('.video-toc li').forEach(el => {
@@ -852,6 +897,66 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
 });
 
 
+// タグ一覧を作成して、ボタン押下で表示切替、タグクリックで検索欄にセット
+function setupTagList() {
+  const tagButton = document.getElementById('tagButton');
+  const tagList = document.getElementById('tagList');
+  const searchBox = document.getElementById('searchBox');
+
+  // data-tagsを集めて重複なくSetに
+  const tagSet = new Set();
+
+  // テキセログのdata-tags
+  document.querySelectorAll('#text .image-link').forEach(el => {
+    const tags = (el.dataset.tags || '').split(',').map(t => t.trim());
+    tags.forEach(t => { if (t) tagSet.add(t); });
+  });
+
+  // YouTubeログのvideo-linksボタンのdata-tags
+  document.querySelectorAll('#youtube .video-links button').forEach(el => {
+    const tags = (el.dataset.tags || '').split(',').map(t => t.trim());
+    tags.forEach(t => { if (t) tagSet.add(t); });
+  });
+
+  // tagListに<li>を作成
+  tagList.innerHTML = '';
+  tagSet.forEach(tag => {
+    const li = document.createElement('li');
+    li.textContent = tag;
+    li.style.padding = '8px 12px';
+    li.style.cursor = 'pointer';
+    li.style.borderBottom = '1px solid #eee';
+    li.addEventListener('mouseenter', () => li.style.backgroundColor = '#f0f0f0');
+    li.addEventListener('mouseleave', () => li.style.backgroundColor = '#fff');
+    li.addEventListener('click', () => {
+      searchBox.value = tag;
+      tagList.style.display = 'none';
+      searchBox.focus();
+      // ここで検索実行の関数があれば呼び出してもOK
+      searchBox.dispatchEvent(new Event('input'));
+    });
+    tagList.appendChild(li);
+  });
+
+  // ボタンで表示/非表示切替
+  tagButton.addEventListener('click', () => {
+    if (tagList.style.display === 'none') {
+      tagList.style.display = 'block';
+    } else {
+      tagList.style.display = 'none';
+    }
+  });
+
+  // ページのどこかクリックでリストを閉じる
+  document.addEventListener('click', (e) => {
+    if (!tagList.contains(e.target) && e.target !== tagButton) {
+      tagList.style.display = 'none';
+    }
+  });
+}
+
+// ページ読み込み時にセットアップ
+window.addEventListener('DOMContentLoaded', setupTagList);
 
 </script>
 
