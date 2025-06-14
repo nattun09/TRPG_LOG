@@ -405,6 +405,7 @@ color:#333333;
     margin: 0;
     padding: 0;
     z-index: 1000;
+
   }
 
 #tagButton {
@@ -991,7 +992,7 @@ function setupTagList() {
     li.addEventListener('click', () => {
       searchBox.value = tag;
       tagList.style.display = 'none';
-      searchBox.focus();
+      //searchBox.focus();
       // ここで検索実行の関数があれば呼び出してもOK
       searchBox.dispatchEvent(new Event('input'));
     });
@@ -1003,6 +1004,10 @@ function setupTagList() {
   const searchBox = document.getElementById('searchBox');
   searchBox.value = ''; // 検索ボックスの中身を空にする
   searchBox.dispatchEvent(new Event('input')); // inputイベントを発火させて全表示
+});
+
+document.getElementById('tagList').addEventListener('mousedown', function(e) {
+  e.preventDefault(); // フォーカス移動阻止
 });
 
   // ボタンで表示/非表示切替
