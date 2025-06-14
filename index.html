@@ -471,7 +471,7 @@ color:#333333;
 
 <div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
   <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:50%;">
-  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">タグ</button>
+  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">キャラ</button>
   <button id="clearButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">削除</button>
   <ul id="tagList"></ul>
 </div>
@@ -576,7 +576,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button  data-tags="開" class="active">ラブレターフロムロラン</button>
+　　　<button data-tags="旭,遥啓" class="active">盲心未遂</button>
+      <button data-tags="開">ラブレターフロムロラン</button>
       <button data-tags="うたたね,白,仁木">レッツロシアンうどん</button>
       <button data-tags="せいな,いのり">捨てKPC</button>
       <button data-tags="薮井,叶">慄け！因習村</button>
@@ -588,9 +589,10 @@ color:#333333;
     </div>
 <div class="video-toc">
   <ul>
+　　<li><a href="#">盲心未遂</a>(いわひらげんみ❌)</li>
     <li><a href="#">ラブレターフロムロラン</a></li>
     <li><a href="#">レッツロシアンうどん</a> (灰よかげんみ❌) </li>
-    <li><a href="#">捨てKPC</a> (脱獄乙女げんみ？) </li>
+    <li><a href="#">捨てKPC</a> (脱獄乙女げんみ❌) </li>
     <li><a href="#">慄け！因習村</a></li>
     <li><a href="#">村ホラーRTA</a></li>
     <li><a href="#">死にたがり電車</a></li>
@@ -716,6 +718,7 @@ document.querySelectorAll('.category').forEach(category => {
 document.querySelectorAll('.category').forEach(category => {
   const videos = {
     session: [
+      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
       {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
       {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
       {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
