@@ -865,7 +865,7 @@ document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
   });
 });
 
-// kennsakusyori 
+// 検索処理
 
 document.getElementById('searchBox').addEventListener('input', function(e) {
   const keyword = e.target.value.toLowerCase();
@@ -879,7 +879,6 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
 
     let isHit = titleText.includes(keyword);
 
-    // 各リンクで検索
     linkGrid.querySelectorAll('.image-link').forEach(link => {
       const text = link.textContent.toLowerCase();
       const tags = (link.dataset.tags || '').toLowerCase();
@@ -888,38 +887,73 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
       if (match) isHit = true;
     });
 
-    // カテゴリタイトルも含めて表示判定
     titleEl.style.display = isHit ? '' : 'none';
     linkGrid.style.display = isHit ? '' : 'none';
   });
 
   // --- YouTubeログ ---
-document.querySelectorAll('#youtube .category').forEach(category => {
-  const titleEl = category.querySelector('.category-title');
-  const title = titleEl ? titleEl.textContent.toLowerCase() : '';
-  const carousel = category.querySelector('.carousel');
-  let isHit = title.includes(keyword);
+  document.querySelectorAll('#youtube .category').forEach(category => {
+    const titleEl = category.querySelector('.category-title');
+    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+    const carousel = category.querySelector('.carousel');
+    let isHit = title.includes(keyword);
 
-  const videoButtons = category.querySelectorAll('.video-links button');
-  videoButtons.forEach(btn => {
-    const text = btn.textContent.toLowerCase();
-    const tags = (btn.dataset.tags || '').toLowerCase();  // 追加
-    const match = text.includes(keyword) || tags.includes(keyword);  // 変更
-    btn.style.display = match ? '' : 'none';
-    if (match) isHit = true;
+    const videoButtons = category.querySelectorAll('.video-links button');
+    let visibleButtons = [];
+
+    const videos = {
+      session: [
+      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
+      {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
+      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
+      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
+      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
+      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
+      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
+      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
+      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
+      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+      ],
+    }[category.dataset.category];
+
+    videoButtons.forEach(btn => {
+      const text = btn.textContent.toLowerCase();
+      const tags = (btn.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
+      btn.style.display = match ? '' : 'none';
+
+      if (match) {
+        isHit = true;
+        visibleButtons.push(btn);
+      }
+    });
+
+    category.style.display = isHit ? '' : 'none';
+    if (carousel) carousel.style.display = isHit ? '' : 'none';
+
+    if (typeof category.currentIndex !== 'number') category.currentIndex = 0;
+
+    videoButtons.forEach(btn => btn.classList.remove('active'));
+
+    if (visibleButtons.length > 0) {
+      const idx = Math.min(category.currentIndex, visibleButtons.length -1);
+      const activeBtn = visibleButtons[idx];
+      activeBtn.classList.add('active');
+
+      const videoIndex = parseInt(activeBtn.dataset.index, 10);
+      const iframe = category.querySelector('iframe');
+      if (iframe && videos && videos[videoIndex]) {
+        iframe.src = videos[videoIndex].src;
+        category.currentIndex = videoIndex;
+      }
+    }
   });
-
-  category.style.display = isHit ? '' : 'none';
-  if (carousel) {
-    carousel.style.display = isHit ? '' : 'none';
-  }
-});
 
   // --- YouTube目次（オマケ） ---
-  document.querySelectorAll('.video-toc li').forEach(el => {
-    const text = el.textContent.toLowerCase();
-    el.style.display = text.includes(keyword) ? '' : 'none';
-  });
+document.querySelectorAll('.video-toc li').forEach(el => {
+  const text = el.textContent.toLowerCase();
+  el.style.display = text.includes(keyword) ? '' : 'none';
+});
 });
 
 
