@@ -801,19 +801,36 @@ document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
 document.getElementById('searchBox').addEventListener('input', function(e) {
   const keyword = e.target.value.toLowerCase();
 
-  // テキセログ
-  document.querySelectorAll('.link-grid .image-link').forEach(el => {
-    const text = el.textContent.toLowerCase();
-    el.style.display = text.includes(keyword) ? '' : 'none';
+  // --- テキセログ ---
+  const categoryTitles = document.querySelectorAll('#text > .category-title');
+  categoryTitles.forEach(titleEl => {
+    const titleText = titleEl.textContent.toLowerCase();
+    const linkGrid = titleEl.nextElementSibling;
+    if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+
+    let isHit = titleText.includes(keyword);
+
+    // 各リンクで検索
+    linkGrid.querySelectorAll('.image-link').forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const match = text.includes(keyword);
+      link.style.display = match ? '' : 'none';
+      if (match) isHit = true;
+    });
+
+    // カテゴリタイトルも含めて表示判定
+    titleEl.style.display = isHit ? '' : 'none';
+    linkGrid.style.display = isHit ? '' : 'none';
   });
 
-  // YouTube各カテゴリ内処理
-  document.querySelectorAll('.category').forEach(category => {
-    const videoButtons = category.querySelectorAll('.video-links button');
+  // --- YouTubeログ ---
+  document.querySelectorAll('#youtube .category').forEach(category => {
+    const titleEl = category.querySelector('.category-title');
+    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
     const carousel = category.querySelector('.carousel');
+    let isHit = title.includes(keyword);
 
-    // ボタン内で検索
-    let isHit = false;
+    const videoButtons = category.querySelectorAll('.video-links button');
     videoButtons.forEach(btn => {
       const text = btn.textContent.toLowerCase();
       const match = text.includes(keyword);
@@ -821,16 +838,20 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
       if (match) isHit = true;
     });
 
-    // もしこのカテゴリでヒットがなければiframeごと非表示
-    carousel.style.display = isHit ? '' : 'none';
+    category.style.display = isHit ? '' : 'none';
+    if (carousel) {
+      carousel.style.display = isHit ? '' : 'none';
+    }
   });
 
-  // YouTube目次（toc）
+  // --- YouTube目次（オマケ） ---
   document.querySelectorAll('.video-toc li').forEach(el => {
     const text = el.textContent.toLowerCase();
     el.style.display = text.includes(keyword) ? '' : 'none';
   });
 });
+
+
 
 </script>
 
