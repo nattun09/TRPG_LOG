@@ -508,27 +508,27 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">ラブレターフロムロラン</button>
-      <button data-index="1">レッツロシアンうどん</button>
-      <button data-index="2">捨てKPC</button>
-      <button data-index="3">慄け！因習村</button>
-      <button data-index="4">村ホラーRTA</button>
-      <button data-index="5">死にたがり電車</button>
-      <button data-index="6">ラーメンは乙女の嗜み</button>
-      <button data-index="7">ハイフェッツをなぞる病</button>
-      <button data-index="8">宇宙船ニル・ノート号の残響</button>
+      <button class="active">ラブレターフロムロラン</button>
+      <button>レッツロシアンうどん</button>
+      <button>捨てKPC</button>
+      <button>慄け！因習村</button>
+      <button>村ホラーRTA</button>
+      <button>死にたがり電車</button>
+      <button>ラーメンは乙女の嗜み</button>
+      <button>ハイフェッツをなぞる病</button>
+      <button>宇宙船ニル・ノート号の残響</button>
     </div>
 <div class="video-toc">
   <ul>
-    <li><a href="#" data-index="0">ラブレターフロムロラン</a></li>
-    <li><a href="#" data-index="1">レッツロシアンうどん</a> (灰よかげんみ❌) </li>
-    <li><a href="#" data-index="2">捨てKPC</a> (脱獄乙女げんみ？) </li>
-    <li><a href="#" data-index="3">慄け！因習村</a></li>
-    <li><a href="#" data-index="4">村ホラーRTA</a></li>
-    <li><a href="#" data-index="5">死にたがり電車</a></li>
-    <li><a href="#" data-index="6">ラーメンは乙女の嗜み</a> (脱獄乙女げんみ❌) </li>
-    <li><a href="#" data-index="7">ハイフェッツをなぞる病</a></li>
-    <li><a href="#" data-index="8">宇宙船ニル・ノート号の残響</a></li>
+    <li><a href="#">ラブレターフロムロラン</a></li>
+    <li><a href="#">レッツロシアンうどん</a> (灰よかげんみ❌) </li>
+    <li><a href="#">捨てKPC</a> (脱獄乙女げんみ？) </li>
+    <li><a href="#">慄け！因習村</a></li>
+    <li><a href="#">村ホラーRTA</a></li>
+    <li><a href="#">死にたがり電車</a></li>
+    <li><a href="#">ラーメンは乙女の嗜み</a> (脱獄乙女げんみ❌) </li>
+    <li><a href="#">ハイフェッツをなぞる病</a></li>
+    <li><a href="#">宇宙船ニル・ノート号の残響</a></li>
   </ul>
 </div>
 
@@ -544,7 +544,7 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">初恋性_おりゆう</button>
+      <button class="active">初恋性_おりゆう</button>
     </div>
   </div>
 
@@ -573,9 +573,9 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">鰯と柊（前編）_しょじょめめ</button>
-      <button data-index="1">鰯と柊（中編）_しょじょめめ</button>
-      <button data-index="2">鰯と柊（後編）_しょじょめめ</button>
+      <button class="active">鰯と柊（前編）_しょじょめめ</button>
+      <button>鰯と柊（中編）_しょじょめめ</button>
+      <button>鰯と柊（後編）_しょじょめめ</button>
     </div>
   </div>
 
@@ -589,8 +589,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">灰になってよかった_うたたね</button>
-      <button data-index="1">灰になってよかった_灰咲白</button>
+      <button class="active">灰よか_灰咲白</button>
+      <button >灰よか_うたたね</button>
     </div>
   </div>
 
@@ -604,8 +604,8 @@ color:#333333;
       </div>
     </div>
     <div class="video-links">
-      <button data-index="0" class="active">カタシロ_蝿島叶</button>
-      <button data-index="1">カタシロ_元目開</button>
+      <button class="active">カタシロ_蝿島叶</button>
+      <button >カタシロ_元目開</button>
     </div>
   </div>
 
@@ -613,6 +613,22 @@ color:#333333;
 </main>
 
 <script>
+
+// 追加：video-links内ボタンとvideo-toc内リンクのdata-indexを自動で振る
+document.querySelectorAll('.category').forEach(category => {
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a');
+
+  videoButtons.forEach((btn, idx) => {
+    btn.setAttribute('data-index', idx);
+  });
+
+  tocLinks.forEach((link, idx) => {
+    link.setAttribute('data-index', idx);
+  });
+});
+
+
   // タブ切り替え
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -655,8 +671,8 @@ document.querySelectorAll('.category').forEach(category => {
       {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
     ],
     haiyoka: [
-      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"},
-      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"}
+      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"},
+      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"}
     ],
     katasiro: [
       {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
