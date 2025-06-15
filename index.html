@@ -692,6 +692,40 @@ color:#333333;
 </main>
 
 <script>
+const videoData = {
+    session: [
+      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
+      {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
+      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
+      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
+      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
+      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
+      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
+      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
+      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
+      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+    ],
+    'hatsukoisei': [
+      {src:"https://www.youtube.com/embed/C9zXP8i7bAA", title:"初恋性_おりゆう"}
+    ],
+    'iwashi-asaharu': [
+      {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
+      {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
+    ],
+    'iwashi-syojomeme': [
+      {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
+    ],
+    haiyoka: [
+      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"},
+      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"}
+    ],
+    katasiro: [
+      {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
+      {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
+    ]
+  };
 
 // 追加：video-links内ボタンとvideo-toc内リンクのdata-indexを自動で振る
 document.querySelectorAll('.category').forEach(category => {
@@ -725,40 +759,7 @@ document.querySelectorAll('.category').forEach(category => {
   });
 
 document.querySelectorAll('.category').forEach(category => {
-  const videos = {
-    session: [
-      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
-      {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
-      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
-      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
-      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
-      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
-      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
-      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
-      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
-      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
-    ],
-    'hatsukoisei': [
-      {src:"https://www.youtube.com/embed/C9zXP8i7bAA", title:"初恋性_おりゆう"}
-    ],
-    'iwashi-asaharu': [
-      {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
-      {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
-    ],
-    'iwashi-syojomeme': [
-      {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
-      {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
-      {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
-    ],
-    haiyoka: [
-      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"},
-      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"}
-    ],
-    katasiro: [
-      {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
-      {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
-    ]
-  }[category.dataset.category];
+const videos = videoData[category.dataset.category];
 
   const iframe = category.querySelector('iframe');
   const prevBtn = category.querySelector('.prev');
@@ -910,28 +911,7 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
     const videoButtons = category.querySelectorAll('.video-links button');
     let visibleButtons = [];
 
-    const videos = {
-      session: [
-      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
-      {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
-      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
-      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
-      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
-      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA"},
-      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車"},
-      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
-      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
-      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
-      ],
-    haiyoka: [
-      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"},
-      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"}
-    ],
-    katasiro: [
-      {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
-      {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
-    ]
-    }[category.dataset.category];
+    const videos = videoData[category.dataset.category];
 
     videoButtons.forEach(btn => {
       const text = btn.textContent.toLowerCase();
