@@ -491,6 +491,25 @@ margin-bottom:2em;
 margin-right: 0.5rem;
 }
 
+.toc-pagination button {
+  background: #f4f4f4;
+  border: none;
+  border-radius: 999px;
+  padding: 0.3rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  transition: 0.2s ease;
+}
+.toc-pagination button:hover {
+  background: #e26a89;
+  color: white;
+}
+.toc-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
   </style>
 </head>
 <body>
@@ -660,6 +679,10 @@ margin-right: 0.5rem;
     <li><a href="#">ハイフェッツをなぞる病</a></li>
     <li><a href="#">宇宙船ニル・ノート号の残響</a></li>
   </ul>
+<div class="toc-pagination" style="text-align: center; margin-top: 0.5rem;">
+  <button class="toc-prev">← 前へ</button>
+  <button class="toc-next">次へ →</button>
+</div>
 </div>
 
   </div>
@@ -1170,6 +1193,50 @@ function showLatestItems() {
 }
 
 window.addEventListener('DOMContentLoaded', showLatestItems);
+
+//動画5件ずつ表示
+document.querySelectorAll('.category').forEach(category => {
+  const tocList = category.querySelector('.video-toc ul');
+  const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+  const prevBtn = category.querySelector('.toc-prev');
+  const nextBtn = category.querySelector('.toc-next');
+
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  function renderTocPage() {
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    tocItems.forEach((li, i) => {
+      li.style.display = (i >= start && i < end) ? '' : 'none';
+    });
+
+    if (prevBtn && nextBtn) {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = end >= tocItems.length;
+    }
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTocPage();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+        currentPage++;
+        renderTocPage();
+      }
+    });
+  }
+
+  renderTocPage();
+});
+
 
 
 </script>
