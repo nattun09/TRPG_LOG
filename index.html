@@ -548,6 +548,35 @@ margin-top:10px;
   transform: scale(1.1);
 }
 
+#imageSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.image-thumb-button {
+  background: #eaeaea;
+  border: none;
+  color: #333333;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.image-thumb-button:hover,
+.image-thumb-button.active {
+  background: #e26a89;
+  color: white;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -588,9 +617,10 @@ margin-top:10px;
 
 <div id="charaDetail" style="display:none; text-align:center; margin:1em 0;">
   <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:0.5em;"></div>
-  <button id="prevChara" style="position:absolute; left:10px; top:400px;font-size:1.5em;">◀</button>
-  <button id="nextChara" style="position:absolute; right:10px; top:400px;font-size:1.5em;">▶</button>
-  <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; height: 500px;">
+  <button id="prevChara" style="position:absolute; left:10px; top:300px;font-size:1.5em;">◀</button>
+  <button id="nextChara" style="position:absolute; right:10px; top:300px;font-size:1.5em;">▶</button>
+  <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; max-height: 500px;max-width:400px;">
+  <div id="imageSelector"></div>
   <br>
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: nowrap; overflow-x: auto;margin-top:1em;">
     <canvas id="charaChart" width="180" height="180"style="min-width: 180px; flex-shrink: 0;"></canvas>
@@ -598,6 +628,8 @@ margin-top:10px;
   </div>
   <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px"></a>
 </div>
+
+
 
 
 
@@ -1439,7 +1471,7 @@ description: "年齢：??<br>性別：男<br>身長：171<br>職業：???<br>出
       INT: 14, EDU: 12
     }
   },
-  "檻崎 折": {
+"檻崎 折": {
     image: "image/折_誘拐犯.png",
     url: "https://iachara.com/view/10768637",
 description: "年齢：??<br>性別：男<br>身長：171<br>職業：大学教授<br>出身シナリオ：初恋性ストックホルム症候群のKPC<br>悠を誘拐した。",
@@ -1470,7 +1502,7 @@ description: "年齢：22<br>性別：女<br>身長：170<br>職業：歌手<br>
     stats: { STR: 10, CON: 9, POW: 16, DEX: 12, APP: 15, SIZ: 13, INT: 17, EDU: 14 }
   },
   "片喰 旭": {
-    image: "image/あさひ.png",
+    image: ["image/あさひ.png","image/旭_盲信.png","image/旭_私服.png"],
     url: "https://iachara.com/view/10796294",
 description: "年齢：25<br>性別：男<br>身長：190<br>職業：信者<br>出身シナリオ：鰯と柊<br>遥啓が教祖",
     stats: { STR: 15, CON: 15, POW: 18, DEX: 13, APP: 7, SIZ: 16, INT: 9, EDU: 14 }
@@ -1500,7 +1532,7 @@ description: "年齢：21<br>性別：男<br>身長：173<br>職業：音大生<
     stats: { STR: 12, CON: 17, POW: 11, DEX: 10, APP: 15, SIZ: 12, INT: 12, EDU: 14 }
   },
   "八染 遥啓": {
-    image: "image/はるのぶ.png",
+    image: ["image/はるのぶ.png","image/はるのぶ_私服.png"],
     url: "https://iachara.com/view/10803642",
 description: "年齢：22<br>性別：男<br>身長：150<br>職業：教祖<br>出身シナリオ：鰯と柊<br>旭が信者",
     stats: { STR: 15, CON: 14, POW: 17, DEX: 14, APP: 14, SIZ: 9, INT: 17, EDU: 16 }
@@ -1524,7 +1556,7 @@ description: "年齢：22<br>性別：男<br>身長：190<br>職業：探偵<br>
     stats: { STR: 14, CON: 10, POW: 10, DEX: 10, APP: 9, SIZ: 16, INT: 18, EDU: 15 }
   },
   "国木田 仁木": {
-    image: "image/仁木.png",
+    image: ["image/仁木.png","image/仁木_私服.png"],
     url: "https://iachara.com/view/11020938",
 description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小説家<br>出身シナリオ：灰になってよかったのKPC<br>うたたね、白を攫った。",
     stats: { STR: 10, CON: 12, POW: 18, DEX: 11, APP: 15, SIZ: 13, INT: 18, EDU: 16 }
@@ -1536,7 +1568,7 @@ description: "年齢：26<br>性別：男<br>身長：180<br>職業：教祖<br>
     stats: { STR: 13, CON: 10, POW: 14, DEX: 13, APP: 13, SIZ: 13, INT: 13, EDU: 11 }
   },
   "蝿島 叶": {
-    image: "image/叶.png",
+    image: ["image/叶.png","image/叶_初期.png"],
     url: "https://iachara.com/view/10692890",
 description: "年齢：29<br>性別：男<br>身長：175<br>職業：研究者兼院長<br>出身シナリオ：慄け！因習村<br>いのりの父。薮井とよく喧嘩している。",
     stats: { STR: 14, CON: 10, POW: 15, DEX: 7, APP: 18, SIZ: 13, INT: 16, EDU: 19 }
@@ -1550,7 +1582,7 @@ description: "年齢：16<br>性別：女<br>身長：160<br>職業：お嬢様<
   "東 恵々": {
     image: "image/恵々.png",
     url: "https://iachara.com/view/10779230",
-description: "年齢：21<br>性別：男<br>身長：170<br>職業：信者<br>出身シナリオ：鰯と柊<br>猩猩が教祖",
+description: "年齢：21<br>性別：男<br>身長：170<br>職業：信者<br>出身シナリオ：鰯と柊<br>猩猩が信者",
     stats: { STR: 10, CON: 10, POW: 12, DEX: 14, APP: 10, SIZ: 12, INT: 15, EDU: 17 }
   },
   "烏丸 君子": {
@@ -1561,6 +1593,7 @@ description: "年齢：36<br>性別：女<br>身長：170<br>職業：探偵<br>
   }
 };
 
+
 const charaNames = Object.keys(charaStats); // 表示順にしたければソートしてOK
 let currentCharaIndex = -1;
 
@@ -1570,10 +1603,41 @@ function updateCharaDetail(name) {
 
 currentCharaIndex = charaNames.indexOf(name);
 
+  const images = Array.isArray(data.image) ? data.image : [data.image];
+let currentImageIndex = 0;
+
+const imageEl = document.getElementById('charaImage');
+imageEl.src = images[currentImageIndex]; // ← 常に最初の画像
+
+const selectorEl = document.getElementById('imageSelector');
+selectorEl.innerHTML = '';
+
+if (images.length > 1) {
+    images.forEach((_, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = index + 1;
+
+btn.className = 'image-thumb-button';
+if (index === 0) btn.classList.add('active');
+
+      btn.addEventListener('click', () => {
+        currentImageIndex = index;
+        imageEl.src = images[index];
+
+  Array.from(selectorEl.children).forEach((b, i) => {
+    b.classList.toggle('active', i === index); // ← ⭐ここに入れる！
+  });
+
+    });
+if (index === 0) btn.classList.add('active');
+      selectorEl.appendChild(btn);
+    });
+  }
+
   const detailEl = document.getElementById('charaDetail');
   detailEl.style.display = 'block';
 
-  document.getElementById('charaImage').src = data.image;
+  //document.getElementById('charaImage').src = data.image;
   document.getElementById('charaLink').textContent = `🔗 ${name} のキャラシ`;
   document.getElementById('charaLink').href = data.url;
 document.getElementById('charaName').textContent = name;
@@ -1673,8 +1737,12 @@ document.getElementById('nextChara').addEventListener('click', () => {
   updateCharaDetail(charaNames[nextIndex]);
 });
 
-
-
+//番号が1の立ち絵を初期表示
+window.addEventListener('DOMContentLoaded', () => {
+  if (charaNames.length > 0) {
+    updateCharaDetail(charaNames[0]); // 最初の探索者を表示
+  }
+});
 
 </script>
 
