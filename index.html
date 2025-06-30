@@ -531,7 +531,8 @@ margin-top:10px;
   border: none;
   border-radius: 50%;
   width: 40px;
-  height: 40px;
+ aspect-ratio: 1 / 1; /* ← 縦横比を保って正円に */
+  min-width: 40px; /* ← 横長になるのを防ぐ */
   font-size: 1.3rem;
   font-weight: bold;
   color: #e26a89;
@@ -592,7 +593,7 @@ margin-top:10px;
   <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; height: 500px;">
   <br>
 <div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: wrap; margin-top:1em;">
-    <canvas id="charaChart" width="200" height="200"></canvas>
+    <canvas id="charaChart" width="170" height="170"></canvas>
     <div id="charaDescription" style="text-align:left; max-width:227px; font-size: 0.9em; color:#555;"></div>
   </div>
   <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px"></a>
