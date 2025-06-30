@@ -674,6 +674,7 @@ margin-right: 0.5rem;
       </div>
     </div>
     <div class="video-links">
+      <button data-tags="ポン吉,桃" data-date="2025-06-29" class="active">初恋性_ぽんもも</button>
       <button data-tags="折,悠" data-date="2025-06-01" class="active">初恋性_おりゆう</button>
     </div>
   </div>
@@ -758,6 +759,7 @@ const videoData = {
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
     ],
     'hatsukoisei': [
+      {src:"https://www.youtube.com/embed/DwFk62dHYQM", title:"初恋性_ぽんもも"},
       {src:"https://www.youtube.com/embed/C9zXP8i7bAA", title:"初恋性_おりゆう"}
     ],
     'iwashi-asaharu': [
@@ -1121,34 +1123,47 @@ function showLatestItems() {
     if(item.type === 'text'){
       // テキセ：そのままリンク
       li.innerHTML = `<a href="${item.url}" target="_blank">${item.title}</a> <span class="new-item-date">${item.date}</span>`;
-    } else if(item.type === 'youtube'){
-      // YouTube：クリックでタブ＆動画切替
-      const link = document.createElement('a');
-      link.href = '#';
-      link.textContent = `${item.title}`;
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        // タブ切り替え
-        document.querySelectorAll('.tab-button').forEach(btn => {
-          btn.classList.remove('active');
-          if(btn.dataset.tab === 'youtube') btn.classList.add('active');
-        });
-        document.querySelectorAll('.tab-content').forEach(tab => {
-          tab.classList.remove('active');
-          if(tab.id === 'youtube') tab.classList.add('active');
-        });
-        // 対象ボタンクリックで動画切り替えa
-        item.targetButton.click();
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // 必要らページトップへ
-      });
+} else if(item.type === 'youtube'){
+  const link = document.createElement('a');
+  link.href = '#';
+  link.textContent = `${item.title}`;
+  link.addEventListener('click', e => {
+    e.preventDefault();
+
+    // videoDataからタイトル一致のYouTube watchリンクを生成
+    let youtubeUrl = '#';
+    for (const videos of Object.values(videoData)) {
+      const match = videos.find(v => v.title === item.title);
+      if (match && match.src.includes('/embed/')) {
+        const videoId = match.src.split('/embed/')[1];
+        youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        break;
+      }
+    }
+
+    // YouTubeタブ切り替え＆iframe更新
+    document.querySelectorAll('.tab-button').forEach(btn => {
+      btn.classList.remove('active');
+      if(btn.dataset.tab === 'youtube') btn.classList.add('active');
+    });
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+      if(tab.id === 'youtube') tab.classList.add('active');
+    });
+    item.targetButton.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // YouTube本体も開きたい場合（必要であれば）
+    window.open(youtubeUrl, '_blank');
+  });
 
   const dateSpan = document.createElement('span');
   dateSpan.textContent = ` ${item.date}`;
-dateSpan.classList.add('new-item-date'); 
+  dateSpan.classList.add('new-item-date');
 
-      li.appendChild(link);
+  li.appendChild(link);
   li.appendChild(dateSpan);
-    }
+}
 
     list.appendChild(li);
   });
