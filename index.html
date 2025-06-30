@@ -592,8 +592,8 @@ margin-top:10px;
   <button id="nextChara" style="position:absolute; right:10px; top:400px;font-size:1.5em;">▶</button>
   <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; height: 500px;">
   <br>
-<div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: wrap; margin-top:1em;">
-    <canvas id="charaChart" width="170" height="170"></canvas>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: nowrap; overflow-x: auto;margin-top:1em;">
+    <canvas id="charaChart" width="200" height="200"style="min-width: 190px; flex-shrink: 0;"></canvas>
     <div id="charaDescription" style="text-align:left; max-width:227px; font-size: 0.9em; color:#555;"></div>
   </div>
   <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px"></a>
@@ -1619,23 +1619,29 @@ window.charaChart = new Chart(ctx, {
     },
     elements: {
       line: {
-        borderWidth: 3
+        borderWidth: 2
       }
     },
     scales: {
-      r: {
-        angleLines: {
-          display: false
-        },
-        suggestedMin: 0,
-        suggestedMax: 20,
-        ticks: {
-          stepSize: 5,
-          beginAtZero: true
-        }
+  r: {
+    angleLines: { display: false },
+    suggestedMin: 0,
+    suggestedMax: 20,
+    ticks: {
+      stepSize: 5,
+      beginAtZero: true,
+      font: {
+        size: 10
+      }
+    },
+    pointLabels: {
+      font: {
+        size: 10
       }
     }
   }
+}
+}
 });
 
   }, 50); // 🔄 少し遅らせることでレイアウト確定後に描画される
