@@ -250,6 +250,7 @@ color:#333333;
       border-left: 5px solid #e26a89;
       padding-left: 0.5rem;
       margin-bottom: 0.5rem;
+text-align: left;
     }
     .tabs {
       display: flex;
@@ -511,6 +512,18 @@ margin-right: 0.5rem;
   cursor: not-allowed;
 }
 
+.char-img img {
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+margin-bottom:0px;
+margin-top:10px;
+}
+
   </style>
 </head>
 <body>
@@ -525,6 +538,7 @@ margin-right: 0.5rem;
 </nav>
 
 <div class="tabs">
+<button class="tab-button" data-tab="chara">キャラ</button>
   <button class="tab-button active" data-tab="text">テキセログ</button>
   <button class="tab-button" data-tab="youtube">YouTubeログ</button>
 </div>
@@ -545,6 +559,115 @@ margin-right: 0.5rem;
 </div>
 
 
+
+
+<div id="chara" class="tab-content image-link char-img">
+
+<div class="category-title">もなかも</div>
+<div class="link-grid">
+  <a href="https://iachara.com/view/11732740" target="_blank" class="image-link" data-tags="ポン吉">
+    <img src="image/ポン吉.jpg">
+    <span>八本木 吉</span>
+  </a>  <a href="https://iachara.com/view/10768637" target="_blank" class="image-link" data-tags="折">
+    <img src="image/折_誘拐犯.jpg">
+    <span>檻崎 折</span>
+  </a>
+  <a href="https://iachara.com/view/11114253" target="_blank" class="image-link" data-tags="薮井">
+    <img src="image/薮井.jpeg">
+    <span>薮井 社</span>
+  </a>
+  <a href="https://iachara.com/view/10960490" target="_blank" class="image-link" data-tags="白">
+    <img src="image/白.jpg">
+    <span>灰咲 白</span>
+  </a>
+  <a href="https://iachara.com/view/10718849" target="_blank" class="image-link" data-tags="晴">
+    <img src="image/はる.jpeg">
+    <span>柊 晴</span>
+  </a>
+</div>
+
+<div class="category-title">てとせ</div>
+<div class="link-grid">
+  <a href="https://iachara.com/view/10876568" target="_blank" class="image-link" data-tags="うたたね">
+    <img src="image/うたたね.jpg">
+    <span>長門 うたたね</span>
+  </a>
+  <a href="https://iachara.com/view/10796294" target="_blank" class="image-link" data-tags="旭">
+    <img src="image/あさひ.jpeg">
+    <span>片喰 旭</span>
+  </a>
+  <a href="https://iachara.com/view/10783734" target="_blank" class="image-link" data-tags="開">
+    <img src="image/開.jpg">
+    <span>元目 開</span>
+  </a>
+  <a href="https://iachara.com/view/8017078" target="_blank" class="image-link" data-tags="まり">
+    <img src="image/まり.jpg">
+    <span>二条 万璃</span>
+  </a>
+</div>
+
+<div class="category-title">星夜</div>
+<div class="link-grid">
+  <a href="https://iachara.com/view/10803642" target="_blank" class="image-link" data-tags="悠">
+    <img src="image/悠.jpeg">
+    <span>悠</span>
+  </a>
+  <a href="https://iachara.com/view/10803642" target="_blank" class="image-link" data-tags="朔">
+    <img src="image/さく.jpeg">
+    <span>朔</span>
+  </a>
+  <a href="https://iachara.com/view/10803642" target="_blank" class="image-link" data-tags="遥啓">
+    <img src="image/はるのぶ.jpeg">
+    <span>八染 遥啓</span>
+  </a>
+  <a href="https://iachara.com/view/10675900" target="_blank" class="image-link" data-tags="せいな">
+    <img src="image/せいな.jpg">
+    <span>神楽坂 星奈</span>
+  </a>
+</div>
+
+<div class="category-title">めこつ</div>
+<div class="link-grid">
+  <a href="https://iachara.com/view/10749984" target="_blank" class="image-link" data-tags="桃">
+    <img src="image/桃.jpg">
+    <span>百井 桃</span>
+  </a>
+  <a href="https://iachara.com/view/10965230" target="_blank" class="image-link" data-tags="葉">
+    <img src="image/葉.jpg">
+    <span>三ツ星 葉</span>
+  </a>
+  <a href="https://iachara.com/view/11020938" target="_blank" class="image-link" data-tags="仁木">
+    <img src="image/仁木.jpg">
+    <span>国木田 仁木</span>
+  </a>
+  <a href="https://iachara.com/view/10749984" target="_blank" class="image-link" data-tags="猩猩">
+    <img src="image/猩猩.jpg">
+    <span>神崎 猩猩</span>
+  </a>
+  <a href="https://iachara.com/view/10692890" target="_blank" class="image-link" data-tags="叶">
+    <img src="image/叶.jpeg">
+    <span>蝿島 叶</span>
+  </a>
+  <a href="https://iachara.com/view/10468122" target="_blank" class="image-link" data-tags="いのり">
+    <img src="image/いのり.jpeg">
+    <span>蝿島 いのり</span>
+  </a>
+</div>
+
+<div class="category-title">ぷわちん</div>
+<div class="link-grid">
+  <a href="https://iachara.com/view/10779230" target="_blank" class="image-link" data-tags="恵々">
+    <img src="image/恵々.jpg">
+    <span>東 恵々</span>
+  </a>
+  <a href="https://iachara.com/view/11115625" target="_blank" class="image-link" data-tags="君子">
+    <img src="image/君子.jpg">
+    <span>烏丸 君子</span>
+  </a>
+</div>
+
+</div>
+</div>
 
 
 <div id="text" class="tab-content active">
@@ -979,6 +1102,30 @@ document.getElementById('searchBox').addEventListener('input', function(e) {
     titleEl.style.display = isHit ? '' : 'none';
     linkGrid.style.display = isHit ? '' : 'none';
   });
+
+// --- キャラ図鑑 ---
+const charaTab = document.getElementById('chara');
+const charaTitles = charaTab.querySelectorAll('.category-title');
+
+charaTitles.forEach(titleEl => {
+  const titleText = titleEl.textContent.toLowerCase();
+  const linkGrid = titleEl.nextElementSibling;
+  if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+
+  let isHit = titleText.includes(keyword);
+
+  const links = linkGrid.querySelectorAll('.image-link');
+  links.forEach(link => {
+    const text = link.textContent.toLowerCase();
+    const tags = (link.dataset.tags || '').toLowerCase();
+    const match = text.includes(keyword) || tags.includes(keyword);
+    link.style.display = match ? '' : 'none';
+    if (match) isHit = true;
+  });
+
+  titleEl.style.display = isHit ? '' : 'none';
+  linkGrid.style.display = isHit ? '' : 'none';
+});
 
   // --- YouTubeログ ---
   document.querySelectorAll('#youtube .category').forEach(category => {
