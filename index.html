@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TRPGログ</title>
@@ -524,6 +525,28 @@ margin-bottom:0px;
 margin-top:10px;
 }
 
+#prevChara,
+#nextChara {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e26a89;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#prevChara:hover,
+#nextChara:hover {
+  background: #e26a89;
+  color: white;
+  transform: scale(1.1);
+}
+
   </style>
 </head>
 <body>
@@ -560,27 +583,41 @@ margin-top:10px;
 
 
 
-
 <div id="chara" class="tab-content image-link char-img">
+
+<div id="charaDetail" style="display:none; text-align:center; margin:1em 0;">
+  <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:0.5em;"></div>
+  <button id="prevChara" style="position:absolute; left:10px; top:400px;font-size:1.5em;">◀</button>
+  <button id="nextChara" style="position:absolute; right:10px; top:400px;font-size:1.5em;">▶</button>
+  <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; height: 500px;">
+  <br>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: wrap; margin-top:1em;">
+    <canvas id="charaChart" width="200" height="200"></canvas>
+    <div id="charaDescription" style="text-align:left; max-width:227px; font-size: 0.9em; color:#555;"></div>
+  </div>
+  <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px"></a>
+</div>
+
+
 
 <div class="category-title">もなかも</div>
 <div class="link-grid">
-  <a href="https://iachara.com/view/11732740" target="_blank" class="image-link" data-tags="ポン吉">
+  <a target="_blank" class="image-link" data-tags="ポン吉">
     <img src="image/ポン吉.jpg">
     <span>八本木 吉</span>
-  </a>  <a href="https://iachara.com/view/10768637" target="_blank" class="image-link" data-tags="折">
+  </a>  <a target="_blank" class="image-link" data-tags="折">
     <img src="image/折_誘拐犯.jpg">
     <span>檻崎 折</span>
   </a>
-  <a href="https://iachara.com/view/11114253" target="_blank" class="image-link" data-tags="薮井">
+  <a target="_blank" class="image-link" data-tags="薮井">
     <img src="image/薮井.jpeg">
     <span>薮井 社</span>
   </a>
-  <a href="https://iachara.com/view/10960490" target="_blank" class="image-link" data-tags="白">
+  <a target="_blank" class="image-link" data-tags="白">
     <img src="image/白.jpg">
     <span>灰咲 白</span>
   </a>
-  <a href="https://iachara.com/view/10718849" target="_blank" class="image-link" data-tags="晴">
+  <a target="_blank" class="image-link" data-tags="晴">
     <img src="image/はる.jpeg">
     <span>柊 晴</span>
   </a>
@@ -588,19 +625,19 @@ margin-top:10px;
 
 <div class="category-title">てとせ</div>
 <div class="link-grid">
-  <a href="https://iachara.com/view/10876568" target="_blank" class="image-link" data-tags="うたたね">
+  <a target="_blank" class="image-link" data-tags="うたたね">
     <img src="image/うたたね.jpg">
     <span>長門 うたたね</span>
   </a>
-  <a href="https://iachara.com/view/10796294" target="_blank" class="image-link" data-tags="旭">
+  <a target="_blank" class="image-link" data-tags="旭">
     <img src="image/あさひ.jpeg">
     <span>片喰 旭</span>
   </a>
-  <a href="https://iachara.com/view/10783734" target="_blank" class="image-link" data-tags="開">
+  <a target="_blank" class="image-link" data-tags="開">
     <img src="image/開.jpg">
     <span>元目 開</span>
   </a>
-  <a href="https://iachara.com/view/8017078" target="_blank" class="image-link" data-tags="まり">
+  <a target="_blank" class="image-link" data-tags="まり">
     <img src="image/まり.jpg">
     <span>二条 万璃</span>
   </a>
@@ -608,19 +645,19 @@ margin-top:10px;
 
 <div class="category-title">星夜</div>
 <div class="link-grid">
-  <a href="https://iachara.com/view/10806973" target="_blank" class="image-link" data-tags="悠">
+  <a target="_blank" class="image-link" data-tags="悠">
     <img src="image/悠.jpeg">
     <span>佐伯 悠</span>
   </a>
-  <a href="https://iachara.com/view/10815170" target="_blank" class="image-link" data-tags="朔">
+  <a target="_blank" class="image-link" data-tags="朔">
     <img src="image/さく.jpeg">
     <span>柊 朔</span>
   </a>
-  <a href="https://iachara.com/view/10803642" target="_blank" class="image-link" data-tags="遥啓">
+  <a target="_blank" class="image-link" data-tags="遥啓">
     <img src="image/はるのぶ.jpeg">
     <span>八染 遥啓</span>
   </a>
-  <a href="https://iachara.com/view/10675900" target="_blank" class="image-link" data-tags="せいな">
+  <a target="_blank" class="image-link" data-tags="せいな">
     <img src="image/せいな.jpg">
     <span>神楽坂 星奈</span>
   </a>
@@ -628,27 +665,27 @@ margin-top:10px;
 
 <div class="category-title">めこつ</div>
 <div class="link-grid">
-  <a href="https://iachara.com/view/11730447" target="_blank" class="image-link" data-tags="桃">
+  <a target="_blank" class="image-link" data-tags="桃">
     <img src="image/桃.jpg">
     <span>百井 桃</span>
   </a>
-  <a href="https://iachara.com/view/10965230" target="_blank" class="image-link" data-tags="葉">
+  <a target="_blank" class="image-link" data-tags="葉">
     <img src="image/葉.jpg">
     <span>三ツ星 葉</span>
   </a>
-  <a href="https://iachara.com/view/11020938" target="_blank" class="image-link" data-tags="仁木">
+  <a target="_blank" class="image-link" data-tags="仁木">
     <img src="image/仁木.jpg">
     <span>国木田 仁木</span>
   </a>
-  <a href="https://iachara.com/view/10749984" target="_blank" class="image-link" data-tags="猩猩">
+  <a target="_blank" class="image-link" data-tags="猩猩">
     <img src="image/猩猩.jpg">
     <span>神崎 猩猩</span>
   </a>
-  <a href="https://iachara.com/view/10692890" target="_blank" class="image-link" data-tags="叶">
+  <a target="_blank" class="image-link" data-tags="叶">
     <img src="image/叶.jpeg">
     <span>蝿島 叶</span>
   </a>
-  <a href="https://iachara.com/view/10468122" target="_blank" class="image-link" data-tags="いのり">
+  <a target="_blank" class="image-link" data-tags="いのり">
     <img src="image/いのり.jpeg">
     <span>蝿島 いのり</span>
   </a>
@@ -656,11 +693,11 @@ margin-top:10px;
 
 <div class="category-title">ぷわちん</div>
 <div class="link-grid">
-  <a href="https://iachara.com/view/10779230" target="_blank" class="image-link" data-tags="恵々">
+  <a target="_blank" class="image-link" data-tags="恵々">
     <img src="image/恵々.jpg">
     <span>東 恵々</span>
   </a>
-  <a href="https://iachara.com/view/11115625" target="_blank" class="image-link" data-tags="君子">
+  <a target="_blank" class="image-link" data-tags="君子">
     <img src="image/君子.jpg">
     <span>烏丸 君子</span>
   </a>
@@ -928,6 +965,9 @@ const videoData = {
       {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
     ]
   };
+
+// 最初に宣言しておく（グローバル）
+window.charaChart = null;
 
 // 追加：video-links内ボタンとvideo-toc内リンクのdata-indexを自動で振る
 document.querySelectorAll('.category').forEach(category => {
@@ -1384,6 +1424,248 @@ document.querySelectorAll('.category').forEach(category => {
 
   renderTocPage();
 });
+
+
+//キャラ立ち絵
+const charaStats = {
+  "八本木 吉": {
+    image: "image/ポン吉.png",
+    url: "https://iachara.com/view/11732740",
+description: "年齢：??　性別：男　身長：171<br>職業：???<br>出身シナリオ：初恋性ストックホルム症候群のKPC<br>桃を誘拐した。",
+    stats: {
+      STR: 11, CON: 9, POW: 16,
+      DEX: 5, APP: 15, SIZ: 12,
+      INT: 14, EDU: 12
+    }
+  },
+  "檻崎 折": {
+    image: "image/折_誘拐犯.png",
+    url: "https://iachara.com/view/10768637",
+description: "年齢：??　性別：男　身長：171<br>職業：大学教授<br>出身シナリオ：初恋性ストックホルム症候群のKPC<br>悠を誘拐した。",
+    stats: { STR: 12, CON: 12, POW: 6, DEX: 12, APP: 12, SIZ: 13, INT: 16, EDU: 17 }
+  },
+  "薮井 社": {
+    image: "image/薮井.png",
+    url: "https://iachara.com/view/11114253",
+description: "年齢：28　性別：男　身長：179<br>職業：ヤブ医者<br>出身シナリオ：慄け！因習村<br>叶とよく喧嘩してる。",
+    stats: { STR: 13, CON: 9, POW: 17, DEX: 12, APP: 13, SIZ: 14, INT: 11, EDU: 14 }
+  },
+  "灰咲 白": {
+    image: "image/白.png",
+    url: "https://iachara.com/view/10960490",
+description: "年齢：18　性別：男　身長：170<br>職業：アイドル<br>出身シナリオ：灰になってよかった<br>仁木に攫われた",
+    stats: { STR: 11, CON: 8, POW: 15, DEX: 11, APP: 15, SIZ: 13, INT: 16, EDU: 17 }
+  },
+  "柊 晴": {
+    image: "image/はる.png",
+    url: "https://iachara.com/view/10718849",
+description: "年齢：23　性別：男　身長：178<br>職業：音大生<br>出身シナリオ：ハイフェッツをなぞる病<br>バイオリニスト。朔は双子の兄。",
+    stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
+  },
+  "長門 うたたね": {
+    image: "image/うたたね.png",
+    url: "https://iachara.com/view/10876568",
+description: "年齢：22　性別：女　身長：170<br>職業：歌手<br>出身シナリオ：灰になってよかった<br>仁木に攫われた。",
+    stats: { STR: 10, CON: 9, POW: 16, DEX: 12, APP: 15, SIZ: 13, INT: 17, EDU: 14 }
+  },
+  "片喰 旭": {
+    image: "image/あさひ.png",
+    url: "https://iachara.com/view/10796294",
+description: "年齢：25　性別：男　身長：190<br>職業：信者<br>出身シナリオ：鰯と柊<br>遥啓が教祖",
+    stats: { STR: 15, CON: 15, POW: 18, DEX: 13, APP: 7, SIZ: 16, INT: 9, EDU: 14 }
+  },
+  "元目 開": {
+    image: "image/開.png",
+    url: "https://iachara.com/view/10783734",
+description: "年齢：20　性別：女　身長：158<br>職業：画家<br>出身シナリオ：カタシロ",
+    stats: { STR: 9, CON: 11, POW: 13, DEX: 16, APP: 11, SIZ: 10, INT: 16, EDU: 12 }
+  },
+  "二条 万璃": {
+    image: "image/まり.png",
+    url: "https://iachara.com/view/8017078",
+description: "年齢：15　性別：女　身長：155<br>職業：お嬢様<br>出身シナリオ：脱獄は乙女の嗜み<br>いのり、星奈と同じ学校。",
+    stats: { STR: 8, CON: 10, POW: 10, DEX: 14, APP: 12, SIZ: 10, INT: 14, EDU: 15 }
+  },
+  "佐伯 悠": {
+    image: "image/悠.png",
+    url: "https://iachara.com/view/10806973",
+description: "年齢：19　性別：男　身長：175<br>職業：大学生<br>出身シナリオ：初恋性ストックホルム症候群<br>折に誘拐された。",
+    stats: { STR: 12, CON: 15, POW: 15, DEX: 17, APP: 13, SIZ: 13, INT: 14, EDU: 14 }
+  },
+  "柊 朔": {
+    image: "image/さく.png",
+    url: "https://iachara.com/view/10815170",
+description: "年齢：21　性別：男　身長：173<br>職業：音大生<br>出身シナリオ：ハイフェッツをなぞる病<br>バイオリニスト。晴は双子の弟。",
+    stats: { STR: 12, CON: 17, POW: 11, DEX: 10, APP: 15, SIZ: 12, INT: 12, EDU: 14 }
+  },
+  "八染 遥啓": {
+    image: "image/はるのぶ.png",
+    url: "https://iachara.com/view/10803642",
+description: "年齢：22　性別：男　身長：150<br>職業：教祖<br>出身シナリオ：鰯と柊<br>旭が信者",
+    stats: { STR: 15, CON: 14, POW: 17, DEX: 14, APP: 14, SIZ: 9, INT: 17, EDU: 16 }
+  },
+  "神楽坂 星奈": {
+    image: "image/せいな.png",
+    url: "https://iachara.com/view/10675900",
+description: "年齢：17　性別：女　身長：163<br>職業：お嬢様<br>出身シナリオ：脱獄は乙女の嗜み<br>万璃、いのりと同じ学校。",
+    stats: { STR: 10, CON: 8, POW: 12, DEX: 11, APP: 16, SIZ: 13, INT: 13, EDU: 13 }
+  },
+  "百井 桃": {
+    image: "image/桃.png",
+    url: "https://iachara.com/view/11730447",
+description: "年齢：20　性別：男　身長：182<br>職業：猫カフェバイト<br>出身シナリオ：初恋性ストックホルム症候群<br>ポン吉に誘拐された。",
+    stats: { STR: 9, CON: 9, POW: 9, DEX: 13, APP: 16, SIZ: 15, INT: 12, EDU: 9 }
+  },
+  "三ツ星 葉": {
+    image: "image/葉.png",
+    url: "https://iachara.com/view/10965230",
+description: "年齢：22　性別：男　身長：190<br>職業：探偵<br>通過シナリオ：死にたがり電車",
+    stats: { STR: 14, CON: 10, POW: 10, DEX: 10, APP: 9, SIZ: 16, INT: 18, EDU: 15 }
+  },
+  "国木田 仁木": {
+    image: "image/仁木.png",
+    url: "https://iachara.com/view/11020938",
+description: "年齢：??　性別：男　身長：178?<br>職業：怪奇小説家<br>出身シナリオ：灰になってよかったのKPC<br>うたたね、白を攫った。",
+    stats: { STR: 10, CON: 12, POW: 18, DEX: 11, APP: 15, SIZ: 13, INT: 18, EDU: 16 }
+  },
+  "神崎 猩猩": {
+    image: "image/猩猩.png",
+    url: "https://iachara.com/view/10749984",
+description: "年齢：26　性別：男　身長：180<br>職業：教祖<br>出身シナリオ：鰯と柊<br>恵々が信者",
+    stats: { STR: 13, CON: 10, POW: 14, DEX: 13, APP: 13, SIZ: 13, INT: 13, EDU: 11 }
+  },
+  "蝿島 叶": {
+    image: "image/叶.png",
+    url: "https://iachara.com/view/10692890",
+description: "年齢：29　性別：男　身長：175<br>職業：研究者兼院長<br>出身シナリオ：慄け！因習村<br>いのりの父。薮井とよく喧嘩している。",
+    stats: { STR: 14, CON: 10, POW: 15, DEX: 7, APP: 18, SIZ: 13, INT: 16, EDU: 19 }
+  },
+  "蝿島 いのり": {
+    image: "image/いのり.png",
+    url: "https://iachara.com/view/10468122",
+description: "年齢：16　性別：女　身長：160<br>職業：お嬢様<br>出身シナリオ：脱獄は乙女の嗜み<br>星奈、万璃と同じ学校。叶は父。",
+    stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
+  },
+  "東 恵々": {
+    image: "image/恵々.png",
+    url: "https://iachara.com/view/10779230",
+description: "年齢：21　性別：男　身長：170<br>職業：信者<br>出身シナリオ：鰯と柊<br>猩猩が信者",
+    stats: { STR: 10, CON: 10, POW: 12, DEX: 14, APP: 10, SIZ: 12, INT: 15, EDU: 17 }
+  },
+  "烏丸 君子": {
+    image: "image/君子.png",
+    url: "https://iachara.com/view/11115625",
+description: "年齢：36　性別：女　身長：170<br>職業：探偵<br>出身シナリオ：村ホラーRTA",
+    stats: { STR: 9, CON: 9, POW: 13, DEX: 17, APP: 7, SIZ: 15, INT: 15, EDU: 14 }
+  }
+};
+
+const charaNames = Object.keys(charaStats); // 表示順にしたければソートしてOK
+let currentCharaIndex = -1;
+
+function updateCharaDetail(name) {
+  const data = charaStats[name];
+  if (!data || !data.stats) return;
+
+currentCharaIndex = charaNames.indexOf(name);
+
+  const detailEl = document.getElementById('charaDetail');
+  detailEl.style.display = 'block';
+
+  document.getElementById('charaImage').src = data.image;
+  document.getElementById('charaLink').textContent = `🔗 ${name} のキャラシ`;
+  document.getElementById('charaLink').href = data.url;
+document.getElementById('charaName').textContent = name;
+document.getElementById('charaDescription').innerHTML = `
+  <div style="font-weight: bold; font-size:15px;text-decoration: underline; margin-bottom: 0.5em;">プロフィール</div>
+  <div>${data.description || ''}</div>
+`;
+
+  // ✅ ラベルは固定、データ値は存在チェック付き
+  const labels = ['STR','CON','POW','DEX','APP','SIZ','INT','EDU'];
+const values = labels.map(key => Number(data.stats[key]) || 0);
+
+  // ✅ チャート描画は少し遅延させてレイアウト完了後に実行
+  setTimeout(() => {
+    const ctx = document.getElementById('charaChart')?.getContext('2d');
+if (!ctx) return;
+  if (window.charaChart) {
+    window.charaChart.destroy();
+  }
+const chartData = {
+  labels: labels,
+  datasets: [{
+    label: name,
+    data: values, // ←ここが選択されたキャラの能力値に！
+    fill: true,
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    borderColor: 'rgb(255, 99, 132)',
+    pointBackgroundColor: 'rgb(255, 99, 132)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgb(255, 99, 132)'
+  }]
+};
+window.charaChart = new Chart(ctx, {
+  type: 'radar',
+  data: chartData,
+  options: {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    elements: {
+      line: {
+        borderWidth: 3
+      }
+    },
+    scales: {
+      r: {
+        angleLines: {
+          display: false
+        },
+        suggestedMin: 0,
+        suggestedMax: 20,
+        ticks: {
+          stepSize: 5,
+          beginAtZero: true
+        }
+      }
+    }
+  }
+});
+
+  }, 50); // 🔄 少し遅らせることでレイアウト確定後に描画される
+
+  // スクロールも安心して実行できる
+  const rect = detailEl.getBoundingClientRect();
+  const offset = window.scrollY + rect.top - 80;
+  window.scrollTo({ top: offset, behavior: 'smooth' });
+}
+
+document.querySelectorAll('#chara .image-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault(); // いあキャラに飛ばない
+    const name = link.querySelector('span').textContent.trim();
+    updateCharaDetail(name);
+  });
+});
+
+
+document.getElementById('prevChara').addEventListener('click', () => {
+  // ← 先頭を超えたら末尾に戻る
+  const prevIndex = (currentCharaIndex - 1 + charaNames.length) % charaNames.length;
+  updateCharaDetail(charaNames[prevIndex]);
+});
+
+document.getElementById('nextChara').addEventListener('click', () => {
+  // → 最後を超えたら先頭に戻る
+  const nextIndex = (currentCharaIndex + 1) % charaNames.length;
+  updateCharaDetail(charaNames[nextIndex]);
+});
+
 
 
 
