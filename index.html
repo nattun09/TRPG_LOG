@@ -635,10 +635,15 @@ margin-top:10px;
 
 <div class="category-title">もなかも</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="夏目">
+    <img src="image/夏目.jpg">
+    <span>夏目 文人</span>
+  </a> 
   <a target="_blank" class="image-link" data-tags="ポン吉">
     <img src="image/ポン吉.jpg">
     <span>八本木 吉</span>
-  </a>  <a target="_blank" class="image-link" data-tags="折">
+  </a>  
+  <a target="_blank" class="image-link" data-tags="折">
     <img src="image/折_誘拐犯.jpg">
     <span>檻崎 折</span>
   </a>
@@ -726,6 +731,22 @@ margin-top:10px;
 
 <div class="category-title">ぷわちん</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="小木">
+    <img src="image/小木.jpg">
+    <span>小木 伸二</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="東雲">
+    <img src="image/東雲.jpg">
+    <span>東雲 葵</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ひまわり">
+    <img src="image/ひまわり.jpg">
+    <span>公星 ひまわり</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="詩織">
+    <img src="image/詩織.jpg">
+    <span>谷 詩織</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="恵々">
     <img src="image/恵々.jpg">
     <span>東 恵々</span>
@@ -862,7 +883,6 @@ margin-top:10px;
     </div>
     <div class="video-links">
       <button data-tags="ひまわり" data-date="2025-07-17" class="active">ホームシック_ひまわり</button>
-      <button data-tags="詩織" data-date="2025-07-01">透明となった君へ_詩織</button>
       <button data-tags="旭,遥啓" data-date="2025-06-14">盲心未遂</button>
       <button data-tags="開" data-date="2025-05-21">ラブレターフロムロラン</button>
       <button data-tags="うたたね,白,仁木" data-date="2025-05-14">レッツロシアンうどん</button>
@@ -876,7 +896,6 @@ margin-top:10px;
 <div class="video-toc">
   <ul>
     <li><a href="#">ホームシック_ひまわり</a></li>
-    <li><a href="#">透明となった君へ_詩織</a></li>
     <li><a href="#">盲心未遂</a>(いわひらげんみ❌)</li>
     <li><a href="#">ラブレターフロムロラン</a></li>
     <li><a href="#">レッツロシアンうどん</a> (灰よかげんみ❌) </li>
@@ -893,6 +912,21 @@ margin-top:10px;
 </div>
 </div>
 
+  </div>
+
+  <div class="category" data-category="toumei">
+    <div class="category-title">透明となった君へ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="東雲,夏目,小木" data-date="2025-07-27" class="active">透君_なつしの</button>
+      <button data-tags="詩織" data-date="2025-07-01" class="active">透君_詩織</button>
+    </div>
   </div>
 
   <div class="category" data-category="murahora">
@@ -1011,7 +1045,6 @@ margin-top:10px;
 const videoData = {
     session: [
       {src:"https://www.youtube.com/embed/QzyBfq6JsvE", title:"ホームシック_ひまわり"},
-      {src:"https://www.youtube.com/embed/oPxIklL5gwA", title:"透明となった君へ_詩織"},
       {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
       {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
       {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
@@ -1021,6 +1054,10 @@ const videoData = {
       {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
       {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+    ],
+    'toumei': [
+      {src:"https://www.youtube.com/embed/K-w4PtZOCis", title:"透君_なつしの"},
+      {src:"https://www.youtube.com/embed/oPxIklL5gwA", title:"透君_詩織"}
     ],
     'murahora': [
       {src:"https://www.youtube.com/embed/lU6JUcWQO7Q", title:"村ホラーRTA_やぶはる"},
@@ -1059,6 +1096,16 @@ const videoData = {
 
 //キャラ立ち絵
 const charaStats = {
+  "夏目 文人": {
+    image: "image/夏目.png",
+    url: "https://iachara.com/view/11985751",
+description: "年齢：36<br>性別：男<br>身長：192<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
+    stats: {
+      STR: 9, CON: 9, POW: 9,
+      DEX: 16, APP: 7, SIZ: 18,
+      INT: 16, EDU: 16
+    }
+  },
   "八本木 吉": {
     image: "image/ポン吉.png",
     url: "https://iachara.com/view/11732740",
@@ -1176,6 +1223,30 @@ description: "年齢：29<br>性別：男<br>身長：175<br>職業：研究者�
     url: "https://iachara.com/view/10468122",
 description: "年齢：16<br>性別：女<br>身長：160<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
     stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
+  },
+  "小木 伸二": {
+    image: "image/小木.png",
+    url: "https://iachara.com/view/",
+description: "年齢：??<br>性別：男<br>身長：??<br>職業：編集者<br>出身：透明となった君へ",
+    stats: { STR: 0, CON: 0, POW: 0, DEX: 0, APP: 0, SIZ: 0, INT: 0, EDU: 0 }
+  },
+  "東雲 葵": {
+    image: "image/東雲.png",
+    url: "https://iachara.com/view/",
+description: "年齢：??<br>性別：女<br>身長：??<br>職業：幽霊<br>出身：透明となった君へ",
+    stats: { STR: 0, CON: 0, POW: 0, DEX: 0, APP: 0, SIZ: 0, INT: 0, EDU: 0 }
+  },
+  "公星 ひまわり": {
+    image: "image/ひまわり.png",
+    url: "https://iachara.com/view/11910983",
+description: "年齢：19<br>性別：女<br>身長：150<br>職業：大学生<br>出身：ホームシック",
+    stats: { STR: 12, CON: 10, POW: 9, DEX: 8, APP: 12, SIZ: 10, INT: 15, EDU: 14 }
+  },
+  "谷 詩織": {
+    image: "image/詩織.png",
+    url: "https://iachara.com/view/11985019",
+description: "年齢：28<br>性別：女<br>身長：180<br>職業：小説家<br>出身：透明となった君へ",
+    stats: { STR: 8, CON: 12, POW: 14, DEX: 8, APP: 10, SIZ: 18, INT: 10, EDU: 15 }
   },
   "東 恵々": {
     image: "image/恵々.png",
