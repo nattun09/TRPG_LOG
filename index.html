@@ -902,6 +902,13 @@ margin-top:10px;
 </div>
 
 </div>
+
+<div id="pagination-controls" style="text-align: center; margin-top: 2rem;margin-bottom: 1rem; display: none;">
+  <button id="prev-btn">◀</button>
+  <span id="page-indicator">(1/5)</span>
+  <button id="next-btn">▶</button>
+</div>
+
 <div id="youtube" class="tab-content">
   <!-- 各カテゴリ -->
   <div class="category" data-category="session">
@@ -1353,6 +1360,7 @@ const sortToggleBtn = document.getElementById('sortToggleBtn');
 
     // 表示モードを同期（カテゴリ／降順）
     syncSortState(target);
+bindCharacterEvents(); // ✅ キャラボタンが表示されたらイベントを再バインド
     });
   });
 
@@ -2015,6 +2023,10 @@ document.getElementById('nextChara').addEventListener('click', () => {
 let originalHTMLs = {};
 let currentSortMode = 'category'; // 初期はカテゴリ
 let allYouTubeWrappers = []; // ← 降順表示用の全データ保存
+let currentPage = 1;
+const itemsPerPage = 5;
+let sortedLogs = []; // 降順にソートされたログ
+
 
 window.addEventListener('DOMContentLoaded', () => {
   ['youtube', 'text'].forEach(id => {
@@ -2074,14 +2086,7 @@ function applyDescendingSort(tab) {
       return new Date(b.dataset.date) - new Date(a.dataset.date);
     });
 
-    const videoList = document.createElement('div');
-    videoList.classList.add('video-iframe-container');
-    videoList.style.display = 'flex';
-    videoList.style.flexDirection = 'column';
-    videoList.style.gap = '2rem';
-
-    // ✅ 一時保存用の配列
-    const wrapperList = [];
+    const logs = [];
 
     sortedButtons.forEach(btn => {
       const title = btn.textContent.trim();
@@ -2091,47 +2096,18 @@ function applyDescendingSort(tab) {
       for (const category in videoData) {
         const video = videoData[category].find(v => v.title === title);
         if (video) {
-          const wrapper = document.createElement('div');
-          wrapper.classList.add('video-wrapper');
-          wrapper.dataset.title = title.toLowerCase();
-          wrapper.dataset.tags = tags.toLowerCase();
-          wrapper.dataset.date = date;
-
-          const iframe = document.createElement('iframe');
-          iframe.src = video.src;
-          iframe.allowFullscreen = true;
-          iframe.style.width = '100%';
-          iframe.style.aspectRatio = '16 / 9';
-          iframe.style.border = 'none';
-          iframe.style.borderRadius = '1rem';
-
-          wrapper.appendChild(iframe);
-
-// ✅ タイトル表示を追加
-const titleElem = document.createElement('div');
-titleElem.classList.add('video-title');
-titleElem.textContent = title;
-titleElem.style.marginTop = '0.5rem';
-titleElem.style.fontSize = '1rem';
-titleElem.style.fontWeight = 'bold';
-titleElem.style.textAlign = 'center';
-titleElem.style.color = '#333';
-
-wrapper.appendChild(titleElem);
-
-          videoList.appendChild(wrapper);
-          wrapperList.push(wrapper); // ✅ 保存
+          logs.push({
+            title,
+            tags,
+            date,
+            src: video.src
+          });
           break;
         }
       }
     });
 
-    // ✅ 全件データとして保存
-    allYouTubeWrappers = wrapperList;
-
-    youtubeTab.innerHTML = '';
-    youtubeTab.appendChild(videoList);
-
+    initializeLogs(logs); // ✅ ページネーション表示に切り替え
 
   } else if (tab === 'text') {
     const container = document.getElementById('text');
@@ -2155,6 +2131,8 @@ function restoreCategoryView(tab) {
 
   const container = document.getElementById(tab);
   container.innerHTML = originalHTMLs[tab];
+
+document.getElementById('pagination-controls').style.display = 'none'; // ✅ 非表示
 
   if (tab === 'youtube') {
     container.querySelectorAll('.carousel').forEach(carousel => {
@@ -2280,6 +2258,94 @@ function filterYouTubeLogs(keyword) {
 }
 
 
+function bindCharacterEvents() {
+  document.querySelectorAll('.character-button').forEach(btn => {
+    btn.onclick = () => {
+      const character = btn.dataset.character;
+      showCharacterLogs(character);
+    };
+  });
+}
+
+function initializeLogs(logs) {
+  sortedLogs = logs.sort((a, b) => new Date(b.date) - new Date(a.date));
+  currentPage = 1;
+  document.getElementById('pagination-controls').style.display = 'block'; // ✅ 表示
+  renderCurrentPage();
+}
+
+
+function renderCurrentPage() {
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const logsToShow = sortedLogs.slice(startIndex, endIndex);
+
+  const container = document.getElementById('youtube');
+  container.innerHTML = ''; // 一旦クリア
+
+  const videoList = document.createElement('div');
+  videoList.classList.add('video-iframe-container');
+  videoList.style.display = 'flex';
+  videoList.style.flexDirection = 'column';
+  videoList.style.gap = '2rem';
+
+  logsToShow.forEach(log => {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('video-wrapper');
+    wrapper.dataset.title = log.title.toLowerCase();
+    wrapper.dataset.tags = log.tags.toLowerCase();
+    wrapper.dataset.date = log.date;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = log.src;
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    iframe.style.width = '100%';
+    iframe.style.aspectRatio = '16 / 9';
+    iframe.style.border = 'none';
+    iframe.style.borderRadius = '1rem';
+
+    const titleElem = document.createElement('div');
+    titleElem.classList.add('video-title');
+    titleElem.textContent = log.title;
+    titleElem.style.marginTop = '0.5rem';
+    titleElem.style.fontSize = '1rem';
+    titleElem.style.fontWeight = 'bold';
+    titleElem.style.textAlign = 'center';
+    titleElem.style.color = '#333';
+
+    wrapper.appendChild(iframe);
+    wrapper.appendChild(titleElem);
+    videoList.appendChild(wrapper);
+  });
+
+  container.appendChild(videoList);
+  updatePaginationDisplay();
+}
+
+
+function updatePaginationDisplay() {
+  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
+  document.getElementById('page-indicator').textContent = `(${currentPage}/${totalPages})`;
+
+  document.getElementById('prev-btn').disabled = currentPage === 1;
+  document.getElementById('next-btn').disabled = currentPage === totalPages;
+}
+
+document.getElementById('prev-btn').onclick = () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderCurrentPage();
+  }
+};
+
+document.getElementById('next-btn').onclick = () => {
+  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderCurrentPage();
+  }
+};
 
 
 
