@@ -629,11 +629,11 @@ margin-top:10px;
 
 <div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
   <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:40%;">
-  <button id="tagButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">キャラ</button>
-  <button id="clearButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">削除</button>
+  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">キャラ</button>
+  <button id="clearButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">削除</button>
   <ul id="tagList"></ul>
-  <button id="sortToggleBtn" style="padding:10px 10px; margin-left:5px; cursor:pointer; ">
-    <span id="sortIcon">📁</span>
+  <button id="sortToggleBtn" style="padding:10px 15px; margin-left:5px; cursor:pointer; ">
+    <span id="sortIcon">📂</span>
 </div>
 
 
@@ -902,13 +902,6 @@ margin-top:10px;
 </div>
 
 </div>
-
-<div id="pagination-controls" style="text-align: center; margin-top: 2rem;margin-bottom: 1rem; display: none;">
-  <button id="prev-btn">◀</button>　
-  <span id="page-indicator">(1/5)</span>
-  <button id="next-btn">▶</button>
-</div>
-
 <div id="youtube" class="tab-content">
   <!-- 各カテゴリ -->
   <div class="category" data-category="session">
@@ -1021,8 +1014,8 @@ margin-top:10px;
       </div>
     </div>
     <div class="video-links">
-      <button data-tags="旭,遥啓" data-date="2025-03-27" class="active">鰯と柊（前編）_あさはる</button>
-      <button data-tags="旭,遥啓" data-date="2025-03-29">鰯と柊（後編）_あさはる</button>
+      <button data-tags="旭,遥啓" data-date="2025-03-29" class="active">鰯と柊（前編）_あさはる</button>
+      <button data-tags="旭,遥啓" data-date="2025-03-27">鰯と柊（後編）_あさはる</button>
     </div>
   </div>
 
@@ -1068,7 +1061,7 @@ margin-top:10px;
     </div>
     <div class="video-links">
       <button data-tags="君子" data-date="2025-06-18" class="active">カタシロ_烏丸君子</button>
-      <button data-tags="叶" data-date="2025-03-20" class="active">カタシロ_蝿島叶</button>
+      <button data-tags="叶" data-date="2025-03-28" class="active">カタシロ_蝿島叶</button>
       <button data-tags="開" data-date="2025-02-12">カタシロ_元目開</button>
     </div>
   </div>
@@ -1337,38 +1330,31 @@ document.querySelectorAll('.category').forEach(category => {
 });
 
 
-// タブ切り替え
-const tabButtons = document.querySelectorAll('.tab-button');
-const tabContents = document.querySelectorAll('.tab-content');
+  // タブ切り替え
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
 const sortToggleBtn = document.getElementById('sortToggleBtn');
-const paginationControls = document.getElementById('pagination-controls');
 
-tabButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
 
-    tabButtons.forEach(b => b.classList.remove('active'));
-    tabContents.forEach(c => c.classList.remove('active'));
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
 
-    btn.classList.add('active');
-    document.getElementById(target).classList.add('active');
+      btn.classList.add('active');
+      document.getElementById(target).classList.add('active');
 
-    // 並び替えボタン表示（text と youtube のときだけ表示）
+// ✅ テキセログのときだけ並び替えボタンを表示
+    //sortToggleBtn.style.display = (target === 'text') ? 'inline-block' : 'none';
+
     const showSort = (target === 'text' || target === 'youtube');
     sortToggleBtn.style.display = showSort ? 'inline-block' : 'none';
 
-    // ページネーション表示は youtube タブのときだけ
-    paginationControls.style.display = (target === 'youtube') ? 'block' : 'none';
-
     // 表示モードを同期（カテゴリ／降順）
     syncSortState(target);
-    bindCharacterEvents(); // キャラボタンイベント再バインド
+    });
   });
-});
-
-// 初期表示用（ページ読み込み時など）
-const initialActiveTab = document.querySelector('.tab-button.active')?.dataset.tab || 'text';
-paginationControls.style.display = (initialActiveTab === 'youtube') ? 'block' : 'none';
 
 document.querySelectorAll('.category').forEach(category => {
 const videos = videoData[category.dataset.category];
@@ -2029,12 +2015,6 @@ document.getElementById('nextChara').addEventListener('click', () => {
 let originalHTMLs = {};
 let currentSortMode = 'category'; // 初期はカテゴリ
 let allYouTubeWrappers = []; // ← 降順表示用の全データ保存
-let currentPage = 1;
-const itemsPerPage = 5;
-let allYoutubeLogs = []; // ✅ 全データを保持する専用変数
-let sortedLogs = [];     // 表示・検索対象（降順などで変化する）
-
-
 
 window.addEventListener('DOMContentLoaded', () => {
   ['youtube', 'text'].forEach(id => {
@@ -2044,18 +2024,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  const activeTab = getActiveTab();
-  if (activeTab) syncSortState(activeTab);
-
-  // ✅ 初回に全データを取得して保持
-  allYoutubeLogs = extractAllYoutubeLogs();
-  initializeLogs([...allYoutubeLogs]); // ← 表示用にコピーして渡す
-});
-
-
   // 初期表示のタブに合わせて並びを同期
   const activeTab = getActiveTab();
   if (activeTab) syncSortState(activeTab);
+});
 
 document.getElementById('sortToggleBtn').addEventListener('click', () => {
   const icon = document.getElementById('sortIcon');
@@ -2102,8 +2074,66 @@ function applyDescendingSort(tab) {
       return new Date(b.dataset.date) - new Date(a.dataset.date);
     });
 
-    const logs = [...allYoutubeLogs].sort((a, b) => new Date(b.date) - new Date(a.date));
-    initializeLogs(logs);
+    const videoList = document.createElement('div');
+    videoList.classList.add('video-iframe-container');
+    videoList.style.display = 'flex';
+    videoList.style.flexDirection = 'column';
+    videoList.style.gap = '2rem';
+
+    // ✅ 一時保存用の配列
+    const wrapperList = [];
+
+    sortedButtons.forEach(btn => {
+      const title = btn.textContent.trim();
+      const tags = (btn.dataset.tags || '').trim();
+      const date = btn.dataset.date || '';
+
+      for (const category in videoData) {
+        const video = videoData[category].find(v => v.title === title);
+        if (video) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('video-wrapper');
+          wrapper.dataset.title = title.toLowerCase();
+          wrapper.dataset.tags = tags.toLowerCase();
+          wrapper.dataset.date = date;
+
+          const iframe = document.createElement('iframe');
+          iframe.src = video.src;
+          iframe.allowFullscreen = true;
+          iframe.loading = 'lazy';
+          iframe.style.width = '100%';
+          iframe.style.aspectRatio = '16 / 9';
+          iframe.style.border = 'none';
+          iframe.style.borderRadius = '1rem';
+
+          wrapper.appendChild(iframe);
+
+// ✅ タイトル表示を追加
+const titleElem = document.createElement('div');
+titleElem.classList.add('video-title');
+titleElem.textContent = title;
+titleElem.style.marginTop = '0.5rem';
+titleElem.style.fontSize = '1rem';
+titleElem.style.fontWeight = 'bold';
+titleElem.style.textAlign = 'center';
+titleElem.style.color = '#333';
+
+wrapper.appendChild(titleElem);
+
+          videoList.appendChild(wrapper);
+          wrapperList.push(wrapper); // ✅ 保存
+          break;
+        }
+      }
+    });
+
+    // ✅ 全件データとして保存
+    allYouTubeWrappers = wrapperList;
+
+    youtubeTab.innerHTML = '';
+    youtubeTab.appendChild(videoList);
+
+
   } else if (tab === 'text') {
     const container = document.getElementById('text');
     const allLinks = Array.from(container.querySelectorAll('.image-link'));
@@ -2126,8 +2156,6 @@ function restoreCategoryView(tab) {
 
   const container = document.getElementById(tab);
   container.innerHTML = originalHTMLs[tab];
-
-document.getElementById('pagination-controls').style.display = 'none'; // ✅ 非表示
 
   if (tab === 'youtube') {
     container.querySelectorAll('.carousel').forEach(carousel => {
@@ -2233,140 +2261,26 @@ function getActiveTab() {
 }
 
 function filterYouTubeLogs(keyword) {
+  const youtubeTab = document.getElementById('youtube');
+  const iframeContainer = youtubeTab.querySelector('.video-iframe-container');
   const normalize = str => str.toLowerCase().replace(/[\s_、]/g, '');
   const kw = normalize(keyword);
 
-  const matchedLogs = allYoutubeLogs.filter(log => {
-    const title = normalize(log.title || '');
-    const tags = (log.tags || '').split(',').map(tag => normalize(tag));
+  const matchedWrappers = allYouTubeWrappers.filter(wrapper => {
+    const title = normalize(wrapper.dataset.title || '');
+    const tags = (wrapper.dataset.tags || '').split(',').map(tag => normalize(tag));
     return !kw || title.includes(kw) || tags.some(tag => tag.includes(kw));
   });
 
-  sortedLogs = matchedLogs;
-  currentPage = 1;
-  renderCurrentPage();
-  document.getElementById('pagination-controls').style.display = 'block';
-}
-
-
-
-function bindCharacterEvents() {
-  document.querySelectorAll('.character-button').forEach(btn => {
-    btn.onclick = () => {
-      const character = btn.dataset.character;
-      showCharacterLogs(character);
-    };
-  });
-}
-
-function initializeLogs(logs) {
-  sortedLogs = logs.sort((a, b) => new Date(b.date) - new Date(a.date));
-  currentPage = 1;
-  document.getElementById('pagination-controls').style.display = 'block'; // ✅ 表示
-  renderCurrentPage();
-}
-
-
-function renderCurrentPage() {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const logsToShow = sortedLogs.slice(startIndex, endIndex);
-
-  const container = document.getElementById('youtube');
-  container.innerHTML = ''; // 一旦クリア
-
-  const videoList = document.createElement('div');
-  videoList.classList.add('video-iframe-container');
-  videoList.style.display = 'flex';
-  videoList.style.flexDirection = 'column';
-  videoList.style.gap = '2rem';
-
-  logsToShow.forEach(log => {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('video-wrapper');
-    wrapper.dataset.title = log.title.toLowerCase();
-    wrapper.dataset.tags = log.tags.toLowerCase();
-    wrapper.dataset.date = log.date;
-
-    const iframe = document.createElement('iframe');
-    iframe.src = log.src;
-    iframe.allowFullscreen = true;
-    iframe.loading = 'lazy';
-    iframe.style.width = '100%';
-    iframe.style.aspectRatio = '16 / 9';
-    iframe.style.border = 'none';
-    iframe.style.borderRadius = '1rem';
-
-    const titleElem = document.createElement('div');
-    titleElem.classList.add('video-title');
-    titleElem.textContent = log.title;
-    titleElem.style.marginTop = '0.5rem';
-    titleElem.style.fontSize = '1rem';
-    titleElem.style.fontWeight = 'bold';
-    titleElem.style.textAlign = 'center';
-    titleElem.style.color = '#333';
-
-    wrapper.appendChild(iframe);
-    wrapper.appendChild(titleElem);
-    videoList.appendChild(wrapper);
-  });
-
-  container.appendChild(videoList);
-  updatePaginationDisplay();
-}
-
-
-function updatePaginationDisplay() {
-  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
-  document.getElementById('page-indicator').textContent = `(${currentPage}/${totalPages})`;
-
-  document.getElementById('prev-btn').disabled = currentPage === 1;
-  document.getElementById('next-btn').disabled = currentPage === totalPages;
-}
-
-document.getElementById('prev-btn').onclick = () => {
-  if (currentPage > 1) {
-    currentPage--;
-    renderCurrentPage();
+  if (iframeContainer) {
+    iframeContainer.innerHTML = '';
+    matchedWrappers.forEach(wrapper => {
+      iframeContainer.appendChild(wrapper.cloneNode(true));
+    });
   }
-};
-
-document.getElementById('next-btn').onclick = () => {
-  const totalPages = Math.ceil(sortedLogs.length / itemsPerPage);
-  if (currentPage < totalPages) {
-    currentPage++;
-    renderCurrentPage();
-  }
-};
-
-function extractAllYoutubeLogs() {
-  const youtubeTab = document.getElementById('youtube');
-  const allButtons = Array.from(youtubeTab.querySelectorAll('.video-links button'))
-    .filter(btn => btn.dataset.date && btn.textContent);
-
-  const logs = [];
-
-  allButtons.forEach(btn => {
-    const title = btn.textContent.trim();
-    const tags = (btn.dataset.tags || '').trim();
-    const date = btn.dataset.date || '';
-
-    for (const category in videoData) {
-      const video = videoData[category].find(v => v.title === title);
-      if (video) {
-        logs.push({
-          title,
-          tags,
-          date,
-          src: video.src
-        });
-        break;
-      }
-    }
-  });
-
-  return logs;
 }
+
+
 
 
 
