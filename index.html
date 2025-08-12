@@ -579,7 +579,26 @@ margin-top:10px;
   color: white;
 }
 
+#sortToggleBtn {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
 
+#sortToggleBtn:hover,
+#sortToggleBtn:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
 
   </style>
 </head>
@@ -609,12 +628,13 @@ margin-top:10px;
 </div>
 
 <div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
-  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:50%;">
-  <button id="tagButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">キャラ</button>
-  <button id="clearButton" style="padding:10px 15px; margin-left:5px; cursor:pointer;">削除</button>
+  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:40%;">
+  <button id="tagButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">キャラ</button>
+  <button id="clearButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">削除</button>
   <ul id="tagList"></ul>
+  <button id="sortToggleBtn" style="padding:10px 10px; margin-left:10px; cursor:pointer; ">
+    <span id="sortIcon">📁</span>
 </div>
-
 
 
 <div id="chara" class="tab-content image-link char-img">
@@ -994,8 +1014,8 @@ margin-top:10px;
       </div>
     </div>
     <div class="video-links">
-      <button data-tags="旭,遥啓" data-date="2025-03-29" class="active">鰯と柊（前編）_あさはる</button>
-      <button data-tags="旭,遥啓" data-date="2025-03-27">鰯と柊（後編）_あさはる</button>
+      <button data-tags="旭,遥啓" data-date="2025-03-27" class="active">鰯と柊（前編）_あさはる</button>
+      <button data-tags="旭,遥啓" data-date="2025-03-29">鰯と柊（後編）_あさはる</button>
     </div>
   </div>
 
@@ -1041,7 +1061,7 @@ margin-top:10px;
     </div>
     <div class="video-links">
       <button data-tags="君子" data-date="2025-06-18" class="active">カタシロ_烏丸君子</button>
-      <button data-tags="叶" data-date="2025-03-28" class="active">カタシロ_蝿島叶</button>
+      <button data-tags="叶" data-date="2025-03-20" class="active">カタシロ_蝿島叶</button>
       <button data-tags="開" data-date="2025-02-12">カタシロ_元目開</button>
     </div>
   </div>
@@ -1313,6 +1333,7 @@ document.querySelectorAll('.category').forEach(category => {
   // タブ切り替え
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
+const sortToggleBtn = document.getElementById('sortToggleBtn');
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1323,6 +1344,15 @@ document.querySelectorAll('.category').forEach(category => {
 
       btn.classList.add('active');
       document.getElementById(target).classList.add('active');
+
+// ✅ テキセログのときだけ並び替えボタンを表示
+    //sortToggleBtn.style.display = (target === 'text') ? 'inline-block' : 'none';
+
+    const showSort = (target === 'text' || target === 'youtube');
+    sortToggleBtn.style.display = showSort ? 'inline-block' : 'none';
+
+    // 表示モードを同期（カテゴリ／降順）
+    syncSortState(target);
     });
   });
 
@@ -1454,53 +1484,75 @@ document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
 document.getElementById('searchBox').addEventListener('input', function(e) {
   const keyword = e.target.value.toLowerCase();
 
-  // --- テキセログ ---
-  const categoryTitles = document.querySelectorAll('#text > .category-title');
-  categoryTitles.forEach(titleEl => {
-    const titleText = titleEl.textContent.toLowerCase();
-    const linkGrid = titleEl.nextElementSibling;
-    if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+  // --- テキストログ ---
+  const textTab = document.getElementById('text');
+  if (currentSortMode === 'category') {
+    const categoryTitles = textTab.querySelectorAll('.category-title');
+    categoryTitles.forEach(titleEl => {
+      const titleText = titleEl.textContent.toLowerCase();
+      const linkGrid = titleEl.nextElementSibling;
+      if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
 
-    let isHit = titleText.includes(keyword);
+      let isHit = titleText.includes(keyword);
 
-    linkGrid.querySelectorAll('.image-link').forEach(link => {
+      linkGrid.querySelectorAll('.image-link').forEach(link => {
+        const text = link.textContent.toLowerCase();
+        const tags = (link.dataset.tags || '').toLowerCase();
+        const match = text.includes(keyword) || tags.includes(keyword);
+        link.style.display = match ? '' : 'none';
+        if (match) isHit = true;
+      });
+
+      titleEl.style.display = isHit ? '' : 'none';
+      linkGrid.style.display = isHit ? '' : 'none';
+    });
+  } else {
+    textTab.querySelectorAll('.image-link').forEach(link => {
       const text = link.textContent.toLowerCase();
       const tags = (link.dataset.tags || '').toLowerCase();
       const match = text.includes(keyword) || tags.includes(keyword);
       link.style.display = match ? '' : 'none';
-      if (match) isHit = true;
     });
+  }
 
-    titleEl.style.display = isHit ? '' : 'none';
-    linkGrid.style.display = isHit ? '' : 'none';
-  });
+  // --- キャラ図鑑 ---
+  const charaTab = document.getElementById('chara');
+  if (currentSortMode === 'category') {
+    const charaTitles = charaTab.querySelectorAll('.category-title');
+    charaTitles.forEach(titleEl => {
+      const titleText = titleEl.textContent.toLowerCase();
+      const linkGrid = titleEl.nextElementSibling;
+      if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
 
-// --- キャラ図鑑 ---
-const charaTab = document.getElementById('chara');
-const charaTitles = charaTab.querySelectorAll('.category-title');
+      let isHit = titleText.includes(keyword);
 
-charaTitles.forEach(titleEl => {
-  const titleText = titleEl.textContent.toLowerCase();
-  const linkGrid = titleEl.nextElementSibling;
-  if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+      linkGrid.querySelectorAll('.image-link').forEach(link => {
+        const text = link.textContent.toLowerCase();
+        const tags = (link.dataset.tags || '').toLowerCase();
+        const match = text.includes(keyword) || tags.includes(keyword);
+        link.style.display = match ? '' : 'none';
+        if (match) isHit = true;
+      });
 
-  let isHit = titleText.includes(keyword);
-
-  const links = linkGrid.querySelectorAll('.image-link');
-  links.forEach(link => {
-    const text = link.textContent.toLowerCase();
-    const tags = (link.dataset.tags || '').toLowerCase();
-    const match = text.includes(keyword) || tags.includes(keyword);
-    link.style.display = match ? '' : 'none';
-    if (match) isHit = true;
-  });
-
-  titleEl.style.display = isHit ? '' : 'none';
-  linkGrid.style.display = isHit ? '' : 'none';
-});
+      titleEl.style.display = isHit ? '' : 'none';
+      linkGrid.style.display = isHit ? '' : 'none';
+    });
+  } else {
+    charaTab.querySelectorAll('.image-link').forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const tags = (link.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
+      link.style.display = match ? '' : 'none';
+    });
+  }
 
   // --- YouTubeログ ---
-  document.querySelectorAll('#youtube .category').forEach(category => {
+const youtubeTab = document.getElementById('youtube');
+const categories = youtubeTab.querySelectorAll('.category');
+
+if (categories.length > 0) {
+  // ✅ カテゴリ表示モード
+  categories.forEach(category => {
     const titleEl = category.querySelector('.category-title');
     const title = titleEl ? titleEl.textContent.toLowerCase() : '';
     const carousel = category.querySelector('.carousel');
@@ -1531,7 +1583,7 @@ charaTitles.forEach(titleEl => {
     videoButtons.forEach(btn => btn.classList.remove('active'));
 
     if (visibleButtons.length > 0) {
-      const idx = Math.min(category.currentIndex, visibleButtons.length -1);
+      const idx = Math.min(category.currentIndex, visibleButtons.length - 1);
       const activeBtn = visibleButtons[idx];
       activeBtn.classList.add('active');
 
@@ -1543,12 +1595,41 @@ charaTitles.forEach(titleEl => {
       }
     }
   });
+} else {
+  // ✅ 降順表示モード（カテゴリなし）
+  const wrappers = youtubeTab.querySelectorAll('.video-wrapper');
+  const iframeContainer = youtubeTab.querySelector('.video-iframe-container');
+  const matchedWrappers = [];
+
+  const normalize = str => str.toLowerCase().replace(/[\s_、]/g, '');
+
+  wrappers.forEach(wrapper => {
+    const title = normalize(wrapper.dataset.title || '');
+    const tags = (wrapper.dataset.tags || '').split(',').map(tag => normalize(tag));
+    const kw = normalize(keyword);
+
+    const match =
+      title.includes(kw) ||
+      tags.some(tag => tag.includes(kw));
+
+    wrapper.style.display = match ? '' : 'none';
+    if (match) matchedWrappers.push(wrapper);
+  });
+
+  // iframeContainer に表示を反映
+  if (iframeContainer) {
+    iframeContainer.innerHTML = '';
+    matchedWrappers.forEach(wrapper => {
+      iframeContainer.appendChild(wrapper.cloneNode(true));
+    });
+  }
+}
 
   // --- YouTube目次（オマケ） ---
-document.querySelectorAll('.video-toc li').forEach(el => {
-  const text = el.textContent.toLowerCase();
-  el.style.display = text.includes(keyword) ? '' : 'none';
-});
+  document.querySelectorAll('.video-toc li').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(keyword) ? '' : 'none';
+  });
 });
 
 
@@ -1613,6 +1694,7 @@ if (visibleCharas.length > 0) {
   const searchBox = document.getElementById('searchBox');
   searchBox.value = ''; // 検索ボックスの中身を空にする
   searchBox.dispatchEvent(new Event('input')); // inputイベントを発火させて全表示
+
 });
 
 document.getElementById('tagList').addEventListener('mousedown', function(e) {
@@ -1703,6 +1785,9 @@ function showLatestItems() {
     document.querySelectorAll('.tab-button').forEach(btn => {
       btn.classList.remove('active');
       if(btn.dataset.tab === 'youtube') btn.classList.add('active');
+
+    // ✅ ソート状態を同期
+    syncSortState(tabId);
     });
     document.querySelectorAll('.tab-content').forEach(tab => {
       tab.classList.remove('active');
@@ -1771,6 +1856,9 @@ document.querySelectorAll('.category').forEach(category => {
 
   renderTocPage();
 });
+
+
+
 
 
 const charaNames = Object.keys(charaStats); // 表示順にしたければソートしてOK
@@ -1923,6 +2011,452 @@ document.getElementById('nextChara').addEventListener('click', () => {
 //    updateCharaDetail(charaNames[0]); // 最初の探索者を表示
 //  }
 //});
+
+
+
+//カテゴリ、降順切り替え
+let originalHTMLs = {};
+let currentSortMode = 'category'; // 初期はカテゴリ
+let allYouTubeWrappers = []; // ← 降順表示用の全データ保存
+
+window.addEventListener('DOMContentLoaded', () => {
+  ['youtube', 'text'].forEach(id => {
+    const container = document.getElementById(id);
+    if (container) {
+      originalHTMLs[id] = container.innerHTML;
+    }
+  });
+
+  // 初期表示のタブに合わせて並びを同期
+  const activeTab = getActiveTab();
+  if (activeTab) syncSortState(activeTab);
+});
+
+document.getElementById('sortToggleBtn').addEventListener('click', () => {
+  const icon = document.getElementById('sortIcon');
+  const activeTab = getActiveTab();
+
+  if (currentSortMode === 'category') {
+    currentSortMode = 'desc';
+    icon.textContent = '⬇️';
+    applyDescendingSort(activeTab);
+
+    // 🔍 検索キーワードがあれば反映
+    const searchBox = document.getElementById('searchBox');
+    const keyword = searchBox.value.trim();
+    if (activeTab === 'youtube' && keyword) {
+      filterYouTubeLogs(keyword);
+    }
+
+  } else {
+    currentSortMode = 'category';
+    icon.textContent = '📂';
+    restoreCategoryView(activeTab);
+  }
+});
+
+function syncSortState(tab) {
+  const icon = document.getElementById('sortIcon');
+
+  if (currentSortMode === 'category') {
+    icon.textContent = '📂';
+    restoreCategoryView(tab);
+  } else {
+    icon.textContent = '⬇️';
+    applyDescendingSort(tab);
+  }
+}
+
+function applyDescendingSort(tab) {
+
+//動画5件ずつ表示
+document.querySelectorAll('.category').forEach(category => {
+  const tocList = category.querySelector('.video-toc ul');
+  const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+  const prevBtn = category.querySelector('.toc-prev');
+  const nextBtn = category.querySelector('.toc-next');
+
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  function renderTocPage() {
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    tocItems.forEach((li, i) => {
+      li.style.display = (i >= start && i < end) ? '' : 'none';
+    });
+
+    if (prevBtn && nextBtn) {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = end >= tocItems.length;
+    }
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTocPage();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+        currentPage++;
+        renderTocPage();
+      }
+    });
+  }
+
+  renderTocPage();
+});
+
+
+
+  if (tab === 'youtube') {
+    const youtubeTab = document.getElementById('youtube');
+    const allButtons = Array.from(youtubeTab.querySelectorAll('.video-links button'))
+      .filter(btn => btn.dataset.date && btn.textContent);
+
+    const sortedButtons = allButtons.sort((a, b) => {
+      return new Date(b.dataset.date) - new Date(a.dataset.date);
+    });
+
+    const videoList = document.createElement('div');
+    videoList.classList.add('video-iframe-container');
+    videoList.style.display = 'flex';
+    videoList.style.flexDirection = 'column';
+    videoList.style.gap = '2rem';
+
+    // ✅ 一時保存用の配列
+    const wrapperList = [];
+
+    sortedButtons.forEach(btn => {
+      const title = btn.textContent.trim();
+      const tags = (btn.dataset.tags || '').trim();
+      const date = btn.dataset.date || '';
+
+      for (const category in videoData) {
+        const video = videoData[category].find(v => v.title === title);
+        if (video) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('video-wrapper');
+          wrapper.dataset.title = title.toLowerCase();
+          wrapper.dataset.tags = tags.toLowerCase();
+          wrapper.dataset.date = date;
+
+          const iframe = document.createElement('iframe');
+          iframe.src = video.src;
+          iframe.allowFullscreen = true;
+          iframe.loading = 'lazy';
+          iframe.style.width = '100%';
+          iframe.style.aspectRatio = '16 / 9';
+          iframe.style.border = 'none';
+          iframe.style.borderRadius = '1rem';
+
+          wrapper.appendChild(iframe);
+
+// ✅ タイトル表示を追加
+const titleElem = document.createElement('div');
+titleElem.classList.add('video-title');
+titleElem.textContent = title;
+titleElem.style.marginTop = '0.5rem';
+titleElem.style.fontSize = '1rem';
+titleElem.style.fontWeight = 'bold';
+titleElem.style.textAlign = 'center';
+titleElem.style.color = '#333';
+
+wrapper.appendChild(titleElem);
+
+          videoList.appendChild(wrapper);
+          wrapperList.push(wrapper); // ✅ 保存
+          break;
+        }
+      }
+    });
+
+    // ✅ 全件データとして保存
+    allYouTubeWrappers = wrapperList;
+
+    youtubeTab.innerHTML = '';
+    youtubeTab.appendChild(videoList);
+
+  // 降順用のページ送りボタンを付ける
+  setupPagination(videoList, wrapperList);
+
+  // ★ここでイベント付け
+  const prevBtn = videoList.querySelector('.prev');
+  const nextBtn = videoList.querySelector('.next');
+  let currentIndex = 0;
+
+  function updateVideo(index) {
+    if (index < 0) index = wrapperList.length - 1;
+    if (index >= wrapperList.length) index = 0;
+    currentIndex = index;
+    // iframe の src を切り替えるならここで設定
+  }
+
+  prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
+  nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
+
+
+  } else if (tab === 'text') {
+    const container = document.getElementById('text');
+    const allLinks = Array.from(container.querySelectorAll('.image-link'));
+
+    container.querySelectorAll('.category-title').forEach(title => title.remove());
+
+    const sortedLinks = allLinks.sort((a, b) => {
+      return new Date(b.dataset.date) - new Date(a.dataset.date);
+    });
+
+    const linkGrid = container.querySelector('.link-grid');
+    linkGrid.innerHTML = '';
+    sortedLinks.forEach(link => linkGrid.appendChild(link));
+  }
+}
+
+
+function restoreCategoryView(tab) {
+  if (!originalHTMLs[tab]) return;
+
+  const container = document.getElementById(tab);
+  container.innerHTML = originalHTMLs[tab];
+
+  if (tab === 'youtube') {
+    container.querySelectorAll('.carousel').forEach(carousel => {
+      carousel.classList.add('show');
+    });
+
+    container.querySelectorAll('.category').forEach(category => {
+      const tocList = category.querySelector('.video-toc ul');
+      const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+      const prevBtn = category.querySelector('.toc-prev');
+      const nextBtn = category.querySelector('.toc-next');
+
+      const itemsPerPage = 5;
+      let currentPage = 0;
+
+      function renderTocPage() {
+        const start = currentPage * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        tocItems.forEach((li, i) => {
+          li.style.display = (i >= start && i < end) ? '' : 'none';
+        });
+
+        if (prevBtn && nextBtn) {
+          prevBtn.disabled = currentPage === 0;
+          nextBtn.disabled = end >= tocItems.length;
+        }
+      }
+
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 0) {
+            currentPage--;
+            renderTocPage();
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+            currentPage++;
+            renderTocPage();
+          }
+        });
+      }
+
+      renderTocPage();
+    });
+
+    container.querySelectorAll('.category').forEach(category => {
+      const iframe = category.querySelector('iframe');
+      const buttons = category.querySelectorAll('.video-links button');
+      const videos = videoData[category.dataset.category];
+
+reindexVideoButtons(category);
+
+      buttons.forEach((btn, index) => {
+        btn.dataset.index = index;
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          if (iframe && videos && videos[index]) {
+            iframe.src = videos[index].src;
+            category.currentIndex = index;
+          }
+        });
+      });
+
+// --- carousel の左右ボタンを確実に動かすための追加コード ---
+const carouselPrev = category.querySelector('.carousel-controls .prev');
+const carouselNext = category.querySelector('.carousel-controls .next');
+// carousel 内の iframe を明示的に取得（セレクタを特定することで衝突を避ける）
+const carouselIframe = category.querySelector('.carousel iframe');
+const videosForCategory = videoData[category.dataset.category] || [];
+let carouselIndex = 0;
+
+function updateCarousel(idx) {
+  if (!videosForCategory.length) return;
+  if (idx < 0) idx = videosForCategory.length - 1;
+  if (idx >= videosForCategory.length) idx = 0;
+  carouselIndex = idx;
+  if (carouselIframe) carouselIframe.src = videosForCategory[carouselIndex].src;
+  // video-links の active 状態を同期する（あれば）
+  const btns = category.querySelectorAll('.video-links button');
+  btns.forEach((b, i) => b.classList.toggle('active', i === carouselIndex));
+}
+
+// prev/next があるならイベントを登録（ガード付き）
+if (carouselPrev) carouselPrev.addEventListener('click', () => updateCarousel(carouselIndex - 1));
+if (carouselNext) carouselNext.addEventListener('click', () => updateCarousel(carouselIndex + 1));
+
+// 初期表示は最初の動画（あるいは既に active なボタン）を反映
+const activeBtn = category.querySelector('.video-links button.active');
+if (activeBtn) {
+  const idx = Array.from(category.querySelectorAll('.video-links button')).indexOf(activeBtn);
+  if (idx >= 0) updateCarousel(idx);
+} else {
+  updateCarousel(0);
+}
+
+      const tocLinks = category.querySelectorAll('.video-toc li a');
+tocLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const title = link.textContent.trim();
+    const targetBtn = Array.from(buttons).find(btn => btn.textContent.trim() === title);
+    if (targetBtn) {
+      const index = parseInt(targetBtn.dataset.index, 10);
+      if (!isNaN(index)) {
+        updateCarousel(index); // ✅ これで carouselIndex も iframe も同期される
+      }
+    }
+  });
+});
+
+    });
+
+    setupTagList();
+    showLatestItems();
+
+    const searchBox = document.getElementById('searchBox');
+    if (searchBox.value.trim()) {
+      searchBox.dispatchEvent(new Event('input'));
+    }
+
+  } else if (tab === 'text') {
+    container.querySelectorAll('.image-link').forEach(link => {
+      link.classList.add('show');
+});
+const searchBox = document.getElementById('searchBox'); 
+if (searchBox.value.trim()) { 
+setTimeout(() => { 
+searchBox.dispatchEvent(new Event('input'));
+ }, 0);
+    }
+  }
+}
+
+function getActiveTab() {
+  if (document.getElementById('youtube')?.classList.contains('active')) return 'youtube';
+  if (document.getElementById('text')?.classList.contains('active')) return 'text';
+  return null;
+}
+
+function filterYouTubeLogs(keyword) {
+  const youtubeTab = document.getElementById('youtube');
+  const iframeContainer = youtubeTab.querySelector('.video-iframe-container');
+  const normalize = str => str.toLowerCase().replace(/[\s_、]/g, '');
+  const kw = normalize(keyword);
+
+  const matchedWrappers = allYouTubeWrappers.filter(wrapper => {
+    const title = normalize(wrapper.dataset.title || '');
+    const tags = (wrapper.dataset.tags || '').split(',').map(tag => normalize(tag));
+    return !kw || title.includes(kw) || tags.some(tag => tag.includes(kw));
+  });
+
+  if (iframeContainer) {
+    iframeContainer.innerHTML = '';
+    matchedWrappers.forEach(wrapper => {
+      iframeContainer.appendChild(wrapper.cloneNode(true));
+    });
+  }
+}
+
+function setupPagination(container, items) {
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  const nav = document.createElement('div');
+  nav.classList.add('pagination-nav');
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = 'Prev';
+  prevBtn.classList.add('prev');
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next';
+  nextBtn.classList.add('next');
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  container.appendChild(nav);
+
+  // 🔍 降順かつYouTubeタブなら全件表示＆ボタン非表示
+  const isDescendingYouTube =
+    getActiveTab() === 'youtube' &&
+    document.querySelector('.video-iframe-container')?.style.flexDirection === 'column';
+
+  function renderPage() {
+    items.forEach((item, i) => {
+      item.style.display = isDescendingYouTube ? '' : (i >= currentPage * itemsPerPage && i < (currentPage + 1) * itemsPerPage) ? '' : 'none';
+    });
+
+    prevBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
+    nextBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
+
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = (currentPage + 1) * itemsPerPage >= items.length;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) {
+      currentPage--;
+      renderPage();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if ((currentPage + 1) * itemsPerPage < items.length) {
+      currentPage++;
+      renderPage();
+    }
+  });
+
+  renderPage();
+}
+
+
+function reindexVideoButtons(category) {
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a');
+
+  videoButtons.forEach((btn, idx) => {
+    btn.setAttribute('data-index', idx);
+  });
+
+  tocLinks.forEach((link, idx) => {
+    link.setAttribute('data-index', idx);
+  });
+}
+
+
+
+
+
 
 </script>
 
