@@ -2405,10 +2405,18 @@ function setupPagination(container, items) {
   nav.appendChild(nextBtn);
   container.appendChild(nav);
 
+  // 🔍 降順かつYouTubeタブなら全件表示＆ボタン非表示
+  const isDescendingYouTube =
+    getActiveTab() === 'youtube' &&
+    document.querySelector('.video-iframe-container')?.style.flexDirection === 'column';
+
   function renderPage() {
     items.forEach((item, i) => {
-      item.style.display = (i >= currentPage * itemsPerPage && i < (currentPage + 1) * itemsPerPage) ? '' : 'none';
+      item.style.display = isDescendingYouTube ? '' : (i >= currentPage * itemsPerPage && i < (currentPage + 1) * itemsPerPage) ? '' : 'none';
     });
+
+    prevBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
+    nextBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
 
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = (currentPage + 1) * itemsPerPage >= items.length;
@@ -2430,6 +2438,7 @@ function setupPagination(container, items) {
 
   renderPage();
 }
+
 
 function reindexVideoButtons(category) {
   const videoButtons = category.querySelectorAll('.video-links button');
