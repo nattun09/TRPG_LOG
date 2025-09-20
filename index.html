@@ -2245,14 +2245,14 @@ infoRow.style.marginTop = '0.5rem';
 infoRow.style.fontSize = '0.9rem';
 infoRow.style.color = '#333';
 
-// 左側：空白（何も入れない）
+// 左側：空白
 const emptyLeft = document.createElement('span');
 emptyLeft.style.flex = '1';
 infoRow.appendChild(emptyLeft);
 
 // 中央：タイトル
 const titleElem = document.createElement('span');
-titleElem.textContent = title;
+titleElem.textContent = title || '';
 titleElem.style.flex = '1';
 titleElem.style.textAlign = 'center';
 titleElem.style.fontWeight = 'bold';
@@ -2260,17 +2260,30 @@ titleElem.style.color = '#333';
 infoRow.appendChild(titleElem);
 
 // 右側：タグ＋日付
-const rightElem = document.createElement('span');
+const rightElem = document.createElement('div');
 rightElem.style.flex = '1';
-rightElem.style.textAlign = 'right';
+rightElem.style.display = 'flex';
+rightElem.style.flexDirection = 'column';
+rightElem.style.alignItems = 'flex-end';
+rightElem.style.marginRight = '10px';
 rightElem.style.fontSize = '0.85rem';
 rightElem.style.color = '#666';
-rightElem.style.marginRight = '10px'; 
-rightElem.textContent = (wrapper.dataset.tags ? wrapper.dataset.tags + '　' : '') + date;
+
+if (wrapper.dataset.tags) {
+  const tagsElem = document.createElement('span');
+  tagsElem.textContent = wrapper.dataset.tags;
+  rightElem.appendChild(tagsElem);
+}
+
+const dateElem = document.createElement('span');
+dateElem.textContent = date || '';
+rightElem.appendChild(dateElem);
+
 infoRow.appendChild(rightElem);
 
-// wrapper に追加
+// DOMに追加
 wrapper.appendChild(infoRow);
+
 
           videoList.appendChild(wrapper);
           wrapperList.push(wrapper); // ✅ 保存
