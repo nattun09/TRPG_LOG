@@ -2823,11 +2823,14 @@ charaSortSelect.addEventListener('change', () => {
 });
 
 // リロード後に探索者タブをアクティブ化
+// リロード後に探索者タブをアクティブ化
 window.addEventListener('DOMContentLoaded', () => {
-  if (localStorage.getItem('activateCharaTab')) {
+  const activateChara = localStorage.getItem('activateCharaTab');
+  if (activateChara) {
     const charaBtn = document.querySelector('.tab-button[data-tab="chara"]');
     const tabButtons = document.querySelectorAll('.tab-button');
 
+    // タブの active クラスだけ操作
     tabButtons.forEach(btn => btn.classList.remove('active'));
     charaBtn.classList.add('active');
 
@@ -2840,8 +2843,27 @@ window.addEventListener('DOMContentLoaded', () => {
     sortToggleBtn.style.display = 'none';
     charaSortSelect.style.display = 'inline-block';
 
+    // フラグは消す（ここで消しても OK）
     localStorage.removeItem('activateCharaTab');
   }
+
+  // タブクリック時の表示切替
+  document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // 各タブ内容を切り替え
+      document.getElementById('chara').style.display = (target === 'chara') ? 'block' : 'none';
+      document.getElementById('text').style.display = (target === 'text') ? 'block' : 'none';
+      document.getElementById('youtube').style.display = (target === 'youtube') ? 'block' : 'none';
+
+      // sortToggleBtn と charaSortSelect の表示切替
+      sortToggleBtn.style.display = (target === 'text' || target === 'youtube') ? 'inline-block' : 'none';
+      charaSortSelect.style.display = (target === 'chara') ? 'inline-block' : 'none';
+    });
+  });
 });
 
 
