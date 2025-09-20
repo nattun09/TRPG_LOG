@@ -2256,17 +2256,55 @@ videoList.prepend(titleDiv);
 
           wrapper.appendChild(iframe);
 
-// ✅ タイトル表示を追加
-const titleElem = document.createElement('div');
-titleElem.classList.add('video-title');
-titleElem.textContent = title;
-titleElem.style.marginTop = '0.5rem';
-titleElem.style.fontSize = '1rem';
-titleElem.style.fontWeight = 'bold';
-titleElem.style.textAlign = 'center';
-titleElem.style.color = '#333';
+// タイトル・タグ・日付用の行を作成
+const infoRow = document.createElement('div');
+infoRow.style.display = 'flex';
+infoRow.style.justifyContent = 'space-between';
+infoRow.style.alignItems = 'center';
+infoRow.style.marginTop = '0.5rem';
+infoRow.style.fontSize = '0.9rem';
+infoRow.style.color = '#333';
 
-wrapper.appendChild(titleElem);
+// 左側：空白
+const emptyLeft = document.createElement('span');
+emptyLeft.style.flex = '1';
+infoRow.appendChild(emptyLeft);
+
+// 中央：タイトル
+const titleElem = document.createElement('span');
+titleElem.textContent = title || '';
+titleElem.style.flex = '1';
+titleElem.style.textAlign = 'center';
+titleElem.style.fontWeight = 'bold';
+titleElem.style.color = '#333';
+infoRow.appendChild(titleElem);
+
+// 右側：タグ＋日付
+const rightElem = document.createElement('div');
+rightElem.style.flex = '1';
+rightElem.style.display = 'flex';
+rightElem.style.flexDirection = 'column';
+rightElem.style.alignItems = 'flex-end';
+rightElem.style.marginRight = '10px';
+rightElem.style.fontSize = '0.85rem';
+rightElem.style.color = '#666';
+
+if (wrapper.dataset.tags) {
+  const tagsElem = document.createElement('span');
+  tagsElem.textContent = wrapper.dataset.tags;
+  rightElem.appendChild(tagsElem);
+}
+
+const dateElem = document.createElement('span');
+dateElem.textContent = date || '';
+rightElem.appendChild(dateElem);
+
+infoRow.appendChild(rightElem);
+
+// DOMに追加
+wrapper.appendChild(infoRow);
+
+
 
           videoList.appendChild(wrapper);
           wrapperList.push(wrapper); // ✅ 保存
