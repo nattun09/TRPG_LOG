@@ -2222,6 +2222,12 @@ document.querySelectorAll('.category').forEach(category => {
     videoList.style.flexDirection = 'column';
     videoList.style.gap = '2rem';
 
+const titleDiv = document.createElement('div');
+titleDiv.classList.add('category-title');
+titleDiv.textContent = '最新順';
+videoList.prepend(titleDiv);
+
+
     // ✅ 一時保存用の配列
     const wrapperList = [];
 
@@ -2300,13 +2306,22 @@ wrapper.appendChild(titleElem);
 
     container.querySelectorAll('.category-title').forEach(title => title.remove());
 
-    const sortedLinks = allLinks.sort((a, b) => {
-      return new Date(b.dataset.date) - new Date(a.dataset.date);
-    });
+// 新しいカテゴリタイトルを作成
+  const titleDiv = document.createElement('div');
+  titleDiv.classList.add('category-title');
+  titleDiv.textContent = '最新順';
 
-    const linkGrid = container.querySelector('.link-grid');
-    linkGrid.innerHTML = '';
-    sortedLinks.forEach(link => linkGrid.appendChild(link));
+  const linkGrid = container.querySelector('.link-grid');
+  linkGrid.innerHTML = '';
+
+  // タイトルをリンクグリッドの **前に container 内で追加**
+  container.insertBefore(titleDiv, linkGrid);
+
+  // 日付順に並び替えて追加
+  const sortedLinks = allLinks.sort((a, b) => {
+    return new Date(b.dataset.date) - new Date(a.dataset.date);
+  });
+  sortedLinks.forEach(link => linkGrid.appendChild(link));
   }
 }
 
