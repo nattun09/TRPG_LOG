@@ -632,10 +632,7 @@ margin-top:10px;
   <button id="tagButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">キャラ</button>
   <button id="clearButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">削除</button>
   <ul id="tagList"></ul>
-  <button id="sortToggleBtn" style="padding:10px 10px; margin-left:10px; cursor:pointer; ">
-    <span id="sortIcon">📁</span>
-</div>
-<select id="charaSortSelect" style="padding:0.5rem 1.2rem; margin-left:10px; border-radius:10px; font-weight:bold;">
+<select id="charaSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333;">
   <option value="folder">📁</option>
   <option value="STR">STR</option>
   <option value="CON">CON</option>
@@ -646,6 +643,10 @@ margin-top:10px;
   <option value="INT">INT</option>
   <option value="EDU">EDU</option>
 </select>
+  <button id="sortToggleBtn" style="padding:10px 10px; margin-left:10px; cursor:pointer; ">
+    <span id="sortIcon">📁</span>
+</div>
+
 
 
 <div id="chara" class="tab-content image-link char-img">
@@ -1419,6 +1420,7 @@ document.querySelectorAll('.category').forEach(category => {
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
 const sortToggleBtn = document.getElementById('sortToggleBtn');
+const charaSortSelect = document.getElementById('charaSortSelect'); // 追加
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1436,10 +1438,16 @@ const sortToggleBtn = document.getElementById('sortToggleBtn');
     const showSort = (target === 'text' || target === 'youtube');
     sortToggleBtn.style.display = showSort ? 'inline-block' : 'none';
 
+// 探索者タブのときだけ select を表示
+    charaSortSelect.style.display = (target === 'chara') ? 'inline-block' : 'none';
+
     // 表示モードを同期（カテゴリ／降順）
     syncSortState(target);
     });
   });
+
+// 初期表示に合わせて select を非表示にしておく
+charaSortSelect.style.display = 'none';
 
 document.querySelectorAll('.category').forEach(category => {
 const videos = videoData[category.dataset.category];
@@ -1945,7 +1953,7 @@ document.querySelectorAll('.category').forEach(category => {
 
 
 
-
+//探索者一覧
 const charaNames = Object.keys(charaStats); // 表示順にしたければソートしてOK
 let currentCharaIndex = -1;
 
@@ -2547,9 +2555,7 @@ let originalCharaHTML = "";
 
 window.addEventListener("DOMContentLoaded", () => {
   const charaContainer = document.getElementById("chara");
-  if (!charaContainer) {
-    return;
-  }
+  if (!charaContainer) return;
 
   // 初期HTML保存
   originalCharaHTML = charaContainer.innerHTML;
@@ -2557,21 +2563,11 @@ window.addEventListener("DOMContentLoaded", () => {
   // 初期表示されている探索者を保持
   allCharaLinks = Array.from(charaContainer.querySelectorAll('.image-link'));
 
-  // 各リンクにクリックイベントを付与
-  allCharaLinks.forEach(link => {
-    const name = link.querySelector('span')?.textContent?.trim();
-    if (name) {
-      link.name = name; // nameをプロパティに保持
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        updateCharaDetail(name);
-        currentCharaIndex = currentCharaOrder.indexOf(name);
-      });
-    }
-  });
+  // 初期クリックイベント付与
+  addClickEvents(allCharaLinks);
 
   // 初期順序を設定
-  currentCharaOrder = allCharaLinks.map(l => l.name);
+  currentCharaOrder = allCharaLinks.map(l => l.querySelector('span')?.textContent?.trim());
 
   // 初期タブが探索者なら同期
   if (getActiveTab() === 'chara') {
@@ -2579,6 +2575,22 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// 共通でクリックイベントを付与する関数
+function addClickEvents(links) {
+  links.forEach(link => {
+    const name = link.querySelector('span')?.textContent?.trim();
+    if (!name) return;
+
+    // 既存イベントを消すために replaceWith ではなく、一旦 removeEventListener しても良い
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      updateCharaDetail(name);
+      currentCharaIndex = currentCharaOrder.indexOf(name);
+    });
+  });
+}
+
+// 並び替え
 function applyCharaSort(statKey) {
   const charaContainer = document.getElementById("chara");
   if (!charaContainer) return;
@@ -2600,55 +2612,54 @@ function applyCharaSort(statKey) {
   grid.className = 'link-grid';
 
   entries.forEach(entry => {
-    const link = allCharaLinks.find(l => l.name === entry.name);
-    if (link) grid.appendChild(link); // cloneせず移動
+    const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
+    if (link) grid.appendChild(link); // 移動するだけ
   });
 
   charaContainer.appendChild(grid);
 
-  // 並び順を更新
   currentCharaOrder = entries.map(e => e.name);
+
+  // 並び替え後もクリックで詳細が動作するように再付与
+  addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
 
   updateCategoryList();
 }
 
+// フォルダ表示
 function restoreCharaCategoryView() {
   const charaContainer = document.getElementById("chara");
   if (!charaContainer || !allCharaLinks.length) return;
 
-  charaContainer.innerHTML = ''; // 初期化
+  charaContainer.innerHTML = '';
 
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = originalCharaHTML;
 
   const categoryBlocks = Array.from(tempDiv.querySelectorAll('.category-title, .link-grid'));
 
-  for (let i = 0; i < categoryBlocks.length; i++) {
-    const block = categoryBlocks[i];
-
+  categoryBlocks.forEach(block => {
     if (block.classList.contains('category-title')) {
       charaContainer.appendChild(block.cloneNode(true));
     } else if (block.classList.contains('link-grid')) {
       const grid = document.createElement('div');
       grid.className = 'link-grid';
 
-      // 元のリンクを allCharaLinks から探して追加
-      const origLinks = Array.from(block.querySelectorAll('.image-link'));
-      origLinks.forEach(origLink => {
+      Array.from(block.querySelectorAll('.image-link')).forEach(origLink => {
         const name = origLink.querySelector('span')?.textContent?.trim();
-        const link = allCharaLinks.find(l => l.name === name);
-        if (link) {
-          grid.appendChild(link); // cloneせず移動
-        }
+        const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === name);
+        if (link) grid.appendChild(link);
       });
 
       charaContainer.appendChild(grid);
     }
-  }
+  });
 
-  // 並び順を初期HTML順に再構築
   currentCharaOrder = Array.from(charaContainer.querySelectorAll('.image-link'))
     .map(link => link.querySelector('span')?.textContent?.trim());
+
+  // フォルダ表示でもクリックで詳細が動作するように再付与
+  addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
 
   updateCategoryList();
 }
@@ -2662,12 +2673,34 @@ function syncCharaSortState() {
   } else {
     applyCharaSort(mode);
   }
+
 }
 
 document.getElementById("charaSortSelect").addEventListener("change", () => {
   syncCharaSortState();
 });
 
+// 並び替え後やフォルダ表示後に必ず最新要素を取得してイベントを付与
+function addClickEventsToCurrentDOM() {
+  const charaContainer = document.getElementById("chara");
+  const links = charaContainer.querySelectorAll('.image-link');
+  links.forEach(link => {
+    const name = link.querySelector('span')?.textContent?.trim();
+    if (!name) return;
+
+    // 一度既存のクリックイベントを消す
+    const newLink = link.cloneNode(true);
+    link.replaceWith(newLink);
+
+    newLink.addEventListener('click', e => {
+      e.preventDefault();
+      updateCharaDetail(name);
+      currentCharaIndex = Array.from(charaContainer.querySelectorAll('.image-link'))
+        .map(l => l.querySelector('span')?.textContent?.trim())
+        .indexOf(name);
+    });
+  });
+}
 
 
 
