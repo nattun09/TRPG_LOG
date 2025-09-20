@@ -600,6 +600,7 @@ margin-top:10px;
   outline: none;
 }
 
+
   </style>
 </head>
 <body>
@@ -2674,10 +2675,40 @@ function applyCharaSort(statKey) {
   const grid = document.createElement('div');
   grid.className = 'link-grid';
 
-  entries.forEach(entry => {
-    const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
-    if (link) grid.appendChild(link); // 移動するだけ
-  });
+entries.forEach(entry => {
+  const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
+  if (link) {
+    // 既存バッジを削除して重複を防ぐ
+    const oldBadge = link.querySelector('.stat-badge');
+    if (oldBadge) oldBadge.remove();
+
+    if (statKey !== 'folder') {
+      // バッジ作成
+      const badge = document.createElement('span');
+      badge.className = 'stat-badge';
+      badge.textContent = entry.value;
+      badge.style.backgroundColor = '#e26a89';
+      badge.style.color = 'white';
+      badge.style.fontSize = '0.7rem';
+      badge.style.fontWeight = 'bold';
+      badge.style.padding = '2px 6px';
+      badge.style.borderRadius = '12px';
+      badge.style.marginLeft = '6px';
+      badge.style.display = 'inline-block';
+      badge.style.verticalAlign = 'middle';
+
+      // 名前のすぐ右横に追加
+      const nameSpan = link.querySelector('span');
+      if (nameSpan) {
+        nameSpan.insertAdjacentElement('afterend', badge);
+      }
+    }
+
+    grid.appendChild(link);
+  }
+});
+
+
 
   charaContainer.appendChild(grid);
 
@@ -2711,7 +2742,13 @@ function restoreCharaCategoryView() {
       Array.from(block.querySelectorAll('.image-link')).forEach(origLink => {
         const name = origLink.querySelector('span')?.textContent?.trim();
         const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === name);
-        if (link) grid.appendChild(link);
+        if (link) {
+          // 📁表示時は既存バッジを削除
+          const oldBadge = link.querySelector('.stat-badge');
+          if (oldBadge) oldBadge.remove();
+
+          grid.appendChild(link);
+        }
       });
 
       charaContainer.appendChild(grid);
@@ -2721,11 +2758,10 @@ function restoreCharaCategoryView() {
   currentCharaOrder = Array.from(charaContainer.querySelectorAll('.image-link'))
     .map(link => link.querySelector('span')?.textContent?.trim());
 
-  // フォルダ表示でもクリックで詳細が動作するように再付与
   addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
-
   updateCategoryList();
 }
+
 
 function syncCharaSortState() {
   const select = document.getElementById('charaSortSelect');
