@@ -2802,6 +2802,50 @@ function addClickEventsToCurrentDOM() {
   });
 }
 
+//📁クリック時
+charaSortSelect.addEventListener('change', () => {
+  const selected = charaSortSelect.value;
+
+    // sortToggleBtnを非表示に
+    sortToggleBtn.style.display = 'none';
+
+  if (selected === 'folder') {
+    // charaSortSelectは表示
+    charaSortSelect.style.display = 'inline-block';
+
+    // 探索者タブをアクティブ化するフラグをセットしてリロード
+    localStorage.setItem('activateCharaTab', '1');
+    location.reload();
+  } else {
+    // 他のソート処理
+    applyCharaSort(selected);
+  }
+});
+
+// リロード後に探索者タブをアクティブ化
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('activateCharaTab')) {
+    const charaBtn = document.querySelector('.tab-button[data-tab="chara"]');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    charaBtn.classList.add('active');
+
+    // 各タブの内容表示切替
+    document.getElementById('chara').style.display = 'block';
+    document.getElementById('text').style.display = 'none';
+    document.getElementById('youtube').style.display = 'none';
+
+    // sortToggleBtn を非表示、charaSortSelect を表示
+    sortToggleBtn.style.display = 'none';
+    charaSortSelect.style.display = 'inline-block';
+
+    localStorage.removeItem('activateCharaTab');
+  }
+});
+
+
+
 
 
 
