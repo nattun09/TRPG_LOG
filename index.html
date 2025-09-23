@@ -635,6 +635,9 @@ margin-top:10px;
   <ul id="tagList"></ul>
 <select id="charaSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333; width:50px; height:39px;">
   <option value="folder">👤</option>
+<option value="age">年齢</option>
+<option value="height">身長</option>
+<option value="birthday">誕生日</option>
   <option value="STR">STR</option>
   <option value="CON">CON</option>
   <option value="POW">POW</option>
@@ -1249,7 +1252,7 @@ const charaStats = {
   "木栖 慶次": {
     image: "image/きずみ.webp",
     url: "https://iachara.com/view/11829031",
-description: "年齢：25<br>性別：男<br>身長：182<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：直毘の部下",
+description: "年齢：25<br>性別：男<br>身長：182<br>誕生日：2/21<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：直毘の部下",
     stats: {
       STR: 13, CON: 13, POW: 12,DEX: 13, APP: 13, SIZ: 15,INT: 16, EDU: 19
     }
@@ -1257,7 +1260,7 @@ description: "年齢：25<br>性別：男<br>身長：182<br>職業：刑事<br>
   "夏目 文人": {
     image: "image/夏目.webp",
     url: "https://iachara.com/view/11985751",
-description: "年齢：36<br>性別：男<br>身長：192<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
+description: "年齢：36<br>性別：男<br>身長：192<br>誕生日：8/15<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
     stats: {
       STR: 9, CON: 9, POW: 9,
       DEX: 16, APP: 7, SIZ: 18,
@@ -1267,7 +1270,7 @@ description: "年齢：36<br>性別：男<br>身長：192<br>職業：小説家<
   "八本木 吉": {
     image: "image/ポン吉.webp",
     url: "https://iachara.com/view/11732740",
-description: "年齢：??<br>性別：男<br>身長：171<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
     stats: {
       STR: 11, CON: 9, POW: 16,
       DEX: 5, APP: 15, SIZ: 12,
@@ -1277,25 +1280,25 @@ description: "年齢：??<br>性別：男<br>身長：171<br>職業：???<br>出
 "檻崎 折": {
     image: "image/折_誘拐犯.webp",
     url: "https://iachara.com/view/10768637",
-description: "年齢：??<br>性別：男<br>身長：171<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：11/1<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
     stats: { STR: 12, CON: 12, POW: 6, DEX: 12, APP: 12, SIZ: 13, INT: 16, EDU: 17 }
   },
   "薮井 社": {
     image: "image/薮井.webp",
     url: "https://iachara.com/view/11114253",
-description: "年齢：28<br>性別：男<br>身長：179<br>職業：ヤブ医者<br>出身：慄け！因習村<br>関係：叶とよく喧嘩してる。",
+description: "年齢：28<br>性別：男<br>身長：179<br>誕生日：8/21<br>職業：ヤブ医者<br>出身：慄け！因習村<br>関係：叶とよく喧嘩してる。",
     stats: { STR: 13, CON: 9, POW: 17, DEX: 12, APP: 13, SIZ: 14, INT: 11, EDU: 14 }
   },
   "灰咲 白": {
     image: "image/白.webp",
     url: "https://iachara.com/view/10960490",
-description: "年齢：18<br>性別：男<br>身長：170<br>職業：アイドル<br>出身：灰になってよかった<br>関係：仁木に攫われた",
+description: "年齢：18<br>性別：男<br>身長：170<br>誕生日：7/2<br>職業：アイドル<br>出身：灰になってよかった<br>関係：仁木に攫われた",
     stats: { STR: 11, CON: 8, POW: 15, DEX: 11, APP: 15, SIZ: 13, INT: 16, EDU: 17 }
   },
   "柊 晴": {
     image: "image/はる.webp",
     url: "https://iachara.com/view/10718849",
-description: "年齢：23<br>性別：男<br>身長：178<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
+description: "年齢：23<br>性別：男<br>身長：178<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
     stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
   },
   "富良野 ルイ": {
@@ -1379,7 +1382,7 @@ description: "年齢：32<br>性別：男<br>身長：177<br>職業：人妻作�
   "花巻 宥磨": {
     image: "image/ゆうま.webp",
     url: "https://iachara.com/view/11049356",
-description: "年齢：17<br>性別：男<br>身長：172<br>職業：高校生<br>出身：キルキルイキル<br>関係：皐生と幼馴染",
+description: "年齢：17<br>性別：男<br>身長：172<br>誕生日：9/23<br>職業：高校生<br>出身：キルキルイキル<br>関係：皐生と幼馴染",
     stats: { STR: 14, CON: 15, POW: 15, DEX: 13, APP: 11, SIZ: 13, INT: 11, EDU: 12 }
   },
   "百井 桃": {
@@ -1391,7 +1394,7 @@ description: "年齢：20<br>性別：男<br>身長：182<br>職業：猫カフ�
   "三ツ星 葉": {
     image: "image/葉.webp",
     url: "https://iachara.com/view/10965230",
-description: "年齢：22<br>性別：男<br>身長：190<br>職業：探偵<br>通過：死にたがり電車",
+description: "年齢：22<br>性別：男<br>身長：190<br>誕生日：5/5<br>職業：探偵<br>通過：死にたがり電車",
     stats: { STR: 14, CON: 10, POW: 10, DEX: 10, APP: 9, SIZ: 16, INT: 18, EDU: 15 }
   },
   "国木田 仁木": {
@@ -1403,19 +1406,19 @@ description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小
   "神崎 猩猩": {
     image: "image/猩猩.webp",
     url: "https://iachara.com/view/10749984",
-description: "年齢：26<br>性別：男<br>身長：180<br>職業：教祖<br>出身：鰯と柊<br>関係：恵々が信者",
+description: "年齢：26<br>性別：男<br>身長：180<br>誕生日：1/23<br>職業：教祖<br>出身：鰯と柊<br>関係：恵々が信者",
     stats: { STR: 13, CON: 10, POW: 14, DEX: 13, APP: 13, SIZ: 13, INT: 13, EDU: 11 }
   },
   "蝿島 叶": {
     image: ["image/叶.webp","image/叶_初期.webp"],
     url: "https://iachara.com/view/10692890",
-description: "年齢：29<br>性別：男<br>身長：175<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
+description: "年齢：29<br>性別：男<br>身長：175<br>誕生日：3/19<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
     stats: { STR: 14, CON: 10, POW: 15, DEX: 7, APP: 18, SIZ: 13, INT: 16, EDU: 19 }
   },
   "蝿島 いのり": {
     image: ["image/いのり.webp","image/のりお.webp"],
     url: "https://iachara.com/view/10468122",
-description: "年齢：16<br>性別：女<br>身長：160<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
+description: "年齢：16<br>性別：女<br>身長：160<br>誕生日：3/31<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
     stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
   },
   "白石・クララ＝クローネ": {
@@ -2710,71 +2713,134 @@ function addClickEvents(links) {
 }
 
 // 並び替え
+function parseBirthdayValueForSort(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    let month = Number(m[1]);
+    let day = Number(m[2]);
+    // 4月を起点に回す
+    let rotatedMonth = (month - 4 + 12) % 12; // 4月=0, 5月=1,...3月=11
+    return rotatedMonth * 100 + day;
+  }
+  return 9999;
+}
+
+function parseAge(description) {
+  if (!description) return 0;
+  const m = description.match(/年齢[:：]\s*([0-9]{1,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseHeight(description) {
+  if (!description) return 0;
+  const m = description.match(/身長[:：]\s*([0-9]{2,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseBirthdayValue(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    const month = Number(m[1]);
+    const day = Number(m[2]);
+    return month * 100 + day;
+  }
+  return 9999;
+}
+
 function applyCharaSort(statKey) {
   const charaContainer = document.getElementById("chara");
   if (!charaContainer) return;
 
-  const entries = Object.entries(charaStats)
-    .filter(([_, data]) => data.stats)
-    .map(([name, data]) => ({ name, value: data.stats[statKey] ?? 0 }));
+const entries = Object.entries(charaStats).map(([name, data]) => {
+  let value = 0;
+  let originalMonth = null;
+  let originalDay = null;
 
-  entries.sort((a, b) => b.value - a.value);
+if (statKey === 'age') {
+    value = parseAge(data.description || '');
+  } else if (statKey === 'height') {
+    value = parseHeight(data.description || '');
+  } else if (statKey === 'birthday') {
+    const m = (data.description || '').match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+    if (m) {
+      originalMonth = Number(m[1]);
+      originalDay = Number(m[2]);
+      // ソート用の回転値
+      value = ((originalMonth - 4 + 12) % 12) * 100 + originalDay;
+    } else {
+      value = 9999;
+    }
+  } else {
+    value = Number(data.stats?.[statKey] ?? 0);
+  }
+
+  return { name, value, data, originalMonth, originalDay };
+});
+
+  if (statKey === 'birthday') {
+    entries.sort((a, b) => a.value - b.value); // 月日順（昇順）
+  } else {
+    entries.sort((a, b) => b.value - a.value); // 高い数値順
+  }
 
   charaContainer.innerHTML = '';
-
   const catTitle = document.createElement('div');
   catTitle.className = 'category-title';
-  catTitle.textContent = `${statKey}順`;
+  if (statKey === 'age') catTitle.textContent = '年齢順';
+  else if (statKey === 'height') catTitle.textContent = '身長順';
+  else if (statKey === 'birthday') catTitle.textContent = '誕生日順';
+  else catTitle.textContent = `${statKey}順`;
   charaContainer.appendChild(catTitle);
 
   const grid = document.createElement('div');
   grid.className = 'link-grid';
 
-entries.forEach(entry => {
-  const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
-  if (link) {
-    // 既存バッジを削除して重複を防ぐ
+  entries.forEach(entry => {
+    const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
+    if (!link) return;
+
     const oldBadge = link.querySelector('.stat-badge');
     if (oldBadge) oldBadge.remove();
 
-    if (statKey !== 'folder') {
-      // バッジ作成
-      const badge = document.createElement('span');
-      badge.className = 'stat-badge';
+    const badge = document.createElement('span');
+    badge.className = 'stat-badge';
+    if (statKey === 'age') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'height') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'birthday') {
+  if (entry.value !== 9999 && entry.originalMonth && entry.originalDay) {
+    badge.textContent = `${entry.originalMonth}/${entry.originalDay}`;
+  }
+} else {
       badge.textContent = entry.value;
-      badge.style.backgroundColor = '#e26a89';
-      badge.style.color = 'white';
-      badge.style.fontSize = '0.6rem';
-      badge.style.fontWeight = 'bold';
-      badge.style.padding = '2px 6px';
-      badge.style.borderRadius = '12px';
-      badge.style.marginLeft = '6px';
-      badge.style.marginTop = '1px';
-      badge.style.display = 'inline-block';
-      badge.style.verticalAlign = 'middle';
-
-      // 名前のすぐ右横に追加
-      const nameSpan = link.querySelector('span');
-      if (nameSpan) {
-        nameSpan.insertAdjacentElement('afterend', badge);
-      }
     }
 
+    badge.style.backgroundColor = '#e26a89';
+    badge.style.color = 'white';
+    badge.style.fontSize = '0.6rem';
+    badge.style.fontWeight = 'bold';
+    badge.style.padding = '2px 6px';
+    badge.style.borderRadius = '12px';
+    badge.style.marginLeft = '6px';
+    badge.style.marginTop = '1px';
+    badge.style.display = 'inline-block';
+    badge.style.verticalAlign = 'middle';
+
+    const nameSpan = link.querySelector('span');
+    if (nameSpan) nameSpan.insertAdjacentElement('afterend', badge);
+
     grid.appendChild(link);
-  }
-});
-
-
+  });
 
   charaContainer.appendChild(grid);
-
   currentCharaOrder = entries.map(e => e.name);
-
-  // 並び替え後もクリックで詳細が動作するように再付与
   addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
-
   updateCategoryList();
 }
+
 
 // フォルダ表示
 function restoreCharaCategoryView() {
