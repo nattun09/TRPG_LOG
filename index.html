@@ -56,6 +56,7 @@
       font-weight: bold;
       transition: background-color 0.3s;
 color:#333333;
+position: relative; 
     }
 
     .tab-button.active {
@@ -261,7 +262,7 @@ text-align: left;
       display: flex;
       justify-content: center;
       margin: 1.5rem 0;
-      gap: 1rem;
+      gap: 0.3rem;
     }
 
 .menu-toggle {
@@ -601,6 +602,39 @@ margin-top:10px;
 }
 
 
+/* cocoforia専用：横2列、画像を4:3で表示 */
+#cocoforia .link-grid {
+  grid-template-columns: repeat(2, 1fr); /* 横2列 */
+  gap: 1em;
+}
+
+/* 画像比を4:3（上書き） */
+#cocoforia .image-link img {
+  aspect-ratio: 5 / 3;   /* 横4:縦3 */
+  object-fit: cover;
+  width: 100%;
+  border-radius: 6px;
+}
+
+
+/* cocoforia 確認モーダル */
+#coco-confirm-modal { display:none; position:fixed; inset:0; z-index:10000; }
+#coco-confirm-modal .coco-modal-backdrop {
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.45);
+  display:flex; align-items:center; justify-content:center;
+}
+#coco-confirm-modal .coco-modal {
+  background:#fff; padding:18px; border-radius:10px;
+  min-width:260px; max-width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  text-align:center;
+}
+#coco-confirm-modal .coco-modal p { margin:0 0 12px; font-size:16px; font-weight:600; }
+#coco-confirm-modal .coco-modal-buttons { display:flex; gap:10px; justify-content:center; margin-top:8px; }
+#coco-confirm-modal button {
+  padding:8px 14px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer;
+}
+#coco-confirm-modal button:focus { outline:2px solid #66aaff; }
   </style>
 </head>
 <body>
@@ -616,8 +650,9 @@ margin-top:10px;
 
 <div class="tabs">
 <button class="tab-button" data-tab="chara">探索者</button>
-  <button class="tab-button active" data-tab="text">テキセログ</button>
-  <button class="tab-button" data-tab="youtube">YouTubeログ</button>
+  <button class="tab-button active" data-tab="text">テキセ</button>
+  <button class="tab-button" data-tab="youtube">YouTube</button>
+<button class="tab-button" data-tab="cocoforia">部屋</button>
 </div>
 
 <main>
@@ -1206,6 +1241,46 @@ margin-top:10px;
   </div>
 
 </div>
+
+
+<div id="cocoforia" class="tab-content">
+  <div class="category-title">公開</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/rFaJLBRQN" target="_blank" class="image-link" data-room="すごろく_あさはる" data-tags="旭,遥啓">
+      <img src="image/すごろく.png">
+      <span>すごろく_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/y_gnUYv61" target="_blank" class="image-link" data-room="どんとたっちKPC！_あさはる" data-tags="旭,遥啓">
+      <img src="image/どんとたっち.webp">
+      <span>どんとたっちKPC！_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/f19OHAUvg" target="_blank" class="image-link" data-room="やぶかなラジオ" data-tags="薮井,叶">
+      <img src="image/やぶかなラジオ.webp">
+      <span>やぶかなラジオ</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/NmY0UVfAZ" target="_blank" class="image-link" data-room="ちっち山">
+      <img src="image/てすと.webp">
+      <span>ちっち山</span>
+    </a>
+  </div>
+
+  <div class="category-title">非公開（やってる人のみ閲覧可）</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/bnvcRhQUX" target="_blank" class="image-link" data-room="ムーンエスケープ_かどはな">
+      <img src="image/むーん.webp">
+      <span>ムーンエスケープ_かどはな</span>
+    </a>
+  </div>
+
+  <div class="category-title">過去部屋</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/WiN1HGKM7" target="_blank" class="image-link" data-room="鰯と柊">
+      <img src="image/いわひら.webp">
+      <span>鰯と柊</span>
+    </a>
+  </div>
+</div>
+
 </main>
 
 <script>
@@ -3025,7 +3100,88 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+// --- モーダルを一度だけ作るユーティリティ ---
+function ensureCocoModal() {
+  let root = document.getElementById('coco-confirm-modal');
+  if (root) return root;
+  root = document.createElement('div');
+  root.id = 'coco-confirm-modal';
+  root.innerHTML = `
+    <div class="coco-modal-backdrop" role="presentation">
+      <div class="coco-modal" role="dialog" aria-modal="true" aria-labelledby="coco-modal-title">
+        <p id="coco-modal-title"></p>
+        <div class="coco-modal-buttons">
+          <button type="button" id="coco-yes">はい</button>
+          <button type="button" id="coco-no">いいえ</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(root);
+  return root;
+}
 
+// --- モーダル表示。Promise で結果を返す（true = はい / false = いいえ） ---
+function showCocoConfirm(roomName) {
+  const modal = ensureCocoModal();
+  const title = modal.querySelector('#coco-modal-title');
+  const yes = modal.querySelector('#coco-yes');
+  const no = modal.querySelector('#coco-no');
+
+  title.textContent = `「${roomName}」を開きますか？`;
+  modal.style.display = 'block';
+
+  const prevFocus = document.activeElement;
+  yes.focus();
+
+  return new Promise((resolve) => {
+    function cleanup(result) {
+      modal.style.display = 'none';
+      yes.removeEventListener('click', onYes);
+      no.removeEventListener('click', onNo);
+      document.removeEventListener('keydown', onKey);
+      if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
+      resolve(result);
+    }
+    function onYes() { cleanup(true); }
+    function onNo() { cleanup(false); }
+    function onKey(e) {
+      if (e.key === 'Escape') cleanup(false);
+      else if (e.key === 'Enter') cleanup(true);
+    }
+    yes.addEventListener('click', onYes);
+    no.addEventListener('click', onNo);
+    document.addEventListener('keydown', onKey);
+  });
+}
+
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+function setupCocoforia() {
+  document.querySelectorAll('#cocoforia .image-link').forEach(a => {
+    if (a.dataset.cocoBound) return;
+    a.dataset.cocoBound = '1';
+
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const room = a.dataset.room || a.querySelector('span')?.textContent?.trim() || 'この部屋';
+
+      showCocoConfirm(room).then(ok => {
+        if (ok) {
+          // 直接 open（空タブは作らない）
+          window.open(a.href, '_blank');
+        }
+      });
+    });
+  });
+}
+
+
+// 呼び出し（DOMContentLoaded の中か、既存の初期化ルーチンの最後に）
+window.addEventListener('DOMContentLoaded', () => {
+  setupCocoforia();
+  // 既存の setupTagList(), showLatestItems() 等はそのまま動かしてください
+});
 </script>
 
 </body>
