@@ -601,6 +601,39 @@ margin-top:10px;
 }
 
 
+/* cocoforia専用：横2列、画像を4:3で表示 */
+#cocoforia .link-grid {
+  grid-template-columns: repeat(2, 1fr); /* 横2列 */
+  gap: 1em;
+}
+
+/* 画像比を4:3（上書き） */
+#cocoforia .image-link img {
+  aspect-ratio: 5 / 3;   /* 横4:縦3 */
+  object-fit: cover;
+  width: 100%;
+  border-radius: 6px;
+}
+
+
+/* cocoforia 確認モーダル */
+#coco-confirm-modal { display:none; position:fixed; inset:0; z-index:10000; }
+#coco-confirm-modal .coco-modal-backdrop {
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.45);
+  display:flex; align-items:center; justify-content:center;
+}
+#coco-confirm-modal .coco-modal {
+  background:#fff; padding:18px; border-radius:10px;
+  min-width:260px; max-width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  text-align:center;
+}
+#coco-confirm-modal .coco-modal p { margin:0 0 12px; font-size:16px; font-weight:600; }
+#coco-confirm-modal .coco-modal-buttons { display:flex; gap:10px; justify-content:center; margin-top:8px; }
+#coco-confirm-modal button {
+  padding:8px 14px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer;
+}
+#coco-confirm-modal button:focus { outline:2px solid #66aaff; }
   </style>
 </head>
 <body>
@@ -616,8 +649,9 @@ margin-top:10px;
 
 <div class="tabs">
 <button class="tab-button" data-tab="chara">探索者</button>
-  <button class="tab-button active" data-tab="text">テキセログ</button>
-  <button class="tab-button" data-tab="youtube">YouTubeログ</button>
+  <button class="tab-button active" data-tab="text">テキセ</button>
+  <button class="tab-button" data-tab="youtube">YouTube</button>
+<button class="tab-button" data-tab="cocoforia">部屋</button>
 </div>
 
 <main>
@@ -635,6 +669,9 @@ margin-top:10px;
   <ul id="tagList"></ul>
 <select id="charaSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333; width:50px; height:39px;">
   <option value="folder">👤</option>
+<option value="age">年齢</option>
+<option value="height">身長</option>
+<option value="birthday">誕生日</option>
   <option value="STR">STR</option>
   <option value="CON">CON</option>
   <option value="POW">POW</option>
@@ -672,6 +709,10 @@ margin-top:10px;
 
 <div class="category-title">もなかも</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="きずみ">
+    <img src="image/iきずみ.webp">
+    <span>木栖 慶次</span>
+  </a> 
   <a target="_blank" class="image-link" data-tags="夏目">
     <img src="image/i夏目.webp">
     <span>夏目 文人</span>
@@ -700,6 +741,14 @@ margin-top:10px;
 
 <div class="category-title">てとせ</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="なおび">
+    <img src="image/iなおび.webp">
+    <span>直毘 誠</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ルイ">
+    <img src="image/iルイ.webp">
+    <span>富良野 ルイ</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="ひつじ">
     <img src="image/iひつじ.webp">
     <span>三栗 ひつじ</span>
@@ -724,6 +773,10 @@ margin-top:10px;
 
 <div class="category-title">星夜</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="しずく">
+    <img src="image/iしずく.webp">
+    <span>水菓子 しずく</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="さつき">
     <img src="image/iさつき.webp">
     <span>門永 皐生</span>
@@ -899,6 +952,18 @@ margin-top:10px;
 
 <div class="category-title">KPレス</div>
 <div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/プルガトリウムの夜SS_木栖/log_export.html" target="_blank" class="image-link" data-tags="きずみ" data-date="2025-09-28">
+    <img src="image/プル夜.webp">
+    <span>プルガトリウムの夜SS_木栖</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/朽ちて蕭々のアダム_いのり/log_export.html" target="_blank" class="image-link" data-tags="ルイ" data-date="2025-09-26">
+    <img src="image/アダム.webp">
+    <span>朽ちて蕭々のアダム_いのり</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/あなたも外側/log_export.html" target="_blank" class="image-link" data-tags="ルイ" data-date="2025-09-20">
+    <img src="image/外側.png">
+    <span>貴方も外側_ルイ</span>
+  </a>
   <a href="https://nattun09.github.io/TRPG_LOG/三星葉が太ってから痩せるシナリオ/log_export.html" target="_blank" class="image-link" data-tags="葉" data-date="2025-09-14">
     <img src="image/体重.png">
     <span>三星葉が太ってから痩せるシナリオ</span>
@@ -999,6 +1064,36 @@ margin-top:10px;
 </div>
 </div>
 
+  </div>
+
+  <div class="category" data-category="puruyo">
+    <div class="category-title">プルガトリウムの夜_なおきず</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="きずみ,なおび" data-date="2025-09-27" class="active">プル夜(前・中編)_なおきず</button>
+      <button data-tags="きずみ,なおび" data-date="2025-09-27">プル夜(後編)_なおきず</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="backrooms">
+    <div class="category-title">The Back Rooms</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="薮井,叶" data-date="2025-09-20" class="active">The Back Rooms_やぶかな</button>
+      <button data-tags="白,仁木" data-date="2025-09-20">The Back Rooms_つくにき</button>
+    </div>
   </div>
 
   <div class="category" data-category="siniden">
@@ -1145,6 +1240,38 @@ margin-top:10px;
   </div>
 
 </div>
+
+
+<div id="cocoforia" class="tab-content">
+  <div class="category-title">公開 稼働中</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/f19OHAUvg" target="_blank" class="image-link" data-room="やぶかなラジオ" data-tags="薮井,叶">
+      <img src="image/やぶかなラジオ.webp">
+      <span>やぶかなラジオ</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/NmY0UVfAZ" target="_blank" class="image-link" data-room="ちっち山">
+      <img src="image/てすと.webp">
+      <span>ちっち山</span>
+    </a>
+  </div>
+
+  <div class="category-title">非公開 稼働中</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/f19OHAUvg" target="_blank" class="image-link" data-room="てすと">
+      <img src="image/ココフォリア.webp">
+      <span>てすと</span>
+    </a>
+  </div>
+
+  <div class="category-title">過去部屋</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/WiN1HGKM7" target="_blank" class="image-link" data-room="鰯と柊">
+      <img src="image/いわひら.webp">
+      <span>鰯と柊</span>
+    </a>
+  </div>
+</div>
+
 </main>
 
 <script>
@@ -1161,6 +1288,14 @@ const videoData = {
       {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
       {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+    ],
+    'puruyo': [
+      {src:"https://www.youtube.com/embed/xfqhlx6v1yM", title:"プル夜(前・中編)_なおきず"},
+      {src:"https://www.youtube.com/embed/h-kucfMtsJw", title:"プル夜(後編)_なおきず"}
+    ],
+    'backrooms': [
+      {src:"https://www.youtube.com/embed/nllR38i4RLA", title:"The Back Rooms_やぶかな"},
+      {src:"https://www.youtube.com/embed/5GStS8jewvE", title:"The Back Rooms_つくにき"}
     ],
     'siniden': [
       {src:"https://www.youtube.com/embed/GypG64vgIU8", title:"死にたがり電車_ルイ"},
@@ -1189,8 +1324,8 @@ const videoData = {
       {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
     ],
     haiyoka: [
-      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰になってよかった_灰咲白"},
-      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰になってよかった_うたたね"}
+      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰よか_灰咲白"},
+      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰よか_うたたね"}
     ],
     katasiro: [
       {src:"https://www.youtube.com/embed/pRTSnTBJyks", title:"カタシロ_烏丸君子"},
@@ -1211,10 +1346,18 @@ const videoData = {
 
 //キャラ立ち絵
 const charaStats = {
+  "木栖 慶次": {
+    image: "image/きずみ.webp",
+    url: "https://iachara.com/view/11829031",
+description: "年齢：25<br>性別：男<br>身長：182<br>誕生日：2/21<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：直毘の部下",
+    stats: {
+      STR: 13, CON: 13, POW: 12,DEX: 13, APP: 13, SIZ: 15,INT: 16, EDU: 19
+    }
+  },
   "夏目 文人": {
     image: "image/夏目.webp",
     url: "https://iachara.com/view/11985751",
-description: "年齢：36<br>性別：男<br>身長：192<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
+description: "年齢：36<br>性別：男<br>身長：192<br>誕生日：8/15<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
     stats: {
       STR: 9, CON: 9, POW: 9,
       DEX: 16, APP: 7, SIZ: 18,
@@ -1224,7 +1367,7 @@ description: "年齢：36<br>性別：男<br>身長：192<br>職業：小説家<
   "八本木 吉": {
     image: "image/ポン吉.webp",
     url: "https://iachara.com/view/11732740",
-description: "年齢：??<br>性別：男<br>身長：171<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
     stats: {
       STR: 11, CON: 9, POW: 16,
       DEX: 5, APP: 15, SIZ: 12,
@@ -1234,85 +1377,103 @@ description: "年齢：??<br>性別：男<br>身長：171<br>職業：???<br>出
 "檻崎 折": {
     image: "image/折_誘拐犯.webp",
     url: "https://iachara.com/view/10768637",
-description: "年齢：??<br>性別：男<br>身長：171<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：11/1<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
     stats: { STR: 12, CON: 12, POW: 6, DEX: 12, APP: 12, SIZ: 13, INT: 16, EDU: 17 }
   },
   "薮井 社": {
     image: "image/薮井.webp",
     url: "https://iachara.com/view/11114253",
-description: "年齢：28<br>性別：男<br>身長：179<br>職業：ヤブ医者<br>出身：慄け！因習村<br>関係：叶とよく喧嘩してる。",
+description: "年齢：28<br>性別：男<br>身長：179<br>誕生日：8/21<br>職業：ヤブ医者<br>出身：慄け！因習村<br>関係：叶とよく喧嘩してる。",
     stats: { STR: 13, CON: 9, POW: 17, DEX: 12, APP: 13, SIZ: 14, INT: 11, EDU: 14 }
   },
   "灰咲 白": {
     image: "image/白.webp",
     url: "https://iachara.com/view/10960490",
-description: "年齢：18<br>性別：男<br>身長：170<br>職業：アイドル<br>出身：灰になってよかった<br>関係：仁木に攫われた",
+description: "年齢：18<br>性別：男<br>身長：170<br>誕生日：7/2<br>職業：アイドル<br>出身：灰になってよかった<br>関係：仁木に攫われた",
     stats: { STR: 11, CON: 8, POW: 15, DEX: 11, APP: 15, SIZ: 13, INT: 16, EDU: 17 }
   },
   "柊 晴": {
     image: "image/はる.webp",
     url: "https://iachara.com/view/10718849",
-description: "年齢：23<br>性別：男<br>身長：178<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
+description: "年齢：21<br>性別：男<br>身長：178<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
     stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
+  },
+  "直毘 誠": {
+    image: "image/なおび.webp",
+    url: "https://iachara.com/view/11829223",
+description: "年齢：36<br>性別：男<br>身長：185<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：木栖の上司",
+    stats: { STR: 13, CON: 14, POW: 17, DEX: 12, APP: 9, SIZ: 15, INT: 18, EDU: 18 }
+  },
+  "富良野 ルイ": {
+    image: "image/ルイ.webp",
+    url: "https://iachara.com/view/11986657",
+description: "年齢：25<br>性別：男<br>身長：175<br>誕生日：12/25<br>職業：探偵<br>出身：死にたがり電車",
+    stats: { STR: 8, CON: 6, POW: 14, DEX: 8, APP: 15, SIZ: 14, INT: 16, EDU: 18 }
   },
   "三栗 ひつじ": {
     image: "image/ひつじ.webp",
     url: "https://iachara.com/view/12199322",
-description: "年齢：20<br>性別：女<br>身長：168<br>職業：看護学生<br>出身：輾転と町は<br>関係：クララ、しずくと幼馴染",
+description: "年齢：20<br>性別：女<br>身長：168<br>誕生日：2/2<br>職業：看護学生<br>出身：輾転と町は<br>関係：クララ、しずくと幼馴染",
     stats: { STR: 10, CON: 15, POW: 17, DEX: 9, APP: 11, SIZ: 12, INT: 12, EDU: 13 }
   },
   "長門 うたたね": {
     image: "image/うたたね.webp",
     url: "https://iachara.com/view/10876568",
-description: "年齢：22<br>性別：女<br>身長：170<br>職業：歌手<br>出身：灰になってよかった<br>関係：仁木に攫われた。",
+description: "年齢：22<br>性別：女<br>身長：170<br>誕生日：7/13<br>職業：歌手<br>出身：灰になってよかった<br>関係：仁木に攫われた。",
     stats: { STR: 10, CON: 9, POW: 16, DEX: 12, APP: 15, SIZ: 13, INT: 17, EDU: 14 }
   },
   "片喰 旭": {
     image: ["image/あさひ.webp","image/旭_盲信.webp","image/旭_私服.webp"],
     url: "https://iachara.com/view/10796294",
-description: "年齢：25<br>性別：男<br>身長：190<br>職業：信者<br>出身：鰯と柊<br>関係：遥啓が教祖",
-    stats: { STR: 15, CON: 15, POW: 18, DEX: 13, APP: 7, SIZ: 16, INT: 9, EDU: 14 }
+description: "年齢：25<br>性別：男<br>身長：190<br>誕生日：6/24<br>職業：信者<br>出身：鰯と柊<br>関係：遥啓が教祖",
+    stats: { STR: 15, CON: 16, POW: 19, DEX: 13, APP: 7, SIZ: 16, INT: 9, EDU: 14 }
   },
   "元目 開": {
     image: "image/開.webp",
     url: "https://iachara.com/view/10783734",
-description: "年齢：20<br>性別：女<br>身長：158<br>職業：画家<br>出身：カタシロ",
+description: "年齢：20<br>性別：女<br>身長：158<br>誕生日：11/17<br>職業：画家<br>出身：カタシロ",
     stats: { STR: 9, CON: 11, POW: 13, DEX: 16, APP: 11, SIZ: 10, INT: 16, EDU: 12 }
   },
   "二条 万璃": {
     image: ["image/まり.webp","image/まり2.webp"],
     url: "https://iachara.com/view/8017078",
-description: "年齢：15<br>性別：女<br>身長：155<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：いのり、星奈と同じ学校。",
+description: "年齢：15<br>性別：女<br>身長：155<br>誕生日：4/20<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：いのり、星奈と同じ学校。",
     stats: { STR: 8, CON: 10, POW: 10, DEX: 14, APP: 12, SIZ: 10, INT: 14, EDU: 15 }
+  },
+  "水菓子 しずく": {
+    image: "image/しずく.webp",
+    url: "https://iachara.com/view/12194989",
+description: "年齢：21<br>性別：女<br>身長：163<br>誕生日：8/25<br>職業：大学生<br>出身：輾転と町は<br>関係：ひつじ、クララと幼馴染",
+    stats: { STR: 9, CON: 10, POW: 13, DEX: 14, APP: 18, SIZ: 12, INT: 14, EDU: 18 }
   },
   "門永 皐生": {
     image: "image/さつき.webp",
     url: "https://iachara.com/view/11106106",
-description: "年齢：17<br>性別：男<br>身長：194<br>職業：高校生<br>出身：キルキルイキル<br>関係：宥磨と幼馴染",
+description: "年齢：17<br>性別：男<br>身長：194<br>誕生日：3/20<br>職業：高校生<br>出身：キルキルイキル<br>関係：宥磨と幼馴染",
     stats: { STR: 11, CON: 15, POW: 12, DEX: 11, APP: 8, SIZ: 17, INT: 13, EDU: 10 }
   },
   "佐伯 悠": {
     image: "image/悠.webp",
     url: "https://iachara.com/view/10806973",
-description: "年齢：19<br>性別：男<br>身長：175<br>職業：大学生<br>出身：初恋性ストックホルム症候群<br>関係：折に誘拐された。",
+description: "年齢：19<br>性別：男<br>身長：175<br>誕生日：5/31<br>職業：大学生<br>出身：初恋性ストックホルム症候群<br>関係：折に誘拐された。",
     stats: { STR: 12, CON: 15, POW: 15, DEX: 17, APP: 13, SIZ: 13, INT: 14, EDU: 14 }
   },
   "柊 朔": {
     image: "image/さく.webp",
     url: "https://iachara.com/view/10815170",
-description: "年齢：21<br>性別：男<br>身長：173<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。晴は双子の弟。",
+description: "年齢：21<br>性別：男<br>身長：173<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。晴は双子の弟。",
     stats: { STR: 12, CON: 17, POW: 11, DEX: 10, APP: 15, SIZ: 12, INT: 12, EDU: 14 }
   },
   "八染 遥啓": {
     image: ["image/はるのぶ.webp","image/はるのぶ_私服.webp"],
     url: "https://iachara.com/view/10803642",
-description: "年齢：22<br>性別：男<br>身長：150<br>職業：教祖<br>出身：鰯と柊<br>関係：旭が信者",
+description: "年齢：22<br>性別：男<br>身長：150<br>誕生日：2/19<br>職業：教祖<br>出身：鰯と柊<br>関係：旭が信者",
     stats: { STR: 15, CON: 14, POW: 17, DEX: 14, APP: 14, SIZ: 9, INT: 17, EDU: 16 }
   },
   "神楽坂 星奈": {
     image: "image/せいな.webp",
     url: "https://iachara.com/view/10675900",
-description: "年齢：17<br>性別：女<br>身長：163<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：万璃、いのりと同じ学校。",
+description: "年齢：17<br>性別：女<br>身長：163<br>誕生日：7/24<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：万璃、いのりと同じ学校。",
     stats: { STR: 10, CON: 8, POW: 12, DEX: 11, APP: 16, SIZ: 13, INT: 13, EDU: 13 }
   },
   "仁妻 秋": {
@@ -1324,7 +1485,7 @@ description: "年齢：32<br>性別：男<br>身長：177<br>職業：人妻作�
   "花巻 宥磨": {
     image: "image/ゆうま.webp",
     url: "https://iachara.com/view/11049356",
-description: "年齢：17<br>性別：男<br>身長：172<br>職業：高校生<br>出身：キルキルイキル<br>関係：皐生と幼馴染",
+description: "年齢：17<br>性別：男<br>身長：172<br>誕生日：9/23<br>職業：高校生<br>出身：キルキルイキル<br>関係：皐生と幼馴染",
     stats: { STR: 14, CON: 15, POW: 15, DEX: 13, APP: 11, SIZ: 13, INT: 11, EDU: 12 }
   },
   "百井 桃": {
@@ -1336,7 +1497,7 @@ description: "年齢：20<br>性別：男<br>身長：182<br>職業：猫カフ�
   "三ツ星 葉": {
     image: "image/葉.webp",
     url: "https://iachara.com/view/10965230",
-description: "年齢：22<br>性別：男<br>身長：190<br>職業：探偵<br>通過：死にたがり電車",
+description: "年齢：22<br>性別：男<br>身長：190<br>誕生日：5/5<br>職業：探偵<br>通過：死にたがり電車",
     stats: { STR: 14, CON: 10, POW: 10, DEX: 10, APP: 9, SIZ: 16, INT: 18, EDU: 15 }
   },
   "国木田 仁木": {
@@ -1348,19 +1509,19 @@ description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小
   "神崎 猩猩": {
     image: "image/猩猩.webp",
     url: "https://iachara.com/view/10749984",
-description: "年齢：26<br>性別：男<br>身長：180<br>職業：教祖<br>出身：鰯と柊<br>関係：恵々が信者",
+description: "年齢：26<br>性別：男<br>身長：180<br>誕生日：1/23<br>職業：教祖<br>出身：鰯と柊<br>関係：恵々が信者",
     stats: { STR: 13, CON: 10, POW: 14, DEX: 13, APP: 13, SIZ: 13, INT: 13, EDU: 11 }
   },
   "蝿島 叶": {
     image: ["image/叶.webp","image/叶_初期.webp"],
     url: "https://iachara.com/view/10692890",
-description: "年齢：29<br>性別：男<br>身長：175<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
+description: "年齢：29<br>性別：男<br>身長：175<br>誕生日：3/19<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
     stats: { STR: 14, CON: 10, POW: 15, DEX: 7, APP: 18, SIZ: 13, INT: 16, EDU: 19 }
   },
   "蝿島 いのり": {
     image: ["image/いのり.webp","image/のりお.webp"],
     url: "https://iachara.com/view/10468122",
-description: "年齢：16<br>性別：女<br>身長：160<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
+description: "年齢：16<br>性別：女<br>身長：160<br>誕生日：3/31<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
     stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
   },
   "白石・クララ＝クローネ": {
@@ -2655,71 +2816,134 @@ function addClickEvents(links) {
 }
 
 // 並び替え
+function parseBirthdayValueForSort(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    let month = Number(m[1]);
+    let day = Number(m[2]);
+    // 4月を起点に回す
+    let rotatedMonth = (month - 4 + 12) % 12; // 4月=0, 5月=1,...3月=11
+    return rotatedMonth * 100 + day;
+  }
+  return 9999;
+}
+
+function parseAge(description) {
+  if (!description) return 0;
+  const m = description.match(/年齢[:：]\s*([0-9]{1,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseHeight(description) {
+  if (!description) return 0;
+  const m = description.match(/身長[:：]\s*([0-9]{2,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseBirthdayValue(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    const month = Number(m[1]);
+    const day = Number(m[2]);
+    return month * 100 + day;
+  }
+  return 9999;
+}
+
 function applyCharaSort(statKey) {
   const charaContainer = document.getElementById("chara");
   if (!charaContainer) return;
 
-  const entries = Object.entries(charaStats)
-    .filter(([_, data]) => data.stats)
-    .map(([name, data]) => ({ name, value: data.stats[statKey] ?? 0 }));
+const entries = Object.entries(charaStats).map(([name, data]) => {
+  let value = 0;
+  let originalMonth = null;
+  let originalDay = null;
 
-  entries.sort((a, b) => b.value - a.value);
+if (statKey === 'age') {
+    value = parseAge(data.description || '');
+  } else if (statKey === 'height') {
+    value = parseHeight(data.description || '');
+  } else if (statKey === 'birthday') {
+    const m = (data.description || '').match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+    if (m) {
+      originalMonth = Number(m[1]);
+      originalDay = Number(m[2]);
+      // ソート用の回転値
+      value = ((originalMonth - 4 + 12) % 12) * 100 + originalDay;
+    } else {
+      value = 9999;
+    }
+  } else {
+    value = Number(data.stats?.[statKey] ?? 0);
+  }
+
+  return { name, value, data, originalMonth, originalDay };
+});
+
+  if (statKey === 'birthday') {
+    entries.sort((a, b) => a.value - b.value); // 月日順（昇順）
+  } else {
+    entries.sort((a, b) => b.value - a.value); // 高い数値順
+  }
 
   charaContainer.innerHTML = '';
-
   const catTitle = document.createElement('div');
   catTitle.className = 'category-title';
-  catTitle.textContent = `${statKey}順`;
+  if (statKey === 'age') catTitle.textContent = '年齢順';
+  else if (statKey === 'height') catTitle.textContent = '身長順';
+  else if (statKey === 'birthday') catTitle.textContent = '誕生日順';
+  else catTitle.textContent = `${statKey}順`;
   charaContainer.appendChild(catTitle);
 
   const grid = document.createElement('div');
   grid.className = 'link-grid';
 
-entries.forEach(entry => {
-  const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
-  if (link) {
-    // 既存バッジを削除して重複を防ぐ
+  entries.forEach(entry => {
+    const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
+    if (!link) return;
+
     const oldBadge = link.querySelector('.stat-badge');
     if (oldBadge) oldBadge.remove();
 
-    if (statKey !== 'folder') {
-      // バッジ作成
-      const badge = document.createElement('span');
-      badge.className = 'stat-badge';
+    const badge = document.createElement('span');
+    badge.className = 'stat-badge';
+    if (statKey === 'age') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'height') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'birthday') {
+  if (entry.value !== 9999 && entry.originalMonth && entry.originalDay) {
+    badge.textContent = `${entry.originalMonth}/${entry.originalDay}`;
+  }
+} else {
       badge.textContent = entry.value;
-      badge.style.backgroundColor = '#e26a89';
-      badge.style.color = 'white';
-      badge.style.fontSize = '0.6rem';
-      badge.style.fontWeight = 'bold';
-      badge.style.padding = '2px 6px';
-      badge.style.borderRadius = '12px';
-      badge.style.marginLeft = '6px';
-      badge.style.marginTop = '1px';
-      badge.style.display = 'inline-block';
-      badge.style.verticalAlign = 'middle';
-
-      // 名前のすぐ右横に追加
-      const nameSpan = link.querySelector('span');
-      if (nameSpan) {
-        nameSpan.insertAdjacentElement('afterend', badge);
-      }
     }
 
+    badge.style.backgroundColor = '#e26a89';
+    badge.style.color = 'white';
+    badge.style.fontSize = '0.6rem';
+    badge.style.fontWeight = 'bold';
+    badge.style.padding = '2px 6px';
+    badge.style.borderRadius = '12px';
+    badge.style.marginLeft = '6px';
+    badge.style.marginTop = '1px';
+    badge.style.display = 'inline-block';
+    badge.style.verticalAlign = 'middle';
+
+    const nameSpan = link.querySelector('span');
+    if (nameSpan) nameSpan.insertAdjacentElement('afterend', badge);
+
     grid.appendChild(link);
-  }
-});
-
-
+  });
 
   charaContainer.appendChild(grid);
-
   currentCharaOrder = entries.map(e => e.name);
-
-  // 並び替え後もクリックで詳細が動作するように再付与
   addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
-
   updateCategoryList();
 }
+
 
 // フォルダ表示
 function restoreCharaCategoryView() {
@@ -2823,7 +3047,6 @@ charaSortSelect.addEventListener('change', () => {
 });
 
 // リロード後に探索者タブをアクティブ化
-// リロード後に探索者タブをアクティブ化
 window.addEventListener('DOMContentLoaded', () => {
   const activateChara = localStorage.getItem('activateCharaTab');
   if (activateChara) {
@@ -2868,13 +3091,88 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+// --- モーダルを一度だけ作るユーティリティ ---
+function ensureCocoModal() {
+  let root = document.getElementById('coco-confirm-modal');
+  if (root) return root;
+  root = document.createElement('div');
+  root.id = 'coco-confirm-modal';
+  root.innerHTML = `
+    <div class="coco-modal-backdrop" role="presentation">
+      <div class="coco-modal" role="dialog" aria-modal="true" aria-labelledby="coco-modal-title">
+        <p id="coco-modal-title"></p>
+        <div class="coco-modal-buttons">
+          <button type="button" id="coco-yes">はい</button>
+          <button type="button" id="coco-no">いいえ</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(root);
+  return root;
+}
+
+// --- モーダル表示。Promise で結果を返す（true = はい / false = いいえ） ---
+function showCocoConfirm(roomName) {
+  const modal = ensureCocoModal();
+  const title = modal.querySelector('#coco-modal-title');
+  const yes = modal.querySelector('#coco-yes');
+  const no = modal.querySelector('#coco-no');
+
+  title.textContent = `「${roomName}」を開きますか？`;
+  modal.style.display = 'block';
+
+  const prevFocus = document.activeElement;
+  yes.focus();
+
+  return new Promise((resolve) => {
+    function cleanup(result) {
+      modal.style.display = 'none';
+      yes.removeEventListener('click', onYes);
+      no.removeEventListener('click', onNo);
+      document.removeEventListener('keydown', onKey);
+      if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
+      resolve(result);
+    }
+    function onYes() { cleanup(true); }
+    function onNo() { cleanup(false); }
+    function onKey(e) {
+      if (e.key === 'Escape') cleanup(false);
+      else if (e.key === 'Enter') cleanup(true);
+    }
+    yes.addEventListener('click', onYes);
+    no.addEventListener('click', onNo);
+    document.addEventListener('keydown', onKey);
+  });
+}
+
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+function setupCocoforia() {
+  document.querySelectorAll('#cocoforia .image-link').forEach(a => {
+    if (a.dataset.cocoBound) return;
+    a.dataset.cocoBound = '1';
+
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const room = a.dataset.room || a.querySelector('span')?.textContent?.trim() || 'この部屋';
+
+      showCocoConfirm(room).then(ok => {
+        if (ok) {
+          // 直接 open（空タブは作らない）
+          window.open(a.href, '_blank');
+        }
+      });
+    });
+  });
+}
 
 
-
-
-
-
-
+// 呼び出し（DOMContentLoaded の中か、既存の初期化ルーチンの最後に）
+window.addEventListener('DOMContentLoaded', () => {
+  setupCocoforia();
+  // 既存の setupTagList(), showLatestItems() 等はそのまま動かしてください
+});
 </script>
 
 </body>
