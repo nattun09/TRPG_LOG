@@ -1,0 +1,3364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link rel="icon" href="favicon/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon/favicon.png" type="image/png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon.png">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TRPGログ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #333;
+    }
+
+    header {
+      height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 0.5rem 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1{
+      font-size: 1.4rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2em auto;
+      padding: 0 1em;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .tab-button {
+      background: #eaeaea;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      margin: 0 0.3rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+color:#333333;
+position: relative; 
+    }
+
+    .tab-button.active {
+      background: #e26a89;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .category {
+      margin-bottom: 3rem;
+  max-width: 600px; /* 👈 好きな幅に調整 */
+  margin: 0 auto; /* 中央寄せ */
+    }
+
+    .category-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      border-left: 5px solid #e26a89;
+      padding-left: 0.5rem;
+    }
+
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+.carousel.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carousel iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 1rem;
+}
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .carousel-controls button {
+      pointer-events: auto;
+      background: rgba(255,255,255,0.8);
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      user-select: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s;
+color:#333333;
+    }
+
+    .carousel-controls button:hover {
+      background: #e26a89;
+      color: white;
+    }
+
+    .video-links {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+    }
+
+    .video-links button {
+      flex-shrink: 0;
+      background: #eaeaea;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+color:#333333;
+    }
+
+    .video-links button.active,
+    .video-links button:hover {
+      background: #e26a89;
+      color: white;
+    }
+
+    .text-log {
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .text-log p {
+      margin: 0.5rem 0;
+    }
+
+    .text-log span:nth-child(1) {
+      font-weight: bold;
+      color: #888;
+      margin-right: 0.5rem;
+    }
+
+    .text-log span:nth-child(2) {
+      font-weight: bold;
+      color: #e26a89;
+      margin-right: 0.5rem;
+    }
+
+    .text-log span:nth-child(3) {
+      color: #333;
+    }
+
+    .link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2em;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .link-list li {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(4px);
+      padding: 1em 1.2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .link-list li:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .link-list a {
+      text-decoration: none;
+      color: #e26a89;
+      font-weight: 600;
+      font-size: iem;
+      word-break: break-all;
+      display: block;
+    }
+
+    .link-list a:hover {
+      text-decoration: underline;
+    }
+
+    .link-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    @media (min-width: 600px) {
+      .link-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .link-list {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+    .category {
+      margin-bottom: 2.5em;
+    }
+
+    .category-title {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      border-left: 5px solid #e26a89;
+      padding-left: 0.5rem;
+      margin-bottom: 0.5rem;
+text-align: left;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+      gap: 0.3rem;
+    }
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color:#333333;
+  }
+
+/* 背景のフェード用オーバーレイ */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 98;
+}
+
+/* 開いたとき */
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* メニュー本体 */
+.category-menu {
+  position: fixed;
+  top: 48px;
+  right: 0;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.9); /* ← 透明度80%に変更 */
+  box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 99;
+}
+
+.category-menu.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* スクロールバー装飾 */
+.category-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.category-menu::-webkit-scrollbar-thumb {
+  background: #e26a89;
+  border-radius: 3px;
+}
+
+/* リンクスタイル */
+.category-menu a {
+  display: block;
+  padding: 0.6rem 0;
+  color: #e26a89;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.category-menu a:hover {
+  color: #c2185b;
+  transform: translateX(4px);
+}
+
+
+  .category-menu ul {
+    list-style: none;
+    padding: 1em;
+    margin: 0;
+  }
+
+  .category-menu li {
+    margin-bottom: 1em;
+  }
+
+
+
+.video-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* 白い枠や線は消すので特に border はなし */
+}
+
+.video-toc li {
+  margin-bottom: 0.4rem; /* 少し詰めてコンパクトに */
+}
+
+.video-toc a {
+  display: inline-block;
+  background: #fce4ec;
+  color: #c2185b;
+  padding: 0.3rem 0.8rem; /* 少し小さめパディング */
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.75rem; /* 文字を小さく */
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.video-toc a:hover {
+  background: #f8bbd0;
+  transform: translateY(-2px);
+}
+
+.video-toc a.active {
+  background: #f48fb1;
+  color: white;
+}
+
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 常に3列 */
+  gap: 1em;
+  margin-bottom: 2em;
+}
+
+.image-link {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.image-link img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.image-link img:hover {
+  transform: scale(1.04);
+}
+
+.image-link span {
+  display: block;
+  margin-top: 0.4em;
+  font-size: 0.85em;
+  line-height: 1.2;
+}
+
+.image-link.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-to-top {
+  text-decoration: none;
+  color: inherit;
+}
+  #tagList {
+    display: none;
+    position: absolute;
+    top: 42px;
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 1000;
+
+  }
+
+#tagButton {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+#tagButton:hover,
+#tagButton:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
+
+#clearButton {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+#clearButton:hover,
+#clearButton:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
+
+#newItems h3{
+ color:#333333;
+font-weight:bold;
+margin:10px;
+}
+
+
+#newItemList{
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-height: 4.5em;
+margin-bottom:2em;
+      overflow-y: auto;
+      text-align: left;
+}
+
+#newItemList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.4rem 0;
+}
+
+#newItemList a {
+  display: inline-block;
+  color: #c2185b;
+  padding: 0.3rem 0.8rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: background 0.3s ease;
+}
+
+.new-item-date {
+  color: #333333;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+margin-right: 0.5rem;
+}
+
+.toc-pagination button {
+  background: #f4f4f4;
+  border: none;
+  border-radius: 999px;
+  padding: 0.3rem 1rem;
+  font-weight: bold;
+  color: #333333;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  transition: 0.2s ease;
+}
+.toc-pagination button:hover {
+  background: #e26a89;
+  color: white;
+}
+.toc-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.char-img img {
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+margin-bottom:0px;
+margin-top:10px;
+}
+
+#prevChara,
+#nextChara {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+ aspect-ratio: 1 / 1; /* ← 縦横比を保って正円に */
+  min-width: 40px; /* ← 横長になるのを防ぐ */
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #e26a89;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#prevChara:hover,
+#nextChara:hover {
+  background: #e26a89;
+  color: white;
+  transform: scale(1.1);
+}
+
+#imageSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.image-thumb-button {
+  background: #eaeaea;
+  border: none;
+  color: #333333;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.image-thumb-button:hover,
+.image-thumb-button.active {
+  background: #e26a89;
+  color: white;
+}
+
+#sortToggleBtn {
+  background: #eaeaea;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin-left: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #333333;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+#sortToggleBtn:hover,
+#sortToggleBtn:focus {
+  background: #e26a89;
+  color: white;
+  outline: none;
+}
+
+
+/* cocoforia専用：横2列、画像を4:3で表示 */
+#cocoforia .link-grid {
+  grid-template-columns: repeat(2, 1fr); /* 横2列 */
+  gap: 1em;
+}
+
+/* 画像比を4:3（上書き） */
+#cocoforia .image-link img {
+  aspect-ratio: 5 / 3;   /* 横4:縦3 */
+  object-fit: cover;
+  width: 100%;
+  border-radius: 6px;
+}
+
+
+/* cocoforia 確認モーダル */
+#coco-confirm-modal { display:none; position:fixed; inset:0; z-index:10000; }
+#coco-confirm-modal .coco-modal-backdrop {
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.45);
+  display:flex; align-items:center; justify-content:center;
+}
+#coco-confirm-modal .coco-modal {
+  background:#fff; padding:18px; border-radius:10px;
+  min-width:260px; max-width:90%; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+  text-align:center;
+}
+#coco-confirm-modal .coco-modal p { margin:0 0 12px; font-size:16px; font-weight:600; }
+#coco-confirm-modal .coco-modal-buttons { display:flex; gap:10px; justify-content:center; margin-top:8px; }
+#coco-confirm-modal button {
+  padding:8px 14px; border-radius:6px; border:1px solid #ccc; background:#fff; cursor:pointer;
+}
+#coco-confirm-modal button:focus { outline:2px solid #66aaff; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><a href="#" class="scroll-to-top">TRPGログ一覧</a></h1>
+    <button class="menu-toggle" aria-label="カテゴリメニュー">☰</button>
+  </header>
+
+<nav class="category-menu" style="padding-top: 1.5em;">
+  <ul></ul>
+</nav>
+
+<div class="tabs">
+<button class="tab-button" data-tab="chara">探索者</button>
+  <button class="tab-button active" data-tab="text">テキセ</button>
+  <button class="tab-button" data-tab="youtube">YouTube</button>
+<button class="tab-button" data-tab="cocoforia">部屋</button>
+</div>
+
+<main>
+
+<div id="newItems" style="text-align:center; margin:20px auto; max-width:400px;">
+  <h3>新着一覧</h3>
+  <ul id="newItemList">
+  </ul>
+</div>
+
+<div style="text-align:center; margin:20px auto; max-width:400px; position: relative;">
+  <input type="text" id="searchBox" placeholder="キーワード検索..." style="padding:10px; width:40%;">
+  <button id="tagButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">キャラ</button>
+  <button id="clearButton" style="padding:10px 10px; margin-left:5px; cursor:pointer;">削除</button>
+  <ul id="tagList"></ul>
+<select id="charaSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333; width:50px; height:39px;">
+  <option value="folder">👤</option>
+<option value="age">年齢</option>
+<option value="height">身長</option>
+<option value="birthday">誕生日</option>
+  <option value="STR">STR</option>
+  <option value="CON">CON</option>
+  <option value="POW">POW</option>
+  <option value="DEX">DEX</option>
+  <option value="APP">APP</option>
+  <option value="SIZ">SIZ</option>
+  <option value="INT">INT</option>
+  <option value="EDU">EDU</option>
+</select>
+<select id="cocofoSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333; width:50px; height:39px;">
+  <option value="folder">📁</option>
+<option value="もなかも">もなかも</option>
+<option value="てとせ">てとせ</option>
+<option value="せいや">せいや</option>
+  <option value="めこつ">めこつ</option>
+  <option value="ぷわちん">ぷわちん</option>
+</select>
+  <button id="sortToggleBtn" style="padding:10px 10px; margin-left:10px; cursor:pointer; ">
+    <span id="sortIcon">📁</span>
+</div>
+
+
+
+<div id="chara" class="tab-content image-link char-img">
+
+<div id="charaDetail" style="display:none; text-align:center; margin:20px 0;">
+  <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:2em;"></div>
+  <button id="prevChara" style="position:absolute; left:10px; top:300px;font-size:1.5em;">◀</button>
+  <button id="nextChara" style="position:absolute; right:10px; top:300px;font-size:1.5em;">▶</button>
+  <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; max-height: 500px;max-width:400px;">
+  <div id="imageSelector"></div>
+  <br>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 1.5em; flex-wrap: nowrap; overflow-x: auto;margin:0.5em 0;">
+    <canvas id="charaChart" width="180" height="180"style="min-width: 180px; flex-shrink: 0;"></canvas>
+    <div id="charaDescription" style="text-align:left; max-width:227px; font-size: 0.9em; color:#555;"></div>
+  </div>
+  <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px;"></a>
+</div>
+
+
+
+
+
+<div class="category-title">もなかも</div>
+<div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="圭">
+    <img src="image/iけい.webp">
+    <span>薮井 圭</span>
+  </a> 
+  <a target="_blank" class="image-link" data-tags="きずみ">
+    <img src="image/iきずみ.webp">
+    <span>木栖 慶次</span>
+  </a> 
+  <a target="_blank" class="image-link" data-tags="夏目">
+    <img src="image/i夏目.webp">
+    <span>夏目 文人</span>
+  </a> 
+  <a target="_blank" class="image-link" data-tags="ポン吉">
+    <img src="image/iポン吉.webp">
+    <span>八本木 吉</span>
+  </a>  
+  <a target="_blank" class="image-link" data-tags="折">
+    <img src="image/i折_誘拐犯.webp">
+    <span>檻崎 折</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="薮井">
+    <img src="image/i薮井.webp">
+    <span>薮井 社</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="白">
+    <img src="image/i白.webp">
+    <span>灰咲 白</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="晴">
+    <img src="image/iはる.webp">
+    <span>柊 晴</span>
+  </a>
+</div>
+
+<div class="category-title">てとせ</div>
+<div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="なおび">
+    <img src="image/iなおび.webp">
+    <span>直毘 誠</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ルイ">
+    <img src="image/iルイ.webp">
+    <span>富良野 ルイ</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ひつじ">
+    <img src="image/iひつじ.webp">
+    <span>三栗 ひつじ</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="うたたね">
+    <img src="image/iうたたね.webp">
+    <span>長門 うたたね</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="旭">
+    <img src="image/iあさひ.webp">
+    <span>片喰 旭</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="開">
+    <img src="image/i開.webp">
+    <span>元目 開</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="まり">
+    <img src="image/iまり.webp">
+    <span>二条 万璃</span>
+  </a>
+</div>
+
+<div class="category-title">星夜</div>
+<div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="カルア">
+    <img src="image/iかるあ.webp">
+    <span>カルア</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="しずく">
+    <img src="image/iしずく.webp">
+    <span>水菓子 しずく</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="さつき">
+    <img src="image/iさつき.webp">
+    <span>門永 皐生</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="悠">
+    <img src="image/i悠.webp">
+    <span>佐伯 悠</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="朔">
+    <img src="image/iさく.webp">
+    <span>柊 朔</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="遥啓">
+    <img src="image/iはるのぶ.webp">
+    <span>八染 遥啓</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="せいな">
+    <img src="image/iせいな.webp">
+    <span>神楽坂 星奈</span>
+  </a>
+</div>
+
+<div class="category-title">めこつ</div>
+<div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="仁妻">
+    <img src="image/i仁妻.webp">
+    <span>仁妻 秋</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ゆうま">
+    <img src="image/iゆうま.webp">
+    <span>花巻 宥磨</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="桃">
+    <img src="image/i桃.webp">
+    <span>百井 桃</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="葉">
+    <img src="image/i葉.webp">
+    <span>三ツ星 葉</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="仁木">
+    <img src="image/i仁木.webp">
+    <span>国木田 仁木</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="猩猩">
+    <img src="image/i猩猩.webp">
+    <span>神崎 猩猩</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="叶">
+    <img src="image/i叶.webp">
+    <span>蝿島 叶</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="いのり">
+    <img src="image/iいのり.webp">
+    <span>蝿島 いのり</span>
+  </a>
+</div>
+
+<div class="category-title">ぷわちん</div>
+<div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="クララ">
+    <img src="image/iクララ.webp">
+    <span>白石・クララ＝クローネ</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="小木">
+    <img src="image/i小木.webp">
+    <span>小木 伸二</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="東雲">
+    <img src="image/i東雲.webp">
+    <span>東雲 葵</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="ひまわり">
+    <img src="image/iひまわり.webp">
+    <span>公星 ひまわり</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="詩織">
+    <img src="image/i詩織.webp">
+    <span>谷 詩織</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="恵々">
+    <img src="image/i恵々.webp">
+    <span>東 恵々</span>
+  </a>
+  <a target="_blank" class="image-link" data-tags="君子">
+    <img src="image/i君子.webp">
+    <span>烏丸 君子</span>
+  </a>
+</div>
+
+</div>
+</div>
+
+
+<div id="text" class="tab-content active">
+
+<div class="category-title">テキセ単発</div>
+<div class="link-grid">
+  <a href="https://samenyankotu.github.io/TRPG_LOG_meko/%E3%83%A0%E3%83%B3%E3%82%A4%E3%83%97/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-11-15">
+    <img src="image/むんいぷ.webp">
+    <span>ムーンエスケープフロムナイトスケイプ<br>やぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるおばまち/log_export.html" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-11-10">
+    <img src="image/おばまち.webp">
+    <span>おばけのまち<br>あさはる</span>
+  </a>
+  <a href="https://samenyankotu.github.io/rurupa_PL-karutimo_KP-kosi/" target="_blank" class="image-link" data-tags="カルア,チモシー" data-date="2025-10-31">
+    <img src="image/ルルパ.webp">
+    <span>口喝ルルパ<br>かるちも</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/やぶかなすごろく/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-09-16">
+    <img src="image/すごろく.png">
+    <span>やぶかな<br>すごろく</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/フカシカ/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶,遥啓,旭" data-date="2025-07-06">
+    <img src="image/フカシカ.webp">
+    <span>フカシカ<br>あさはるやぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/Holiday's Midnight/log_export.html" target="_blank" class="image-link" data-tags="折,悠" data-date="2025-06-15">
+    <img src="image/HolidayMidnight.webp" alt="Holiday's Midnight_おりゆう">
+    <span>Holiday's Midnight<br>おりゆう</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/転がるおじさんとジャスミンティー/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-06-11">
+    <img src="image/ころおじ.webp" alt="転がるおじさんとジャスミンティー_やぶかな">
+    <span>転がるおじさんとジャスミンティー<br>やぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/きみとだけきこえる、ささめごと.html" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-04-30">
+    <img src="image/きみささ.webp" alt="きみとだけきこえる、ささめごと_あさはる">
+    <span>きみとだけきこえる、ささめごと<br>あさはる</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/わたしたち、入れ替わってる～⁉/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-05-18">
+    <img src="image/入れ替わり.webp" alt="わたしたち、入れ替わってる～！？_やぶかな">
+    <span>わたしたち、入れ替わってる～！？<br>やぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/仲良死_やぶかな/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-05-05">
+    <img src="image/仲良くしないと死ぬ部屋.webp" alt="仲良くしないと死ぬ部屋_やぶかな">
+    <span>仲良くしないと死ぬ部屋<br>やぶかな</span>
+  </a>
+</div>
+
+<div class="category-title">蟹蟹詐欺</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/蟹蟹詐欺_やぶかな/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-08-10">
+    <img src="image/かにかに詐欺.webp">
+    <span>蟹蟹詐欺<br>やぶかな</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/蟹蟹詐欺_かどはな/log_export.html" target="_blank" class="image-link" data-tags="ゆうま,さつき" data-date="2025-07-04">
+    <img src="image/かにかに詐欺.webp">
+    <span>蟹蟹詐欺<br>かどはな</span>
+  </a>
+</div>
+
+<div class="category-title">暴走！妄想！ナマモノノート！</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/あさはるのーと.html" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-05-06">
+    <img src="image/ナマモノ.webp" alt="あさはるのーと">
+    <span>あさはるのーと</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/あさはるのーと/【副音声】あさはるのーと.html" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-05-06">
+    <img src="image/ナマモノ.webp" alt="【副音声】あさはるのーと">
+    <span>【副音声】あさはるのーと</span>
+  </a>
+  <a href="https://privatter.net/p/11525772" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-05-06">
+    <img src="image/ナマモノ.webp" alt="あさはるのーと小説">
+    <span>あさはるのーと小説</span>
+  </a>
+</div>
+
+<div class="category-title">媚バレックス</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_あさはる/log_export.html" target="_blank" class="image-link" data-tags="旭,遥啓" data-date="2025-05-17">
+    <img src="image/媚バレ.webp" alt="媚バレックス_あさはる">
+    <span>媚バレックス<br>あさはる</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_はるさく/log_export.html" target="_blank" class="image-link" data-tags="晴,朔" data-date="2025-05-02">
+    <img src="image/媚バレ.webp" alt="媚バレックス_はるさく">
+    <span>媚バレックス<br>はるさく</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/媚バレックス_やぶかな/log_export.html" target="_blank" class="image-link" data-tags="薮井,叶" data-date="2025-05-01">
+    <img src="image/媚バレ.webp" alt="媚バレックス_やぶかな">
+    <span>媚バレックス<br>やぶかな</span>
+  </a>
+</div>
+
+<div class="category-title">えっちだんじょんず</div>
+<div class="link-grid">
+  <a href="https://nattun09.github.io/TRPG_LOG/えっちだんじょんず_薮井/log_export.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-10-16">
+    <img src="image/えっちだんじょんず.webp" alt="えっちだんじょんず_薮井">
+    <span>えっちだんじょんず_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/えっちだんじょんず_叶/log_export.html" target="_blank" class="image-link" data-tags="叶" data-date="2025-10-15">
+    <img src="image/えっちだんじょんず.webp" alt="えっちだんじょんず_叶">
+    <span>えっちだんじょんず_叶</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/えっちだんじょんず_遥啓/log_export.html" target="_blank" class="image-link" data-tags="遥啓" data-date="2025-10-14">
+    <img src="image/えっちだんじょんず.webp">
+    <span>えっちだんじょんず_遥啓</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/えっちだんじょんず_旭/log_export.html" target="_blank" class="image-link" data-tags="旭" data-date="2025-07-23">
+    <img src="image/えっちだんじょんず.webp" alt="えっちだんじょんず_旭">
+    <span>えっちだんじょんず_旭</span>
+  </a>
+</div>
+
+
+<div class="category-title">KPレス</div>
+<div class="link-grid">
+
+  <a href="https://nattun09.github.io/TRPG_LOG/プルガトリウムの夜SS_木栖/log_export.html" target="_blank" class="image-link" data-tags="きずみ" data-date="2025-09-28">
+    <img src="image/プル夜.webp">
+    <span>プルガトリウムの夜SS_木栖</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/朽ちて蕭々のアダム_いのり/log_export.html" target="_blank" class="image-link" data-tags="ルイ" data-date="2025-09-26">
+    <img src="image/アダム.webp">
+    <span>朽ちて蕭々のアダム_いのり</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/あなたも外側/log_export.html" target="_blank" class="image-link" data-tags="ルイ" data-date="2025-09-20">
+    <img src="image/外側.png">
+    <span>貴方も外側_ルイ</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/三星葉が太ってから痩せるシナリオ/log_export.html" target="_blank" class="image-link" data-tags="葉" data-date="2025-09-14">
+    <img src="image/体重.png">
+    <span>三星葉が太ってから痩せるシナリオ</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/冷蔵庫にいます/log_export.html" target="_blank" class="image-link" data-tags="うたたね" data-date="2025-09-08">
+    <img src="image/冷蔵庫.webp">
+    <span>冷蔵庫にいます_うたたね</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/いや中継/log_export.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-08-03">
+    <img src="image/いや中継.webp">
+    <span>いや中継_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/星拾いバイト/log_export.html" target="_blank" class="image-link" data-tags="遥啓" data-date="2025-07-25">
+    <img src="image/星拾いバイト.webp" alt="星拾いバイト_遥啓">
+    <span>星拾いバイト_遥啓</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/真実と懺悔録/log_export.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-06-22">
+    <img src="image/真実と懺悔録.webp" alt="真実と懺悔録_薮井">
+    <span>真実と懺悔録_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/うわ配信/log_export.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-06-15">
+    <img src="image/うわ配信.webp" alt="うわ配信_薮井">
+    <span>うわ配信_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_叶.html" target="_blank" class="image-link" data-tags="叶" data-date="2025-04-30">
+    <img src="image/レタスサラダ.webp" alt="レタスサラダ_叶">
+    <span>レタスサラダ_叶</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/レタスサラダ_遥啓.html" target="_blank" class="image-link" data-tags="遥啓" data-date="2025-04-30">
+    <img src="image/レタスサラダ.webp" alt="レタスサラダ_遥啓">
+    <span>レタスサラダ_遥啓</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/レタスサラダ_薮井/log_export.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-04-29">
+    <img src="image/レタスサラダ.webp" alt="レタスサラダ_薮井">
+    <span>レタスサラダ_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_薮井.html" target="_blank" class="image-link" data-tags="薮井" data-date="2025-04-28">
+    <img src="image/くつくつ.webp" alt="くつくつ_薮井">
+    <span>くつくつ_薮井</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/くつくつ_猩猩.html" target="_blank" class="image-link" data-tags="猩猩" data-date="2025-04-17">
+    <img src="image/くつくつ.webp" alt="くつくつ_猩猩">
+    <span>くつくつ_猩猩</span>
+  </a>
+  <a href="https://nattun09.github.io/TRPG_LOG/KPレス/kana.html" target="_blank" class="image-link" data-tags="叶" data-date="2025-03-07">
+    <img src="image/プリトレ.webp" alt="プリズナートレーニング_叶">
+    <span>プリズナートレーニング_叶</span>
+  </a>
+</div>
+</div>
+
+</div>
+<div id="youtube" class="tab-content">
+  <!-- 各カテゴリ -->
+  <div class="category" data-category="session">
+    <div class="category-title">単発</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev" aria-label="前の動画">&lt;</button>
+        <button class="next" aria-label="次の動画">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="いのり,まり" data-date="2025-10-28" class="active">愛は灼熱のアラビアンナイト</button>
+      <button data-tags="叶" data-date="2025-10-25">上手く生きられなくてごめんなさい</button>
+      <button data-tags="クララ,しずく,ひつじ" data-date="2025-09-06">輾転と町は</button>
+      <button data-tags="ゆうま,さつき" data-date="2025-08-30">キルキルイキル_かどはな</button>
+      <button data-tags="ひまわり" data-date="2025-07-17">ホームシック_ひまわり</button>
+      <button data-tags="旭,遥啓" data-date="2025-06-14">盲心未遂</button>
+      <button data-tags="開" data-date="2025-05-21">ラブレターフロムロラン</button>
+      <button data-tags="うたたね,白,仁木" data-date="2025-05-14">レッツロシアンうどん</button>
+      <button data-tags="せいな,いのり" data-date="2025-05-02">捨てKPC</button>
+      <button data-tags="薮井,叶" data-date="2025-04-26">慄け！因習村</button>
+      <button data-tags="せいな,まり,いのり" data-date="2025-03-16">ラーメンは乙女の嗜み</button>
+      <button data-tags="晴,朔" data-date="2025-02-23">ハイフェッツをなぞる病</button>
+      <button  data-date="2025-02-22">宇宙船ニル・ノート号の残響</button>
+    </div>
+<div class="video-toc">
+  <ul>
+    <li><a href="#">愛は灼熱のアラビアンナイト</a></li>
+    <li><a href="#">上手く生きられなくてごめんなさい</a></li>
+    <li><a href="#">輾転と町は</a></li>
+    <li><a href="#">キルキルイキル_かどはな</a></li>
+    <li><a href="#">ホームシック_ひまわり</a></li>
+    <li><a href="#">盲心未遂</a>(いわひらげんみ❌)</li>
+    <li><a href="#">ラブレターフロムロラン</a></li>
+    <li><a href="#">レッツロシアンうどん</a> (灰よかげんみ❌) </li>
+    <li><a href="#">捨てKPC</a> (脱獄乙女げんみ❌) </li>
+    <li><a href="#">慄け！因習村</a></li>
+    <li><a href="#">ラーメンは乙女の嗜み</a> (脱獄乙女げんみ❌) </li>
+    <li><a href="#">ハイフェッツをなぞる病</a></li>
+    <li><a href="#">宇宙船ニル・ノート号の残響</a></li>
+  </ul>
+<div class="toc-pagination" style="text-align: center; margin-top: 0.5rem;">
+  <button class="toc-prev">← 前へ</button>
+  <button class="toc-next">次へ →</button>
+</div>
+</div>
+
+  </div>
+
+  <div class="category" data-category="puruyo">
+    <div class="category-title">プルガトリウムの夜_なおきず</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="きずみ,なおび" data-date="2025-09-27" class="active">プル夜(前・中編)_なおきず</button>
+      <button data-tags="きずみ,なおび" data-date="2025-09-27">プル夜(後編)_なおきず</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="backrooms">
+    <div class="category-title">The Back Rooms</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="薮井,叶" data-date="2025-09-20" class="active">The Back Rooms_やぶかな</button>
+      <button data-tags="白,仁木" data-date="2025-09-20">The Back Rooms_つくにき</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="siniden">
+    <div class="category-title">死にたがり電車</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="ルイ" data-date="2025-07-03" class="active">死にたがり電車_ルイ</button>
+      <button data-tags="葉" data-date="2025-03-22">死にたがり電車_葉</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="toumei">
+    <div class="category-title">透明となった君へ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="仁妻" data-date="2025-09-12" class="active">透君_仁妻</button>
+      <button data-tags="東雲,夏目,小木" data-date="2025-07-27">透君_なつしの</button>
+      <button data-tags="詩織" data-date="2025-07-01" class="active">透君_詩織</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="murahora">
+    <div class="category-title">村ホラーRTA</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="遥啓,薮井" data-date="2025-07-07" class="active">村ホラーRTA_やぶはる</button>
+      <button data-tags="うたたね,君子" data-date="2025-04-02" class="active">村ホラーRTA_うたきみ</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="hatsukoisei">
+    <div class="category-title">初恋性ストックホルム症候群</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="ポン吉,桃" data-date="2025-06-29" class="active">初恋性_ぽんもも</button>
+      <button data-tags="折,悠" data-date="2025-06-01" class="active">初恋性_おりゆう</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="iwashi-asaharu">
+    <div class="category-title">鰯と柊_あさはる</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="旭,遥啓" data-date="2025-03-27" class="active">鰯と柊（前編）_あさはる</button>
+      <button data-tags="旭,遥啓" data-date="2025-03-29">鰯と柊（後編）_あさはる</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="iwashi-syojomeme">
+    <div class="category-title">鰯と柊_しょじょめめ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="猩猩,恵々" data-date="2025-04-04" class="active">鰯と柊（前編）_しょじょめめ</button>
+      <button data-tags="猩猩,恵々" data-date="2025-04-05">鰯と柊（中編）_しょじょめめ</button>
+      <button data-tags="猩猩,恵々" data-date="2025-04-05">鰯と柊（後編）_しょじょめめ</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="haiyoka">
+    <div class="category-title">灰になってよかった</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="白,仁木" data-date="2025-04-12" class="active">灰よか_灰咲白</button>
+      <button data-tags="うたたね,仁木" data-date="2025-03-16">灰よか_うたたね</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="katasiro">
+    <div class="category-title">カタシロ</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="君子" data-date="2025-06-18" class="active">カタシロ_烏丸君子</button>
+      <button data-tags="叶" data-date="2025-03-20" class="active">カタシロ_蝿島叶</button>
+      <button data-tags="開" data-date="2025-02-12">カタシロ_元目開</button>
+    </div>
+  </div>
+
+  <div class="category" data-category="sousaku">
+    <div class="category-title">創作動画</div>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="旭,"遥啓class="active">akage meme【あさはる】</button>
+      <button data-tags="ゆうま,さつき">アプリコット_かどはな</button>
+      <button data-tags="薮井,叶">❤やぶかなのーと❤</button>
+      <button data-tags="薮井">ダカラドオシタ</button>
+      <button data-tags="薮井">だめにんげんだ！</button>
+      <button data-tags="叶">毒占欲</button>
+      <button data-tags="薮井,叶">ム責任集合体</button>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="cocoforia" class="tab-content">
+  <div class="category-title">公開</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/NmY0UVfAZ" target="_blank" class="image-link" data-room="ちっち山">
+      <img src="image/てすと.webp">
+      <span>ちっち山</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/f19OHAUvg" target="_blank" class="image-link" data-room="やぶかなラジオ" data-tags="薮井,叶,もなかも,めこつ">
+      <img src="image/やぶかなラジオ.webp">
+      <span>やぶかなラジオ</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/rFaJLBRQN" target="_blank" class="image-link" data-room="すごろく_あさはる" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/すごろく.png">
+      <span>すごろく_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/y_gnUYv61" target="_blank" class="image-link" data-room="どんとたっちKPC！_あさはる" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/どんとたっち.webp">
+      <span>どんとたっちKPC！_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/o2M_aTJ_5" target="_blank" class="image-link" data-room="ムーンエスケープ_やぶかな" data-tags="薮井,叶,もなかも,めこつ">
+      <img src="image/むーん.webp">
+      <span>ムーンエスケープ_やぶかな</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/F9qV3xuLq" target="_blank" class="image-link" data-room="らぶらぶ❤せっくすしないと出られない部屋_けいやぶ" data-tags="薮井,圭,もなかも">
+      <img src="image/らぶらぶせっくす.webp">
+      <span>らぶらぶ❤せっくすしないと出られない部屋_けいやぶ</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/RfwJ9vfBV" target="_blank" class="image-link" data-room="ムーンエスケープ_あさはる" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/むーん.webp">
+      <span>ムーンエスケープ_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/twLFMkGA_" target="_blank" class="image-link" data-room="ʜᴀ;ʟᴀʟ/ʀᴀᴍ" data-tags="まり,いのり,せいな,てとせ,せいや,めこつ">
+      <img src="image/はるらむ.webp">
+      <span>ʜᴀ;ʟᴀʟ/ʀᴀᴍ</span>
+    </a>
+  </div>
+
+  <div class="category-title">非公開（やってる人のみ閲覧可）</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/iZQt6cXtg" target="_blank" class="image-link" data-room="鳴かぬ蛍の恋心_おりゆう" data-tags="折,悠,もなかも,せいや">
+      <img src="image/ほたこい.png">
+      <span>鳴かぬ蛍の恋心_おりゆう</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/x_y-oY6Aa" target="_blank" class="image-link" data-room="蛇の恋_あさはる" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/蛇恋.jpg">
+      <span>蛇の恋_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/bnvcRhQUX" target="_blank" class="image-link" data-room="ムーンエスケープ_かどはな" data-tags="ゆうま,さつき,めこつ,せいや">
+      <img src="image/むーん.webp">
+      <span>ムーンエスケープ_かどはな</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/AmEXidjev" target="_blank" class="image-link" data-room="常識改変された世界で犯されまくる_叶" data-tags="叶,めこつ">
+      <img src="image/じょうしき.webp">
+      <span>常識改変された世界で犯されまくる_叶</span>
+    </a>
+  </div>
+
+  <div class="category-title">過去部屋</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://ccfolia.com/rooms/qvm7p5tjS" target="_blank" class="image-link" data-room="えれぱに" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/えれぱに.webp">
+      <span>えれぱに_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/vu5Bxr5Zf" target="_blank" class="image-link" data-room="盲心未遂" data-tags="旭,遥啓,てとせ,せいや">
+      <img src="image/もうしん.webp">
+      <span>盲心未遂_あさはる</span>
+    </a>
+    <a href="https://ccfolia.com/rooms/WiN1HGKM7" target="_blank" class="image-link" data-room="鰯と柊" data-tags="もなかも">
+      <img src="image/いわひら.webp">
+      <span>鰯と柊</span>
+    </a>
+  </div>
+
+  <div class="category-title">年表</div>
+  <div class="link-grid cocoforia-grid">
+    <a href="https://app.the-timeline.jp/2PACX-1vQXRK7l9aSOFsjBvUj95buN0ymaa064k4a90QugEpj9SNFaOeD1aG5xLqX06IW4Bw0zCKPNLtYqH_VC?start=20111018043523&end=20220126172601" target="_blank" class="image-link" data-room="ちっち王国年表">
+      <img src="image/carender.webp">
+      <span>ちっち王国年表</span>
+    </a>
+    <a href="https://docs.google.com/spreadsheets/d/1bjv7XNK2lxzkdyjdyaEK5aY65I8C1eIZ1GEcnhTQPAw/edit?usp=sharing" target="_blank" class="image-link" data-room="年表‗編集">
+      <img src="image/google.png">
+      <span>年表‗編集</span>
+    </a>
+  </div>
+
+
+</main>
+
+<script>
+const videoData = {
+    session: [
+      {src:"https://www.youtube.com/embed/BtoWRSPta0o", title:"愛は灼熱のアラビアンナイト"},
+      {src:"https://www.youtube.com/embed/n1AhtSGgg9M", title:"上手く生きられなくてごめんなさい"},
+      {src:"https://www.youtube.com/embed/XKrH8fEvSOk", title:"輾転と町は"},
+      {src:"https://www.youtube.com/embed/LY6-1IjejDw", title:"キルキルイキル_かどはな"},
+      {src:"https://www.youtube.com/embed/QzyBfq6JsvE", title:"ホームシック_ひまわり"},
+      {src:"https://www.youtube.com/embed/H_6j_OgCkuU", title:"盲心未遂"},
+      {src:"https://www.youtube.com/embed/jI-8EJu_tCo", title:"ラブレターフロムロラン"},
+      {src:"https://www.youtube.com/embed/6tjWtt8NfQE", title:"レッツロシアンうどん"},
+      {src:"https://www.youtube.com/embed/ClFjS0ClGXA", title:"捨てKPC"},
+      {src:"https://www.youtube.com/embed/4MSWcF7a66I", title:"慄け！因習村"},
+      {src:"https://www.youtube.com/embed/Y5bT97cfmP0", title:"ラーメンは乙女の嗜み"},
+      {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
+      {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
+    ],
+    'puruyo': [
+      {src:"https://www.youtube.com/embed/xfqhlx6v1yM", title:"プル夜(前・中編)_なおきず"},
+      {src:"https://www.youtube.com/embed/h-kucfMtsJw", title:"プル夜(後編)_なおきず"}
+    ],
+    'backrooms': [
+      {src:"https://www.youtube.com/embed/nllR38i4RLA", title:"The Back Rooms_やぶかな"},
+      {src:"https://www.youtube.com/embed/5GStS8jewvE", title:"The Back Rooms_つくにき"}
+    ],
+    'siniden': [
+      {src:"https://www.youtube.com/embed/GypG64vgIU8", title:"死にたがり電車_ルイ"},
+      {src:"https://www.youtube.com/embed/_T2g13mmZvA", title:"死にたがり電車_葉"}
+    ],
+    'toumei': [
+      {src:"https://www.youtube.com/embed/_wBlK5XA3kk", title:"透君_仁妻"},
+      {src:"https://www.youtube.com/embed/K-w4PtZOCis", title:"透君_なつしの"},
+      {src:"https://www.youtube.com/embed/oPxIklL5gwA", title:"透君_詩織"}
+    ],
+    'murahora': [
+      {src:"https://www.youtube.com/embed/lU6JUcWQO7Q", title:"村ホラーRTA_やぶはる"},
+      {src:"https://www.youtube.com/embed/f9zjZYBwQ_M", title:"村ホラーRTA_うたきみ"}
+    ],
+    'hatsukoisei': [
+      {src:"https://www.youtube.com/embed/DwFk62dHYQM", title:"初恋性_ぽんもも"},
+      {src:"https://www.youtube.com/embed/C9zXP8i7bAA", title:"初恋性_おりゆう"}
+    ],
+    'iwashi-asaharu': [
+      {src:"https://www.youtube.com/embed/YW5t72-C-U4", title:"鰯と柊（前編）_あさはる"},
+      {src:"https://www.youtube.com/embed/QDdmX_JjWT4", title:"鰯と柊（後編）_あさはる"}
+    ],
+    'iwashi-syojomeme': [
+      {src:"https://www.youtube.com/embed/jaFasO8uNu0", title:"鰯と柊（前編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/8VXCSbJVlxQ", title:"鰯と柊（中編）_しょじょめめ"},
+      {src:"https://www.youtube.com/embed/P4k_nU-BkVs", title:"鰯と柊（後編）_しょじょめめ"}
+    ],
+    haiyoka: [
+      {src:"https://www.youtube.com/embed/TqPPVhGek8Y", title:"灰よか_灰咲白"},
+      {src:"https://www.youtube.com/embed/qaVvF54SAbA", title:"灰よか_うたたね"}
+    ],
+    katasiro: [
+      {src:"https://www.youtube.com/embed/pRTSnTBJyks", title:"カタシロ_烏丸君子"},
+      {src:"https://www.youtube.com/embed/MU8A8O1Ie_k", title:"カタシロ_蝿島叶"},
+      {src:"https://www.youtube.com/embed/aAcluTAGQ3s", title:"カタシロ_元目開"}
+    ],
+    sousaku: [
+      {src:"https://www.youtube.com/embed/B-Wm7pF4LnA", title:"akage meme【あさはる】"},
+      {src:"https://www.youtube.com/embed/fWAr5BFTzVw", title:"アプリコット_かどはな"},
+      {src:"https://www.youtube.com/embed/jpx6mZ9SvL0", title:"❤やぶかなのーと❤"},
+      {src:"https://www.youtube.com/embed/m2b0w4IwU3U", title:"ダカラドオシタ"},
+      {src:"https://www.youtube.com/embed/Jk47XeZc7Yo", title:"だめにんげんだ！"},
+      {src:"https://www.youtube.com/embed/n4EB3_Qw-K0", title:"毒占欲"},
+      {src:"https://www.youtube.com/embed/kZ9k_IJK9W0", title:"ム責任集合体"}
+    ]
+  };
+
+
+//キャラ立ち絵
+const charaStats = {
+  "薮井 圭": {
+    image: "image/けい.webp",
+    url: "https://iachara.com/view/11542663",
+description: "年齢：30<br>性別：男<br>身長：182<br>誕生日：2/10<br>職業：医者<br>関係：薮井社の兄",
+    stats: {
+      STR: 14, CON: 8, POW: 10,DEX: 15, APP: 16, SIZ: 15,INT: 16, EDU: 18
+    }
+  },
+  "木栖 慶次": {
+    image: "image/きずみ.webp",
+    url: "https://iachara.com/view/11829031",
+description: "年齢：25<br>性別：男<br>身長：182<br>誕生日：2/21<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：直毘の部下",
+    stats: {
+      STR: 13, CON: 13, POW: 12,DEX: 13, APP: 13, SIZ: 15,INT: 16, EDU: 19
+    }
+  },
+  "夏目 文人": {
+    image: "image/夏目.webp",
+    url: "https://iachara.com/view/11985751",
+description: "年齢：36<br>性別：男<br>身長：192<br>誕生日：8/15<br>職業：小説家<br>出身：透明となった君へ<br>関係：東雲と出会った。編集者は小木。",
+    stats: {
+      STR: 9, CON: 9, POW: 9,
+      DEX: 16, APP: 7, SIZ: 18,
+      INT: 16, EDU: 16
+    }
+  },
+  "八本木 吉": {
+    image: "image/ポン吉.webp",
+    url: "https://iachara.com/view/11732740",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
+    stats: {
+      STR: 11, CON: 9, POW: 16,
+      DEX: 5, APP: 15, SIZ: 12,
+      INT: 14, EDU: 12
+    }
+  },
+"檻崎 折": {
+    image: "image/折_誘拐犯.webp",
+    url: "https://iachara.com/view/10768637",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：11/1<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
+    stats: { STR: 12, CON: 12, POW: 6, DEX: 12, APP: 12, SIZ: 13, INT: 16, EDU: 17 }
+  },
+  "薮井 社": {
+    image:["image/薮井.webp","image/中学生やぶい2.webp","image/にょたやぶい.webp"],
+    url: "https://iachara.com/view/11114253",
+description: "年齢：28<br>性別：男<br>身長：179<br>誕生日：8/21<br>職業：ヤブ医者<br>出身：慄け！因習村<br>関係：叶とよく喧嘩してる。",
+    stats: { STR: 13, CON: 9, POW: 17, DEX: 12, APP: 13, SIZ: 14, INT: 11, EDU: 14 }
+  },
+  "灰咲 白": {
+    image: "image/白.webp",
+    url: "https://iachara.com/view/10960490",
+description: "年齢：18<br>性別：男<br>身長：170<br>誕生日：7/2<br>職業：アイドル<br>出身：灰になってよかった<br>関係：仁木に攫われた",
+    stats: { STR: 11, CON: 8, POW: 15, DEX: 11, APP: 15, SIZ: 13, INT: 16, EDU: 17 }
+  },
+  "柊 晴": {
+    image: "image/はる.webp",
+    url: "https://iachara.com/view/10718849",
+description: "年齢：21<br>性別：男<br>身長：178<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
+    stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
+  },
+  "直毘 誠": {
+    image: "image/なおび.webp",
+    url: "https://iachara.com/view/11829223",
+description: "年齢：36<br>性別：男<br>身長：185<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：木栖の上司",
+    stats: { STR: 13, CON: 14, POW: 17, DEX: 12, APP: 9, SIZ: 15, INT: 18, EDU: 18 }
+  },
+  "富良野 ルイ": {
+    image: "image/ルイ.webp",
+    url: "https://iachara.com/view/11986657",
+description: "年齢：25<br>性別：男<br>身長：175<br>誕生日：12/25<br>職業：探偵<br>出身：死にたがり電車",
+    stats: { STR: 8, CON: 6, POW: 14, DEX: 8, APP: 15, SIZ: 14, INT: 16, EDU: 18 }
+  },
+  "三栗 ひつじ": {
+    image: "image/ひつじ.webp",
+    url: "https://iachara.com/view/12199322",
+description: "年齢：20<br>性別：女<br>身長：168<br>誕生日：2/2<br>職業：看護学生<br>出身：輾転と町は<br>関係：クララ、しずくと幼馴染",
+    stats: { STR: 10, CON: 15, POW: 17, DEX: 9, APP: 11, SIZ: 12, INT: 12, EDU: 13 }
+  },
+  "長門 うたたね": {
+    image: "image/うたたね.webp",
+    url: "https://iachara.com/view/10876568",
+description: "年齢：22<br>性別：女<br>身長：170<br>誕生日：7/13<br>職業：歌手<br>出身：灰になってよかった<br>関係：仁木に攫われた。",
+    stats: { STR: 10, CON: 9, POW: 16, DEX: 12, APP: 15, SIZ: 13, INT: 17, EDU: 14 }
+  },
+  "片喰 旭": {
+    image: ["image/あさひ.webp","image/旭_盲信.webp","image/旭_私服.webp","image/あさひ_おばまち.webp"],
+    url: "https://iachara.com/view/10796294",
+description: "年齢：25<br>性別：男<br>身長：190<br>誕生日：6/24<br>職業：信者<br>出身：鰯と柊<br>関係：遥啓が教祖",
+    stats: { STR: 15, CON: 16, POW: 19, DEX: 13, APP: 7, SIZ: 16, INT: 9, EDU: 14 }
+  },
+  "元目 開": {
+    image: "image/開.webp",
+    url: "https://iachara.com/view/10783734",
+description: "年齢：20<br>性別：女<br>身長：158<br>誕生日：11/17<br>職業：画家<br>出身：カタシロ",
+    stats: { STR: 9, CON: 11, POW: 13, DEX: 16, APP: 11, SIZ: 10, INT: 16, EDU: 12 }
+  },
+  "二条 万璃": {
+    image: ["image/まり.webp","image/まり2.webp","image/まり3.webp"],
+    url: "https://iachara.com/view/8017078",
+description: "年齢：15<br>性別：女<br>身長：155<br>誕生日：4/20<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：いのり、星奈と同じ学校。",
+    stats: { STR: 8, CON: 10, POW: 10, DEX: 14, APP: 12, SIZ: 10, INT: 14, EDU: 15 }
+  },
+  "カルア": {
+    image: "image/かるあ.webp",
+    url: "",
+description: "年齢：14<br>性別：男<br>身長：157<br>誕生日：2/7<br>職業：歌手<br>出身：口渇ルルパ<br>関係：チモシーと幼馴染",
+    stats: { STR: 0, CON: 0, POW: 0, DEX: 0, APP: 0, SIZ: 0, INT: 0, EDU: 0 }
+  },
+  "水菓子 しずく": {
+    image: "image/しずく.webp",
+    url: "https://iachara.com/view/12194989",
+description: "年齢：21<br>性別：女<br>身長：163<br>誕生日：8/25<br>職業：大学生<br>出身：輾転と町は<br>関係：ひつじ、クララと幼馴染",
+    stats: { STR: 9, CON: 10, POW: 13, DEX: 14, APP: 18, SIZ: 12, INT: 14, EDU: 18 }
+  },
+  "門永 皐生": {
+    image: "image/さつき.webp",
+    url: "https://iachara.com/view/11106106",
+description: "年齢：17<br>性別：男<br>身長：194<br>誕生日：3/20<br>職業：高校生<br>出身：キルキルイキル<br>関係：宥磨と幼馴染",
+    stats: { STR: 11, CON: 15, POW: 12, DEX: 11, APP: 8, SIZ: 17, INT: 13, EDU: 10 }
+  },
+  "佐伯 悠": {
+    image: "image/悠.webp",
+    url: "https://iachara.com/view/10806973",
+description: "年齢：19<br>性別：男<br>身長：175<br>誕生日：5/31<br>職業：大学生<br>出身：初恋性ストックホルム症候群<br>関係：折に誘拐された。",
+    stats: { STR: 12, CON: 15, POW: 15, DEX: 17, APP: 13, SIZ: 13, INT: 14, EDU: 14 }
+  },
+  "柊 朔": {
+    image: "image/さく.webp",
+    url: "https://iachara.com/view/10815170",
+description: "年齢：21<br>性別：男<br>身長：173<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。晴は双子の弟。",
+    stats: { STR: 12, CON: 17, POW: 11, DEX: 10, APP: 15, SIZ: 12, INT: 12, EDU: 14 }
+  },
+  "八染 遥啓": {
+    image: ["image/はるのぶ.webp","image/はるのぶ_私服.webp","image/しょたのぶ.webp"],
+    url: "https://iachara.com/view/10803642",
+description: "年齢：22<br>性別：男<br>身長：150<br>誕生日：2/19<br>職業：教祖<br>出身：鰯と柊<br>関係：旭が信者",
+    stats: { STR: 15, CON: 14, POW: 17, DEX: 14, APP: 14, SIZ: 9, INT: 17, EDU: 16 }
+  },
+  "神楽坂 星奈": {
+    image:  ["image/せいな.webp","image/せいなばにー.webp"],
+    url: "https://iachara.com/view/10675900",
+description: "年齢：17<br>性別：女<br>身長：163<br>誕生日：7/24<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：万璃、いのりと同じ学校。",
+    stats: { STR: 10, CON: 8, POW: 12, DEX: 11, APP: 16, SIZ: 13, INT: 13, EDU: 13 }
+  },
+  "仁妻 秋": {
+    image: "image/仁妻.webp",
+    url: "https://iachara.com/view/12546305",
+description: "年齢：32<br>性別：男<br>身長：177<br>職業：人妻作家<br>出身：透明となった君へ",
+    stats: { STR: 16, CON: 9, POW: 15, DEX: 13, APP: 14, SIZ: 13, INT: 13, EDU: 15 }
+  },
+  "花巻 宥磨": {
+    image: "image/ゆうま.webp",
+    url: "https://iachara.com/view/11049356",
+description: "年齢：17<br>性別：男<br>身長：172<br>誕生日：9/23<br>職業：高校生<br>出身：キルキルイキル<br>関係：皐生と幼馴染",
+    stats: { STR: 14, CON: 15, POW: 15, DEX: 13, APP: 11, SIZ: 13, INT: 11, EDU: 12 }
+  },
+  "百井 桃": {
+    image: "image/桃.webp",
+    url: "https://iachara.com/view/11730447",
+description: "年齢：20<br>性別：男<br>身長：182<br>職業：猫カフェバイト<br>出身：初恋性ストックホルム症候群<br>関係：ポン吉に誘拐された。",
+    stats: { STR: 9, CON: 9, POW: 9, DEX: 13, APP: 16, SIZ: 15, INT: 12, EDU: 9 }
+  },
+  "三ツ星 葉": {
+    image: "image/葉.webp",
+    url: "https://iachara.com/view/10965230",
+description: "年齢：22<br>性別：男<br>身長：190<br>誕生日：5/5<br>職業：探偵<br>通過：死にたがり電車",
+    stats: { STR: 14, CON: 10, POW: 10, DEX: 10, APP: 9, SIZ: 16, INT: 18, EDU: 15 }
+  },
+  "国木田 仁木": {
+    image: ["image/仁木.webp","image/仁木_私服.webp"],
+    url: "https://iachara.com/view/11020938",
+description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小説家<br>出身：灰になってよかったのKPC<br>関係：うたたね、白を攫った。",
+    stats: { STR: 10, CON: 12, POW: 18, DEX: 11, APP: 15, SIZ: 13, INT: 18, EDU: 16 }
+  },
+  "神崎 猩猩": {
+    image: "image/猩猩.webp",
+    url: "https://iachara.com/view/10749984",
+description: "年齢：26<br>性別：男<br>身長：180<br>誕生日：1/23<br>職業：教祖<br>出身：鰯と柊<br>関係：恵々が信者",
+    stats: { STR: 13, CON: 10, POW: 14, DEX: 13, APP: 13, SIZ: 13, INT: 13, EDU: 11 }
+  },
+  "蝿島 叶": {
+    image: ["image/叶.webp","image/叶_初期.webp","image/中学生かなえ.webp"],
+    url: "https://iachara.com/view/10692890",
+description: "年齢：29<br>性別：男<br>身長：175<br>誕生日：3/19<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
+    stats: { STR: 14, CON: 10, POW: 15, DEX: 7, APP: 18, SIZ: 13, INT: 16, EDU: 19 }
+  },
+  "蝿島 いのり": {
+    image: ["image/いのり.webp","image/のりお.webp"],
+    url: "https://iachara.com/view/10468122",
+description: "年齢：16<br>性別：女<br>身長：160<br>誕生日：3/31<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
+    stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
+  },
+  "白石・クララ＝クローネ": {
+    image: "image/クララ.webp",
+    url: "https://iachara.com/view/12210521",
+description: "年齢：22<br>性別：女<br>身長：183<br>職業：高校生<br>出身：輾転と町は<br>関係：しずく、ひつじと幼馴染",
+    stats: { STR: 11, CON: 3, POW: 12, DEX: 11, APP: 16, SIZ: 15, INT: 16, EDU: 11 }
+  },
+  "小木 伸二": {
+    image: "image/小木.webp",
+    url: "https://iachara.com/view/12170927",
+description: "年齢：24<br>性別：男<br>身長：170<br>職業：編集者<br>出身：透明となった君へ",
+    stats: { STR: 10, CON: 13, POW: 14, DEX: 14, APP: 11, SIZ: 13, INT: 12, EDU: 9 }
+  },
+  "東雲 葵": {
+    image: "image/東雲.webp",
+    url: "https://iachara.com/view/",
+description: "年齢：??<br>性別：女<br>身長：??<br>職業：幽霊<br>出身：透明となった君へ",
+    stats: { STR: 0, CON: 0, POW: 0, DEX: 0, APP: 0, SIZ: 0, INT: 0, EDU: 0 }
+  },
+  "公星 ひまわり": {
+    image: "image/ひまわり.webp",
+    url: "https://iachara.com/view/11910983",
+description: "年齢：19<br>性別：女<br>身長：150<br>職業：大学生<br>出身：ホームシック",
+    stats: { STR: 12, CON: 10, POW: 9, DEX: 8, APP: 12, SIZ: 10, INT: 15, EDU: 14 }
+  },
+  "谷 詩織": {
+    image: "image/詩織.webp",
+    url: "https://iachara.com/view/11985019",
+description: "年齢：28<br>性別：女<br>身長：180<br>職業：小説家<br>出身：透明となった君へ",
+    stats: { STR: 8, CON: 12, POW: 14, DEX: 8, APP: 10, SIZ: 18, INT: 10, EDU: 15 }
+  },
+  "東 恵々": {
+    image: "image/恵々.webp",
+    url: "https://iachara.com/view/10779230",
+description: "年齢：21<br>性別：男<br>身長：170<br>職業：信者<br>出身：鰯と柊<br>関係：猩猩が教祖",
+    stats: { STR: 10, CON: 10, POW: 12, DEX: 14, APP: 10, SIZ: 12, INT: 15, EDU: 17 }
+  },
+  "烏丸 君子": {
+    image: "image/君子.webp",
+    url: "https://iachara.com/view/11115625",
+description: "年齢：36<br>性別：女<br>身長：170<br>職業：探偵<br>出身：村ホラーRTA",
+    stats: { STR: 9, CON: 9, POW: 13, DEX: 17, APP: 7, SIZ: 15, INT: 15, EDU: 14 }
+  }
+};
+
+
+
+// 最初に宣言しておく（グローバル）
+window.charaChart = null;
+
+// 追加：video-links内ボタンとvideo-toc内リンクのdata-indexを自動で振る
+document.querySelectorAll('.category').forEach(category => {
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a');
+
+  videoButtons.forEach((btn, idx) => {
+    btn.setAttribute('data-index', idx);
+  });
+
+  tocLinks.forEach((link, idx) => {
+    link.setAttribute('data-index', idx);
+  });
+});
+
+
+  // タブ切り替え
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+const sortToggleBtn = document.getElementById('sortToggleBtn');
+const charaSortSelect = document.getElementById('charaSortSelect'); // 追加
+const cocofoSortSelect = document.getElementById('cocofoSortSelect'); // 追加
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      tabButtons.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById(target).classList.add('active');
+
+// ✅ テキセログのときだけ並び替えボタンを表示
+    //sortToggleBtn.style.display = (target === 'text') ? 'inline-block' : 'none';
+
+    const showSort = (target === 'text' || target === 'youtube');
+    sortToggleBtn.style.display = showSort ? 'inline-block' : 'none';
+
+// 探索者タブのときだけ select を表示
+    charaSortSelect.style.display = (target === 'chara') ? 'inline-block' : 'none';
+
+// ココフォリアタブのときだけ select を表示
+    cocofoSortSelect.style.display = (target === 'cocoforia') ? 'inline-block' : 'none';
+
+    // 表示モードを同期（カテゴリ／降順）
+    syncSortState(target);
+    });
+  });
+
+// 初期表示に合わせて select を非表示にしておく
+charaSortSelect.style.display = 'none';
+
+// 初期表示に合わせて select を非表示にしておく
+cocofoSortSelect.style.display = 'none';
+
+document.querySelectorAll('.category').forEach(category => {
+const videos = videoData[category.dataset.category];
+
+  const iframe = category.querySelector('iframe');
+  const prevBtn = category.querySelector('.prev');
+  const nextBtn = category.querySelector('.next');
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a'); // ←追加
+
+  let currentIndex = 0;
+
+  function updateVideo(index) {
+    if(index < 0) index = videos.length - 1;
+    if(index >= videos.length) index = 0;
+    currentIndex = index;
+    iframe.src = videos[currentIndex].src;
+
+    videoButtons.forEach(btn => btn.classList.remove('active'));
+    if(videoButtons[currentIndex]) videoButtons[currentIndex].classList.add('active');
+  }
+
+  prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
+  nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
+
+  videoButtons.forEach(btn => {
+    btn.addEventListener('click', () => updateVideo(parseInt(btn.dataset.index, 10)));
+  });
+
+  // 🔽 新しく追加：目次リンクにも同様のイベント処理を設定
+  tocLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const index = parseInt(link.dataset.index, 10);
+      if (!isNaN(index)) {
+        updateVideo(index);
+      }
+    });
+  });
+
+  updateVideo(0);
+});
+
+
+const menuToggle = document.querySelector('.menu-toggle');
+const categoryMenu = document.querySelector('.category-menu');
+const categoryList = document.querySelector('.category-menu ul');
+
+// ハンバーガーメニューの開閉
+menuToggle.addEventListener('click', () => {
+  categoryMenu.classList.toggle('open');
+});
+
+// カテゴリリストを再生成する関数
+function updateCategoryList() {
+  // 一度リストをクリア
+  categoryList.innerHTML = '';
+
+  // 現在表示されているタブコンテンツを取得
+  const activeTabContent = document.querySelector('.tab-content.active');
+  if (!activeTabContent) return;
+
+  // その中のカテゴリタイトルだけ取得
+  activeTabContent.querySelectorAll('.category-title').forEach(title => {
+    const id = title.textContent.trim().replace(/\s+/g, '-');
+    title.id = id;
+
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${id}`;
+    a.textContent = title.textContent.trim();
+
+    li.appendChild(a);
+    categoryList.appendChild(li);
+  });
+}
+
+// タブが切り替わったときに呼ばれるようにする
+document.querySelectorAll('.tabs button').forEach(button => {
+  button.addEventListener('click', () => {
+    const target = button.getAttribute('data-tab');
+
+    // タブ切り替え
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.toggle('active', tab.id === target);
+    });
+//探索者タブの立ち絵非表示
+if (target !== 'chara') {
+  const detailBox = document.getElementById('charaDetail');
+  if (detailBox) detailBox.style.display = 'none';
+}
+
+
+    // 遅延でカテゴリ更新
+    setTimeout(() => {
+      console.log("Running updateCategoryList");
+      updateCategoryList();
+    }, 0);
+  });
+});
+// 初期表示時にも実行
+updateCategoryList();
+
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('.image-link, .carousel').forEach(el => observer.observe(el));
+
+document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+// 検索処理
+
+document.getElementById('searchBox').addEventListener('input', function(e) {
+  const keyword = e.target.value.toLowerCase();
+
+  // --- テキストログ ---
+  const textTab = document.getElementById('text');
+  if (currentSortMode === 'category') {
+    const categoryTitles = textTab.querySelectorAll('.category-title');
+    categoryTitles.forEach(titleEl => {
+      const titleText = titleEl.textContent.toLowerCase();
+      const linkGrid = titleEl.nextElementSibling;
+      if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+
+      let isHit = titleText.includes(keyword);
+
+      linkGrid.querySelectorAll('.image-link').forEach(link => {
+        const text = link.textContent.toLowerCase();
+        const tags = (link.dataset.tags || '').toLowerCase();
+        const match = text.includes(keyword) || tags.includes(keyword);
+        link.style.display = match ? '' : 'none';
+        if (match) isHit = true;
+      });
+
+      titleEl.style.display = isHit ? '' : 'none';
+      linkGrid.style.display = isHit ? '' : 'none';
+    });
+  } else {
+    textTab.querySelectorAll('.image-link').forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const tags = (link.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
+      link.style.display = match ? '' : 'none';
+    });
+  }
+
+  // --- キャラ図鑑 ---
+  const charaTab = document.getElementById('chara');
+  if (currentSortMode === 'category') {
+    const charaTitles = charaTab.querySelectorAll('.category-title');
+    charaTitles.forEach(titleEl => {
+      const titleText = titleEl.textContent.toLowerCase();
+      const linkGrid = titleEl.nextElementSibling;
+      if (!linkGrid || !linkGrid.classList.contains('link-grid')) return;
+
+      let isHit = titleText.includes(keyword);
+
+      linkGrid.querySelectorAll('.image-link').forEach(link => {
+        const text = link.textContent.toLowerCase();
+        const tags = (link.dataset.tags || '').toLowerCase();
+        const match = text.includes(keyword) || tags.includes(keyword);
+        link.style.display = match ? '' : 'none';
+        if (match) isHit = true;
+      });
+
+      titleEl.style.display = isHit ? '' : 'none';
+      linkGrid.style.display = isHit ? '' : 'none';
+    });
+  } else {
+    charaTab.querySelectorAll('.image-link').forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const tags = (link.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
+      link.style.display = match ? '' : 'none';
+    });
+  }
+
+// --- Cocofolia 部屋 ---
+const cocoTab = document.getElementById('cocoforia');
+cocoTab.querySelectorAll('.image-link').forEach(link => {
+  const title = (link.dataset.room || link.querySelector('span')?.textContent || '').toLowerCase();
+  const tags = (link.dataset.tags || '').toLowerCase();
+  const match = title.includes(keyword) || tags.includes(keyword);
+  link.style.display = match ? '' : 'none';
+});
+
+  // --- YouTubeログ ---
+const youtubeTab = document.getElementById('youtube');
+const categories = youtubeTab.querySelectorAll('.category');
+
+if (categories.length > 0) {
+  // ✅ カテゴリ表示モード
+  categories.forEach(category => {
+    const titleEl = category.querySelector('.category-title');
+    const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+    const carousel = category.querySelector('.carousel');
+    let isHit = title.includes(keyword);
+
+    const videoButtons = category.querySelectorAll('.video-links button');
+    let visibleButtons = [];
+
+    const videos = videoData[category.dataset.category];
+
+    videoButtons.forEach(btn => {
+      const text = btn.textContent.toLowerCase();
+      const tags = (btn.dataset.tags || '').toLowerCase();
+      const match = text.includes(keyword) || tags.includes(keyword);
+      btn.style.display = match ? '' : 'none';
+
+      if (match) {
+        isHit = true;
+        visibleButtons.push(btn);
+      }
+    });
+
+    category.style.display = isHit ? '' : 'none';
+    if (carousel) carousel.style.display = isHit ? '' : 'none';
+
+    if (typeof category.currentIndex !== 'number') category.currentIndex = 0;
+
+    videoButtons.forEach(btn => btn.classList.remove('active'));
+
+    if (visibleButtons.length > 0) {
+      const idx = Math.min(category.currentIndex, visibleButtons.length - 1);
+      const activeBtn = visibleButtons[idx];
+      activeBtn.classList.add('active');
+
+      const videoIndex = parseInt(activeBtn.dataset.index, 10);
+      const iframe = category.querySelector('iframe');
+      if (iframe && videos && videos[videoIndex]) {
+        iframe.src = videos[videoIndex].src;
+        category.currentIndex = videoIndex;
+      }
+    }
+  });
+} else {
+  // ✅ 降順表示モード（カテゴリなし）
+  const wrappers = youtubeTab.querySelectorAll('.video-wrapper');
+  const iframeContainer = youtubeTab.querySelector('.video-iframe-container');
+  const matchedWrappers = [];
+
+  const normalize = str => str.toLowerCase().replace(/[\s_、]/g, '');
+
+  wrappers.forEach(wrapper => {
+    const title = normalize(wrapper.dataset.title || '');
+    const tags = (wrapper.dataset.tags || '').split(',').map(tag => normalize(tag));
+    const kw = normalize(keyword);
+
+    const match =
+      title.includes(kw) ||
+      tags.some(tag => tag.includes(kw));
+
+    wrapper.style.display = match ? '' : 'none';
+    if (match) matchedWrappers.push(wrapper);
+  });
+
+  // iframeContainer に表示を反映
+  if (iframeContainer) {
+    iframeContainer.innerHTML = '';
+    matchedWrappers.forEach(wrapper => {
+      iframeContainer.appendChild(wrapper.cloneNode(true));
+    });
+  }
+}
+
+  // --- YouTube目次（オマケ） ---
+  document.querySelectorAll('.video-toc li').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.style.display = text.includes(keyword) ? '' : 'none';
+  });
+});
+
+
+// タグ一覧を作成して、ボタン押下で表示切替、タグクリックで検索欄にセット
+function setupTagList() {
+  const tagButton = document.getElementById('tagButton');
+  const tagList = document.getElementById('tagList');
+  const searchBox = document.getElementById('searchBox');
+
+  // data-tagsを集めて重複なくSetに
+  const tagSet = new Set();
+
+  // テキセログのdata-tags
+  document.querySelectorAll('#text .image-link').forEach(el => {
+    const tags = (el.dataset.tags || '').split(',').map(t => t.trim());
+    tags.forEach(t => { if (t) tagSet.add(t); });
+  });
+
+  // YouTubeログのvideo-linksボタンのdata-tags
+  document.querySelectorAll('#youtube .video-links button').forEach(el => {
+    const tags = (el.dataset.tags || '').split(',').map(t => t.trim());
+    tags.forEach(t => { if (t) tagSet.add(t); });
+  });
+
+  // tagListに<li>を作成
+  tagList.innerHTML = '';
+  tagSet.forEach(tag => {
+    const li = document.createElement('li');
+    li.textContent = tag;
+    li.style.padding = '8px 12px';
+    li.style.cursor = 'pointer';
+    li.style.borderBottom = '1px solid #eee';
+    li.addEventListener('mouseenter', () => li.style.backgroundColor = '#f0f0f0');
+    li.addEventListener('mouseleave', () => li.style.backgroundColor = '#fff');
+    li.addEventListener('click', () => {
+      searchBox.value = tag;
+      tagList.style.display = 'none';
+      //searchBox.focus();
+      // ここで検索実行の関数があれば呼び出してもOK
+      searchBox.dispatchEvent(new Event('input'));
+
+// --- 検索後に探索者の詳細を更新する ---
+const visibleCharas = Array.from(document.querySelectorAll('#chara .image-link'))
+  .filter(el => el.style.display !== 'none');
+
+if (visibleCharas.length > 0) {
+  const firstName = visibleCharas[0].querySelector('span')?.textContent?.trim();
+  if (firstName) {
+    updateCharaDetail(firstName);
+  }
+} else {
+  // 検索結果が0件なら詳細を非表示に
+  document.getElementById('charaDetail').style.display = 'none';
+}
+
+    });
+    tagList.appendChild(li);
+  });
+
+
+  document.getElementById('clearButton').addEventListener('click', () => {
+  const searchBox = document.getElementById('searchBox');
+  searchBox.value = ''; // 検索ボックスの中身を空にする
+  searchBox.dispatchEvent(new Event('input')); // inputイベントを発火させて全表示
+
+});
+
+document.getElementById('tagList').addEventListener('mousedown', function(e) {
+  e.preventDefault(); // フォーカス移動阻止
+});
+
+  // ボタンで表示/非表示切替
+  tagButton.addEventListener('click', () => {
+    if (tagList.style.display === 'none') {
+      tagList.style.display = 'block';
+    } else {
+      tagList.style.display = 'none';
+    }
+  });
+
+  // ページのどこかクリックでリストを閉じる
+  document.addEventListener('click', (e) => {
+    if (!tagList.contains(e.target) && e.target !== tagButton) {
+      tagList.style.display = 'none';
+    }
+  });
+}
+
+// ページ読み込み時にセットアップ
+window.addEventListener('DOMContentLoaded', setupTagList);
+
+
+function showLatestItems() {
+  const items = [];
+
+  // テキセ（リンクで直接飛ぶ）
+  document.querySelectorAll('#text .image-link').forEach(link => {
+    const date = link.dataset.date;
+    if (date) {
+      items.push({
+        date: date,
+        title: link.querySelector('span').innerText,
+        url: link.href,
+        type: 'text' // テキセログ
+      });
+    }
+  });
+
+  // YouTube（リンクせず内部で切り替え）
+  document.querySelectorAll('#youtube .video-links button').forEach(btn => {
+    const date = btn.dataset.date;
+    if (date) {
+      items.push({
+        date: date,
+        title: btn.textContent,
+        targetButton: btn, // ←ボタンDOMそのもの
+        type: 'youtube'
+      });
+    }
+  });
+
+  // 新しい順にソート
+  items.sort((a, b) => b.date.localeCompare(a.date));
+
+  // 表示
+  const list = document.getElementById('newItemList');
+  list.innerHTML = ''; 
+  items.forEach(item => {
+    const li = document.createElement('li');
+
+    if(item.type === 'text'){
+      // テキセ：そのままリンク
+      li.innerHTML = `<a href="${item.url}" target="_blank">${item.title}</a> <span class="new-item-date">${item.date}</span>`;
+} else if(item.type === 'youtube'){
+  const link = document.createElement('a');
+  link.href = '#';
+  link.textContent = `${item.title}`;
+  link.addEventListener('click', e => {
+    e.preventDefault();
+
+    // videoDataからタイトル一致のYouTube watchリンクを生成
+    let youtubeUrl = '#';
+    for (const videos of Object.values(videoData)) {
+      const match = videos.find(v => v.title === item.title);
+      if (match && match.src.includes('/embed/')) {
+        const videoId = match.src.split('/embed/')[1];
+        youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        break;
+      }
+    }
+
+    // YouTubeタブ切り替え＆iframe更新
+    document.querySelectorAll('.tab-button').forEach(btn => {
+      btn.classList.remove('active');
+      if(btn.dataset.tab === 'youtube') btn.classList.add('active');
+
+    // ✅ ソート状態を同期
+    syncSortState('youtube');
+    });
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.remove('active');
+      if(tab.id === 'youtube') tab.classList.add('active');
+    });
+    item.targetButton.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // YouTube本体も開きたい場合（必要であれば）
+    window.open(youtubeUrl, '_blank');
+  });
+
+  const dateSpan = document.createElement('span');
+  dateSpan.textContent = ` ${item.date}`;
+  dateSpan.classList.add('new-item-date');
+
+  li.appendChild(link);
+  li.appendChild(dateSpan);
+}
+
+    list.appendChild(li);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', showLatestItems);
+
+//動画5件ずつ表示
+document.querySelectorAll('.category').forEach(category => {
+  const tocList = category.querySelector('.video-toc ul');
+  const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+  const prevBtn = category.querySelector('.toc-prev');
+  const nextBtn = category.querySelector('.toc-next');
+
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  function renderTocPage() {
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    tocItems.forEach((li, i) => {
+      li.style.display = (i >= start && i < end) ? '' : 'none';
+    });
+
+    if (prevBtn && nextBtn) {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = end >= tocItems.length;
+    }
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTocPage();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+        currentPage++;
+        renderTocPage();
+      }
+    });
+  }
+
+  renderTocPage();
+});
+
+
+
+
+//探索者一覧
+const charaNames = Object.keys(charaStats); // 表示順にしたければソートしてOK
+let currentCharaIndex = -1;
+
+function updateCharaDetail(name) {
+  const data = charaStats[name];
+  if (!data || !data.stats) return;
+
+currentCharaIndex = charaNames.indexOf(name);
+
+  const images = Array.isArray(data.image) ? data.image : [data.image];
+let currentImageIndex = 0;
+
+const imageEl = document.getElementById('charaImage');
+imageEl.src = images[currentImageIndex]; // ← 常に最初の画像
+
+const selectorEl = document.getElementById('imageSelector');
+selectorEl.innerHTML = '';
+
+if (images.length > 1) {
+    images.forEach((_, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = index + 1;
+
+btn.className = 'image-thumb-button';
+if (index === 0) btn.classList.add('active');
+
+      btn.addEventListener('click', () => {
+        currentImageIndex = index;
+        imageEl.src = images[index];
+
+  Array.from(selectorEl.children).forEach((b, i) => {
+    b.classList.toggle('active', i === index); // ← ⭐ここに入れる！
+  });
+
+    });
+if (index === 0) btn.classList.add('active');
+      selectorEl.appendChild(btn);
+    });
+  }
+
+  const detailEl = document.getElementById('charaDetail');
+  detailEl.style.display = 'block';
+
+  document.getElementById('charaDetail').style.display = 'block';
+
+  document.getElementById('charaLink').textContent = `🔗 ${name} のキャラシ`;
+  document.getElementById('charaLink').href = data.url;
+document.getElementById('charaName').textContent = name;
+document.getElementById('charaDescription').innerHTML = `
+  <div style="font-weight: bold; font-size:15px;text-decoration: underline; margin-bottom: 0.5em;">プロフィール</div>
+  <div>${data.description || ''}</div>
+`;
+
+  // ✅ ラベルは固定、データ値は存在チェック付き
+  const labels = ['STR','CON','POW','DEX','APP','SIZ','INT','EDU'];
+const values = labels.map(key => Number(data.stats[key]) || 0);
+
+  // ✅ チャート描画は少し遅延させてレイアウト完了後に実行
+  setTimeout(() => {
+    const ctx = document.getElementById('charaChart')?.getContext('2d');
+if (!ctx) return;
+  if (window.charaChart) {
+    window.charaChart.destroy();
+  }
+const chartData = {
+  labels: labels,
+  datasets: [{
+    label: name,
+    data: values, // ←ここが選択されたキャラの能力値に！
+    fill: true,
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    borderColor: 'rgb(255, 99, 132)',
+    pointBackgroundColor: 'rgb(255, 99, 132)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgb(255, 99, 132)'
+  }]
+};
+window.charaChart = new Chart(ctx, {
+  type: 'radar',
+  data: chartData,
+  options: {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      }
+    },
+    scales: {
+  r: {
+    angleLines: { display: false },
+    suggestedMin: 0,
+    suggestedMax: 20,
+    ticks: {
+      stepSize: 5,
+      beginAtZero: true,
+      font: {
+        size: 10
+      }
+    },
+    pointLabels: {
+      font: {
+        size: 10
+      }
+    }
+  }
+}
+}
+});
+
+  }, 50); // 🔄 少し遅らせることでレイアウト確定後に描画される
+
+  // スクロールも安心して実行できる
+  const rect = detailEl.getBoundingClientRect();
+  const offset = window.scrollY + rect.top - 80;
+  window.scrollTo({ top: offset, behavior: 'smooth' });
+}
+
+document.querySelectorAll('#chara .image-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault(); // いあキャラに飛ばない
+    const name = link.querySelector('span').textContent.trim();
+    updateCharaDetail(name);
+  });
+});
+
+
+document.getElementById('prevChara').addEventListener('click', () => {
+  // ← 先頭を超えたら末尾に戻る
+  const prevIndex = (currentCharaIndex - 1 + charaNames.length) % charaNames.length;
+  updateCharaDetail(charaNames[prevIndex]);
+});
+
+document.getElementById('nextChara').addEventListener('click', () => {
+  // → 最後を超えたら先頭に戻る
+  const nextIndex = (currentCharaIndex + 1) % charaNames.length;
+  updateCharaDetail(charaNames[nextIndex]);
+});
+
+//番号が1の立ち絵を初期表示
+//window.addEventListener('DOMContentLoaded', () => {
+//  if (charaNames.length > 0) {
+//    updateCharaDetail(charaNames[0]); // 最初の探索者を表示
+//  }
+//});
+
+
+
+//カテゴリ、降順切り替え
+let originalHTMLs = {};
+let currentSortMode = 'category'; // 初期はカテゴリ
+let allYouTubeWrappers = []; // ← 降順表示用の全データ保存
+
+window.addEventListener('DOMContentLoaded', () => {
+  ['youtube', 'text'].forEach(id => {
+    const container = document.getElementById(id);
+    if (container) {
+      originalHTMLs[id] = container.innerHTML;
+    }
+  });
+
+  // 初期表示のタブに合わせて並びを同期
+  const activeTab = getActiveTab();
+  if (activeTab) syncSortState(activeTab);
+});
+
+document.getElementById('sortToggleBtn').addEventListener('click', () => {
+  const icon = document.getElementById('sortIcon');
+  const activeTab = getActiveTab();
+
+  if (currentSortMode === 'category') {
+    currentSortMode = 'desc';
+    icon.textContent = '⬇️';
+    applyDescendingSort(activeTab);
+
+    // 🔍 検索キーワードがあれば反映
+    const searchBox = document.getElementById('searchBox');
+    const keyword = searchBox.value.trim();
+    if (activeTab === 'youtube' && keyword) {
+      filterYouTubeLogs(keyword);
+    }
+
+  } else {
+    currentSortMode = 'category';
+    icon.textContent = '📂';
+    restoreCategoryView(activeTab);
+  }
+});
+
+function syncSortState(tab) {
+  const icon = document.getElementById('sortIcon');
+
+  if (currentSortMode === 'category') {
+    icon.textContent = '📂';
+    restoreCategoryView(tab);
+  } else {
+    icon.textContent = '⬇️';
+    applyDescendingSort(tab);
+  }
+}
+
+function applyDescendingSort(tab) {
+
+//動画5件ずつ表示
+document.querySelectorAll('.category').forEach(category => {
+  const tocList = category.querySelector('.video-toc ul');
+  const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+  const prevBtn = category.querySelector('.toc-prev');
+  const nextBtn = category.querySelector('.toc-next');
+
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  function renderTocPage() {
+    const start = currentPage * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    tocItems.forEach((li, i) => {
+      li.style.display = (i >= start && i < end) ? '' : 'none';
+    });
+
+    if (prevBtn && nextBtn) {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = end >= tocItems.length;
+    }
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderTocPage();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+        currentPage++;
+        renderTocPage();
+      }
+    });
+  }
+
+  renderTocPage();
+});
+
+
+
+  if (tab === 'youtube') {
+    const youtubeTab = document.getElementById('youtube');
+    const allButtons = Array.from(youtubeTab.querySelectorAll('.video-links button'))
+      .filter(btn => btn.dataset.date && btn.textContent);
+
+    const sortedButtons = allButtons.sort((a, b) => {
+      return new Date(b.dataset.date) - new Date(a.dataset.date);
+    });
+
+    const videoList = document.createElement('div');
+    videoList.classList.add('video-iframe-container');
+    videoList.style.display = 'flex';
+    videoList.style.flexDirection = 'column';
+    videoList.style.gap = '2rem';
+
+const titleDiv = document.createElement('div');
+titleDiv.classList.add('category-title');
+titleDiv.textContent = '最新順';
+videoList.prepend(titleDiv);
+
+
+    // ✅ 一時保存用の配列
+    const wrapperList = [];
+
+    sortedButtons.forEach(btn => {
+      const title = btn.textContent.trim();
+      const tags = (btn.dataset.tags || '').trim();
+      const date = btn.dataset.date || '';
+
+      for (const category in videoData) {
+        const video = videoData[category].find(v => v.title === title);
+        if (video) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('video-wrapper');
+          wrapper.dataset.title = title.toLowerCase();
+          wrapper.dataset.tags = tags.toLowerCase();
+          wrapper.dataset.date = date;
+
+          const iframe = document.createElement('iframe');
+          iframe.src = video.src;
+          iframe.allowFullscreen = true;
+          iframe.loading = 'lazy';
+          iframe.style.width = '100%';
+          iframe.style.aspectRatio = '16 / 9';
+          iframe.style.border = 'none';
+          iframe.style.borderRadius = '1rem';
+
+          wrapper.appendChild(iframe);
+
+// タイトル・タグ・日付用の行を作成
+const infoRow = document.createElement('div');
+infoRow.style.display = 'flex';
+infoRow.style.justifyContent = 'space-between';
+infoRow.style.alignItems = 'center';
+infoRow.style.marginTop = '0.5rem';
+infoRow.style.fontSize = '0.9rem';
+infoRow.style.color = '#333';
+
+// 左側：空白
+const emptyLeft = document.createElement('span');
+emptyLeft.style.flex = '1';
+infoRow.appendChild(emptyLeft);
+
+// 中央：タイトル
+const titleElem = document.createElement('span');
+titleElem.textContent = title || '';
+titleElem.style.flex = '1';
+titleElem.style.textAlign = 'center';
+titleElem.style.fontWeight = 'bold';
+titleElem.style.color = '#333';
+infoRow.appendChild(titleElem);
+
+// 右側：タグ＋日付
+const rightElem = document.createElement('div');
+rightElem.style.flex = '1';
+rightElem.style.display = 'flex';
+rightElem.style.flexDirection = 'column';
+rightElem.style.alignItems = 'flex-end';
+rightElem.style.marginRight = '10px';
+rightElem.style.fontSize = '0.85rem';
+rightElem.style.color = '#666';
+
+if (wrapper.dataset.tags) {
+  const tagsElem = document.createElement('span');
+  tagsElem.textContent = wrapper.dataset.tags;
+  rightElem.appendChild(tagsElem);
+}
+
+const dateElem = document.createElement('span');
+dateElem.textContent = date || '';
+rightElem.appendChild(dateElem);
+
+infoRow.appendChild(rightElem);
+
+// DOMに追加
+wrapper.appendChild(infoRow);
+
+
+
+          videoList.appendChild(wrapper);
+          wrapperList.push(wrapper); // ✅ 保存
+          break;
+        }
+      }
+    });
+
+    // ✅ 全件データとして保存
+    allYouTubeWrappers = wrapperList;
+
+    youtubeTab.innerHTML = '';
+    youtubeTab.appendChild(videoList);
+
+  // 降順用のページ送りボタンを付ける
+  setupPagination(videoList, wrapperList);
+
+  // ★ここでイベント付け
+  const prevBtn = videoList.querySelector('.prev');
+  const nextBtn = videoList.querySelector('.next');
+  let currentIndex = 0;
+
+  function updateVideo(index) {
+    if (index < 0) index = wrapperList.length - 1;
+    if (index >= wrapperList.length) index = 0;
+    currentIndex = index;
+    // iframe の src を切り替えるならここで設定
+  }
+
+  prevBtn.addEventListener('click', () => updateVideo(currentIndex - 1));
+  nextBtn.addEventListener('click', () => updateVideo(currentIndex + 1));
+
+
+  } else if (tab === 'text') {
+    const container = document.getElementById('text');
+    const allLinks = Array.from(container.querySelectorAll('.image-link'));
+
+    container.querySelectorAll('.category-title').forEach(title => title.remove());
+
+// 新しいカテゴリタイトルを作成
+  const titleDiv = document.createElement('div');
+  titleDiv.classList.add('category-title');
+  titleDiv.textContent = '最新順';
+
+  const linkGrid = container.querySelector('.link-grid');
+  linkGrid.innerHTML = '';
+
+  // タイトルをリンクグリッドの **前に container 内で追加**
+  container.insertBefore(titleDiv, linkGrid);
+
+  // 日付順に並び替えて追加
+  const sortedLinks = allLinks.sort((a, b) => {
+    return new Date(b.dataset.date) - new Date(a.dataset.date);
+  });
+  sortedLinks.forEach(link => linkGrid.appendChild(link));
+  }
+}
+
+
+function restoreCategoryView(tab) {
+  if (!originalHTMLs[tab]) return;
+
+  const container = document.getElementById(tab);
+  container.innerHTML = originalHTMLs[tab];
+
+  if (tab === 'youtube') {
+    container.querySelectorAll('.carousel').forEach(carousel => {
+      carousel.classList.add('show');
+    });
+
+    container.querySelectorAll('.category').forEach(category => {
+      const tocList = category.querySelector('.video-toc ul');
+      const tocItems = Array.from(tocList?.querySelectorAll('li') || []);
+      const prevBtn = category.querySelector('.toc-prev');
+      const nextBtn = category.querySelector('.toc-next');
+
+      const itemsPerPage = 5;
+      let currentPage = 0;
+
+      function renderTocPage() {
+        const start = currentPage * itemsPerPage;
+        const end = start + itemsPerPage;
+
+        tocItems.forEach((li, i) => {
+          li.style.display = (i >= start && i < end) ? '' : 'none';
+        });
+
+        if (prevBtn && nextBtn) {
+          prevBtn.disabled = currentPage === 0;
+          nextBtn.disabled = end >= tocItems.length;
+        }
+      }
+
+      if (prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 0) {
+            currentPage--;
+            renderTocPage();
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if ((currentPage + 1) * itemsPerPage < tocItems.length) {
+            currentPage++;
+            renderTocPage();
+          }
+        });
+      }
+
+      renderTocPage();
+    });
+
+    container.querySelectorAll('.category').forEach(category => {
+      const iframe = category.querySelector('iframe');
+      const buttons = category.querySelectorAll('.video-links button');
+      const videos = videoData[category.dataset.category];
+
+reindexVideoButtons(category);
+
+      buttons.forEach((btn, index) => {
+        btn.dataset.index = index;
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          if (iframe && videos && videos[index]) {
+            iframe.src = videos[index].src;
+            category.currentIndex = index;
+          }
+        });
+      });
+
+// --- carousel の左右ボタンを確実に動かすための追加コード ---
+const carouselPrev = category.querySelector('.carousel-controls .prev');
+const carouselNext = category.querySelector('.carousel-controls .next');
+// carousel 内の iframe を明示的に取得（セレクタを特定することで衝突を避ける）
+const carouselIframe = category.querySelector('.carousel iframe');
+const videosForCategory = videoData[category.dataset.category] || [];
+let carouselIndex = 0;
+
+function updateCarousel(idx) {
+  if (!videosForCategory.length) return;
+  if (idx < 0) idx = videosForCategory.length - 1;
+  if (idx >= videosForCategory.length) idx = 0;
+  carouselIndex = idx;
+  if (carouselIframe) carouselIframe.src = videosForCategory[carouselIndex].src;
+  // video-links の active 状態を同期する（あれば）
+  const btns = category.querySelectorAll('.video-links button');
+  btns.forEach((b, i) => b.classList.toggle('active', i === carouselIndex));
+}
+
+// prev/next があるならイベントを登録（ガード付き）
+if (carouselPrev) carouselPrev.addEventListener('click', () => updateCarousel(carouselIndex - 1));
+if (carouselNext) carouselNext.addEventListener('click', () => updateCarousel(carouselIndex + 1));
+
+// 初期表示は最初の動画（あるいは既に active なボタン）を反映
+const activeBtn = category.querySelector('.video-links button.active');
+if (activeBtn) {
+  const idx = Array.from(category.querySelectorAll('.video-links button')).indexOf(activeBtn);
+  if (idx >= 0) updateCarousel(idx);
+} else {
+  updateCarousel(0);
+}
+
+      const tocLinks = category.querySelectorAll('.video-toc li a');
+tocLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const title = link.textContent.trim();
+    const targetBtn = Array.from(buttons).find(btn => btn.textContent.trim() === title);
+    if (targetBtn) {
+      const index = parseInt(targetBtn.dataset.index, 10);
+      if (!isNaN(index)) {
+        updateCarousel(index); // ✅ これで carouselIndex も iframe も同期される
+      }
+    }
+  });
+});
+
+    });
+
+    setupTagList();
+    showLatestItems();
+
+    const searchBox = document.getElementById('searchBox');
+    if (searchBox.value.trim()) {
+      searchBox.dispatchEvent(new Event('input'));
+    }
+
+  } else if (tab === 'text') {
+    container.querySelectorAll('.image-link').forEach(link => {
+      link.classList.add('show');
+});
+const searchBox = document.getElementById('searchBox'); 
+if (searchBox.value.trim()) { 
+setTimeout(() => { 
+searchBox.dispatchEvent(new Event('input'));
+ }, 0);
+    }
+  }
+}
+
+function getActiveTab() {
+  if (document.getElementById('youtube')?.classList.contains('active')) return 'youtube';
+  if (document.getElementById('text')?.classList.contains('active')) return 'text';
+  return null;
+}
+
+function filterYouTubeLogs(keyword) {
+  const youtubeTab = document.getElementById('youtube');
+  const iframeContainer = youtubeTab.querySelector('.video-iframe-container');
+  const normalize = str => str.toLowerCase().replace(/[\s_、]/g, '');
+  const kw = normalize(keyword);
+
+  const matchedWrappers = allYouTubeWrappers.filter(wrapper => {
+    const title = normalize(wrapper.dataset.title || '');
+    const tags = (wrapper.dataset.tags || '').split(',').map(tag => normalize(tag));
+    return !kw || title.includes(kw) || tags.some(tag => tag.includes(kw));
+  });
+
+  if (iframeContainer) {
+    iframeContainer.innerHTML = '';
+    matchedWrappers.forEach(wrapper => {
+      iframeContainer.appendChild(wrapper.cloneNode(true));
+    });
+  }
+}
+
+function setupPagination(container, items) {
+  const itemsPerPage = 5;
+  let currentPage = 0;
+
+  const nav = document.createElement('div');
+  nav.classList.add('pagination-nav');
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = 'Prev';
+  prevBtn.classList.add('prev');
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = 'Next';
+  nextBtn.classList.add('next');
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  container.appendChild(nav);
+
+  // 🔍 降順かつYouTubeタブなら全件表示＆ボタン非表示
+  const isDescendingYouTube =
+    getActiveTab() === 'youtube' &&
+    document.querySelector('.video-iframe-container')?.style.flexDirection === 'column';
+
+  function renderPage() {
+    items.forEach((item, i) => {
+      item.style.display = isDescendingYouTube ? '' : (i >= currentPage * itemsPerPage && i < (currentPage + 1) * itemsPerPage) ? '' : 'none';
+    });
+
+    prevBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
+    nextBtn.style.display = isDescendingYouTube ? 'none' : 'inline-block';
+
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = (currentPage + 1) * itemsPerPage >= items.length;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) {
+      currentPage--;
+      renderPage();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if ((currentPage + 1) * itemsPerPage < items.length) {
+      currentPage++;
+      renderPage();
+    }
+  });
+
+  renderPage();
+}
+
+
+function reindexVideoButtons(category) {
+  const videoButtons = category.querySelectorAll('.video-links button');
+  const tocLinks = category.querySelectorAll('.video-toc a');
+
+  videoButtons.forEach((btn, idx) => {
+    btn.setAttribute('data-index', idx);
+  });
+
+  tocLinks.forEach((link, idx) => {
+    link.setAttribute('data-index', idx);
+  });
+}
+
+
+
+//探索者並び替え機能
+let currentCharaOrder = [];
+let allCharaLinks = []; // 全探索者の .image-link を保持
+let originalCharaHTML = "";
+
+window.addEventListener("DOMContentLoaded", () => {
+  const charaContainer = document.getElementById("chara");
+  if (!charaContainer) return;
+
+  // 初期HTML保存
+  originalCharaHTML = charaContainer.innerHTML;
+
+  // 初期表示されている探索者を保持
+  allCharaLinks = Array.from(charaContainer.querySelectorAll('.image-link'));
+
+  // 初期クリックイベント付与
+  addClickEvents(allCharaLinks);
+
+  // 初期順序を設定
+  currentCharaOrder = allCharaLinks.map(l => l.querySelector('span')?.textContent?.trim());
+
+  // 初期タブが探索者なら同期
+  if (getActiveTab() === 'chara') {
+    syncCharaSortState();
+  }
+});
+
+// 共通でクリックイベントを付与する関数
+function addClickEvents(links) {
+  links.forEach(link => {
+    const name = link.querySelector('span')?.textContent?.trim();
+    if (!name) return;
+
+    // 既存イベントを消すために replaceWith ではなく、一旦 removeEventListener しても良い
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      updateCharaDetail(name);
+      currentCharaIndex = currentCharaOrder.indexOf(name);
+    });
+  });
+}
+
+// 並び替え
+function parseBirthdayValueForSort(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    let month = Number(m[1]);
+    let day = Number(m[2]);
+    // 4月を起点に回す
+    let rotatedMonth = (month - 4 + 12) % 12; // 4月=0, 5月=1,...3月=11
+    return rotatedMonth * 100 + day;
+  }
+  return 9999;
+}
+
+function parseAge(description) {
+  if (!description) return 0;
+  const m = description.match(/年齢[:：]\s*([0-9]{1,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseHeight(description) {
+  if (!description) return 0;
+  const m = description.match(/身長[:：]\s*([0-9]{2,3})/);
+  return m ? Number(m[1]) : 0;
+}
+
+function parseBirthdayValue(description) {
+  if (!description) return 9999;
+  const m = description.match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+  if (m) {
+    const month = Number(m[1]);
+    const day = Number(m[2]);
+    return month * 100 + day;
+  }
+  return 9999;
+}
+
+function applyCharaSort(statKey) {
+  const charaContainer = document.getElementById("chara");
+  if (!charaContainer) return;
+
+const entries = Object.entries(charaStats).map(([name, data]) => {
+  let value = 0;
+  let originalMonth = null;
+  let originalDay = null;
+
+if (statKey === 'age') {
+    value = parseAge(data.description || '');
+  } else if (statKey === 'height') {
+    value = parseHeight(data.description || '');
+  } else if (statKey === 'birthday') {
+    const m = (data.description || '').match(/誕生日[:：]\s*([0-9]{1,2})\/([0-9]{1,2})/);
+    if (m) {
+      originalMonth = Number(m[1]);
+      originalDay = Number(m[2]);
+      // ソート用の回転値
+      value = ((originalMonth - 4 + 12) % 12) * 100 + originalDay;
+    } else {
+      value = 9999;
+    }
+  } else {
+    value = Number(data.stats?.[statKey] ?? 0);
+  }
+
+  return { name, value, data, originalMonth, originalDay };
+});
+
+  if (statKey === 'birthday') {
+    entries.sort((a, b) => a.value - b.value); // 月日順（昇順）
+  } else {
+    entries.sort((a, b) => b.value - a.value); // 高い数値順
+  }
+
+  charaContainer.innerHTML = '';
+  const catTitle = document.createElement('div');
+  catTitle.className = 'category-title';
+  if (statKey === 'age') catTitle.textContent = '年齢順';
+  else if (statKey === 'height') catTitle.textContent = '身長順';
+  else if (statKey === 'birthday') catTitle.textContent = '誕生日順';
+  else catTitle.textContent = `${statKey}順`;
+  charaContainer.appendChild(catTitle);
+
+  const grid = document.createElement('div');
+  grid.className = 'link-grid';
+
+  entries.forEach(entry => {
+    const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === entry.name);
+    if (!link) return;
+
+    const oldBadge = link.querySelector('.stat-badge');
+    if (oldBadge) oldBadge.remove();
+
+    const badge = document.createElement('span');
+    badge.className = 'stat-badge';
+    if (statKey === 'age') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'height') {
+      badge.textContent = entry.value ? `${entry.value}` : '';
+    } else if (statKey === 'birthday') {
+  if (entry.value !== 9999 && entry.originalMonth && entry.originalDay) {
+    badge.textContent = `${entry.originalMonth}/${entry.originalDay}`;
+  }
+} else {
+      badge.textContent = entry.value;
+    }
+
+    badge.style.backgroundColor = '#e26a89';
+    badge.style.color = 'white';
+    badge.style.fontSize = '0.6rem';
+    badge.style.fontWeight = 'bold';
+    badge.style.padding = '2px 6px';
+    badge.style.borderRadius = '12px';
+    badge.style.marginLeft = '6px';
+    badge.style.marginTop = '1px';
+    badge.style.display = 'inline-block';
+    badge.style.verticalAlign = 'middle';
+
+    const nameSpan = link.querySelector('span');
+    if (nameSpan) nameSpan.insertAdjacentElement('afterend', badge);
+
+    grid.appendChild(link);
+  });
+
+  charaContainer.appendChild(grid);
+  currentCharaOrder = entries.map(e => e.name);
+  addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
+  updateCategoryList();
+}
+
+
+// フォルダ表示
+function restoreCharaCategoryView() {
+  const charaContainer = document.getElementById("chara");
+  if (!charaContainer || !allCharaLinks.length) return;
+
+  charaContainer.innerHTML = '';
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = originalCharaHTML;
+
+  const categoryBlocks = Array.from(tempDiv.querySelectorAll('.category-title, .link-grid'));
+
+  categoryBlocks.forEach(block => {
+    if (block.classList.contains('category-title')) {
+      charaContainer.appendChild(block.cloneNode(true));
+    } else if (block.classList.contains('link-grid')) {
+      const grid = document.createElement('div');
+      grid.className = 'link-grid';
+
+      Array.from(block.querySelectorAll('.image-link')).forEach(origLink => {
+        const name = origLink.querySelector('span')?.textContent?.trim();
+        const link = allCharaLinks.find(l => l.querySelector('span')?.textContent?.trim() === name);
+        if (link) {
+          // 📁表示時は既存バッジを削除
+          const oldBadge = link.querySelector('.stat-badge');
+          if (oldBadge) oldBadge.remove();
+
+          grid.appendChild(link);
+        }
+      });
+
+      charaContainer.appendChild(grid);
+    }
+  });
+
+  currentCharaOrder = Array.from(charaContainer.querySelectorAll('.image-link'))
+    .map(link => link.querySelector('span')?.textContent?.trim());
+
+  addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
+  updateCategoryList();
+}
+
+
+function syncCharaSortState() {
+  const select = document.getElementById('charaSortSelect');
+  const mode = select?.value || 'folder';
+
+  if (mode === 'folder') {
+    restoreCharaCategoryView();
+  } else {
+    applyCharaSort(mode);
+  }
+
+}
+
+document.getElementById("charaSortSelect").addEventListener("change", () => {
+  syncCharaSortState();
+});
+
+// 並び替え後やフォルダ表示後に必ず最新要素を取得してイベントを付与
+function addClickEventsToCurrentDOM() {
+  const charaContainer = document.getElementById("chara");
+  const links = charaContainer.querySelectorAll('.image-link');
+  links.forEach(link => {
+    const name = link.querySelector('span')?.textContent?.trim();
+    if (!name) return;
+
+    // 一度既存のクリックイベントを消す
+    const newLink = link.cloneNode(true);
+    link.replaceWith(newLink);
+
+    newLink.addEventListener('click', e => {
+      e.preventDefault();
+      updateCharaDetail(name);
+      currentCharaIndex = Array.from(charaContainer.querySelectorAll('.image-link'))
+        .map(l => l.querySelector('span')?.textContent?.trim())
+        .indexOf(name);
+    });
+  });
+}
+
+//📁クリック時
+charaSortSelect.addEventListener('change', () => {
+  const selected = charaSortSelect.value;
+
+    // sortToggleBtnを非表示に
+    sortToggleBtn.style.display = 'none';
+
+  if (selected === 'folder') {
+    // charaSortSelectは表示
+    charaSortSelect.style.display = 'inline-block';
+
+    // 探索者タブをアクティブ化するフラグをセットしてリロード
+    localStorage.setItem('activateCharaTab', '1');
+    location.reload();
+  } else {
+    // 他のソート処理
+    applyCharaSort(selected);
+  }
+});
+
+// リロード後に探索者タブをアクティブ化
+window.addEventListener('DOMContentLoaded', () => {
+  const activateChara = localStorage.getItem('activateCharaTab');
+  if (activateChara) {
+    const charaBtn = document.querySelector('.tab-button[data-tab="chara"]');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    // タブの active クラスだけ操作
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    charaBtn.classList.add('active');
+
+    // 各タブの内容表示切替
+    document.getElementById('chara').style.display = 'block';
+    document.getElementById('text').style.display = 'none';
+    document.getElementById('youtube').style.display = 'none';
+
+    // sortToggleBtn を非表示、charaSortSelect を表示
+    sortToggleBtn.style.display = 'none';
+    charaSortSelect.style.display = 'inline-block';
+
+    // フラグは消す（ここで消しても OK）
+    localStorage.removeItem('activateCharaTab');
+  }
+
+  // タブクリック時の表示切替
+  document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // 各タブ内容を切り替え
+      document.getElementById('chara').style.display = (target === 'chara') ? 'block' : 'none';
+      document.getElementById('text').style.display = (target === 'text') ? 'block' : 'none';
+      document.getElementById('youtube').style.display = (target === 'youtube') ? 'block' : 'none';
+
+      // sortToggleBtn と charaSortSelect の表示切替
+      sortToggleBtn.style.display = (target === 'text' || target === 'youtube') ? 'inline-block' : 'none';
+      charaSortSelect.style.display = (target === 'chara') ? 'inline-block' : 'none';
+    });
+  });
+});
+
+
+
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+// --- モーダルを一度だけ作るユーティリティ ---
+function ensureCocoModal() {
+  let root = document.getElementById('coco-confirm-modal');
+  if (root) return root;
+  root = document.createElement('div');
+  root.id = 'coco-confirm-modal';
+  root.innerHTML = `
+    <div class="coco-modal-backdrop" role="presentation">
+      <div class="coco-modal" role="dialog" aria-modal="true" aria-labelledby="coco-modal-title">
+        <p id="coco-modal-title"></p>
+        <div class="coco-modal-buttons">
+          <button type="button" id="coco-yes">はい</button>
+          <button type="button" id="coco-no">いいえ</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(root);
+  return root;
+}
+
+// --- モーダル表示。Promise で結果を返す（true = はい / false = いいえ） ---
+function showCocoConfirm(roomName) {
+  const modal = ensureCocoModal();
+  const title = modal.querySelector('#coco-modal-title');
+  const yes = modal.querySelector('#coco-yes');
+  const no = modal.querySelector('#coco-no');
+
+  title.textContent = `「${roomName}」を開きますか？`;
+  modal.style.display = 'block';
+
+  const prevFocus = document.activeElement;
+  yes.focus();
+
+  return new Promise((resolve) => {
+    function cleanup(result) {
+      modal.style.display = 'none';
+      yes.removeEventListener('click', onYes);
+      no.removeEventListener('click', onNo);
+      document.removeEventListener('keydown', onKey);
+      if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
+      resolve(result);
+    }
+    function onYes() { cleanup(true); }
+    function onNo() { cleanup(false); }
+    function onKey(e) {
+      if (e.key === 'Escape') cleanup(false);
+      else if (e.key === 'Enter') cleanup(true);
+    }
+    yes.addEventListener('click', onYes);
+    no.addEventListener('click', onNo);
+    document.addEventListener('keydown', onKey);
+  });
+}
+
+// ====== cocoforia 用のクリック確認 + タグ／新着取り込み ======
+function setupCocoforia() {
+  document.querySelectorAll('#cocoforia .image-link').forEach(a => {
+    if (a.dataset.cocoBound) return;
+    a.dataset.cocoBound = '1';
+
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const room = a.dataset.room || a.querySelector('span')?.textContent?.trim() || 'この部屋';
+
+      showCocoConfirm(room).then(ok => {
+        if (ok) {
+          // 直接 open（空タブは作らない）
+          window.open(a.href, '_blank');
+        }
+      });
+    });
+  });
+}
+
+
+// 呼び出し（DOMContentLoaded の中か、既存の初期化ルーチンの最後に）
+window.addEventListener('DOMContentLoaded', () => {
+  setupCocoforia();
+  // 既存の setupTagList(), showLatestItems() 等はそのまま動かしてください
+});
+
+
+
+cocofoSortSelect.addEventListener('change', () => {
+  const value = cocofoSortSelect.value;
+
+  // 📁 が選ばれたら検索欄をクリア、それ以外なら検索欄に反映
+  if (value === 'folder') {
+    searchBox.value = '';
+  } else {
+    searchBox.value = value;
+  }
+
+  // 入力イベントを発火させて検索処理を即時反映
+  searchBox.dispatchEvent(new Event('input'));
+});
+
+
+</script>
+
+</body>
+
+</html>
