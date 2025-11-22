@@ -1953,6 +1953,22 @@ document.querySelector('.scroll-to-top').addEventListener('click', (e) => {
   });
 });
 
+
+// カテゴリメニュー内リンクをクリックしたときスムーズにスクロール
+categoryList.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (!link) return;
+
+  e.preventDefault();
+
+  const target = document.querySelector(link.getAttribute('href'));
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+
+});
+
+
 // 検索処理
 
 document.getElementById('searchBox').addEventListener('input', function(e) {
