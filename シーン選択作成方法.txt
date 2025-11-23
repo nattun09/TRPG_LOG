@@ -214,11 +214,9 @@ body.export-body {
 <div id="export-all-mode-filter" class="all-mode-filter export></div>
 
 
-③背景画像がjpgだと反応しないので、pngに変更してcssの該当箇所をpngに変える！
-→背景のカラー変えた上で、imageフォルダ下のほかのpngにしたら変わった？
+③背景画像が一旦名前を変更したpngをアップし、cssの該当箇所を変更したpngに変える！
 
 
-最新版は、上のみでOK
 
 
 
