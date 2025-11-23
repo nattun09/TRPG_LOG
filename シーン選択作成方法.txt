@@ -214,7 +214,8 @@ body.export-body {
 <div id="export-all-mode-filter" class="all-mode-filter export></div>
 
 
-③背景画像が一旦名前を変更したpngをアップし、cssの該当箇所を変更したpngに変える！
+③背景画像が読み込まない場合は、一旦名前を変更したpngをアップし、cssの該当箇所を変更したpngに変える！
+
 
 
 
