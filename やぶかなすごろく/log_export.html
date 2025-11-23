@@ -62,9 +62,17 @@ btn.addEventListener("click", () => {
 });
 
 const volumeBar = document.getElementById("volume-bar");
+
 volumeBar.addEventListener("input", () => {
-  bgm.volume = volumeBar.value;
+  if (bgm.paused) {
+    bgm.play().then(() => {
+      bgm.volume = volumeBar.value;
+    }).catch(err => console.log("再生エラー:", err));
+  } else {
+    bgm.volume = volumeBar.value;
+  }
 });
+
 
   });
 </script>
@@ -132,13 +140,8 @@ volumeBar.addEventListener("input", () => {
 
 @media (max-width: 600px) {
   .music-btn {
-    margin-left: 10px;
+    margin-left: 6px;
   }
-}
-
-.music-btn:hover {
-  background: rgba(0, 0, 0, 0.25);
-  transform: scale(1.1);
 }
 
 .volume-bar {
