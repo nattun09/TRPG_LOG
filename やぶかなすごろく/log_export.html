@@ -45,17 +45,21 @@
     const bgm = document.getElementById("bgm");
     const btn = document.getElementById("music-toggle");
 
-    btn.addEventListener("click", () => {
-      if (bgm.paused) {
-        bgm.play();
-        btn.innerHTML = "❚❚"; 
-        btn.classList.add("active");
-      } else {
-        bgm.pause();
-        btn.innerHTML = "▶"; 
-        btn.classList.remove("active");
-      }
+btn.addEventListener("click", () => {
+  if (bgm.paused) {
+    bgm.play().then(() => {
+      bgm.volume = volumeBar.value; // iOSでも反映
+    }).catch(err => {
+      console.log("再生エラー:", err);
     });
+    btn.innerHTML = "❚❚"; 
+    btn.classList.add("active");
+  } else {
+    bgm.pause();
+    btn.innerHTML = "▶"; 
+    btn.classList.remove("active");
+  }
+});
 
 const volumeBar = document.getElementById("volume-bar");
 volumeBar.addEventListener("input", () => {
