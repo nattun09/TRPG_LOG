@@ -68,29 +68,36 @@ volumeBar.addEventListener("input", () => {
 
 <style>
   /* 上部固定ヘッダー */
-  #image-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
+#image-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
   background: #ffffffcc;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #e4e4e4;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;       /* 1行固定 */
+  gap: 8px;                /* アイテム間の間隔 */
+  padding: 0 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;        /* 横幅不足時はスクロール */
+  white-space: nowrap;     /* テキスト改行防止 */
+}
 
   /* セレクトボックスの見た目 */
 .image-selector {
-  padding: 2px 6px;      /* 縦: 2px、横: 6px に調整 */
-  font-size: 12px;       /* 少し小さめの文字 */
-  min-width: 220px;
-  height: auto;          /* 明示的に高さをautoにする（必要に応じて） */
-  line-height: 1.2;      /* 行の高さを詰めることでさらに細くできる */
+  padding: 2px 6px;
+  font-size: 12px;
+  min-width: 120px;    /* 最小幅 */
+  max-width: 60%;      /* 最大幅 */
+  width: auto;
+  flex-shrink: 1;       /* 縮んでもOK */
+  height: auto;
+  line-height: 1.2;
 }
 
   /* ヘッダーと被らないように本文に余白追加 */
@@ -100,16 +107,12 @@ volumeBar.addEventListener("input", () => {
 
 .dropdown-label {
   font-size: 12px;
-  margin-bottom: 4px;
   opacity: 0.7;
-padding-right:4px;
-  /* 縦並び用 margin を削除して横並び用に変更 */
-  margin-bottom: 0;
-  white-space: nowrap; /* 改行されないように */
+  padding-right: 4px;
+  white-space: nowrap;
 }
 
 .music-btn {
-  margin-left: auto;
   width: 32px;
   height: 32px;
   min-width: 32px;
@@ -135,12 +138,14 @@ padding-right:4px;
 }
 
 .volume-bar {
-  width: 90px;
-  margin-left: 10px;
-  appearance: none;
+  flex-grow: 1;       /* 空きスペースに広がる */
+  min-width: 60px;
+  max-width: 120px;
   height: 4px;
   border-radius: 3px;
+  appearance: none;
   background: rgba(120,120,120,0.3);
+  margin-left: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -165,6 +170,20 @@ padding-right:4px;
   background: rgba(80,80,80,0.45);
 }
 
+/* ヘッダーと被らないように本文に余白追加 */
+body.export-body {
+  padding-top: 60px !important;
+}
+
+/* 小さい画面でさらに調整 */
+@media (max-width: 600px) {
+  .image-selector {
+    max-width: 100%;   /* セレクトボックスは可能な限り縮む */
+  }
+  .volume-bar {
+    max-width: 100px;
+  }
+}
 
 </style>
 
