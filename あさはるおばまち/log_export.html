@@ -1,91 +1,194 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>session_log</title><link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet"></head>
 
+
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const select = document.getElementById("image-selector");
-
-    // level-2 heading-item だけを対象にする
-    const elements = document.querySelectorAll(".heading-item.export.level-2.log-item");
-
-    elements.forEach((el, index) => {
-      let id = el.id;
-
-      // IDなければ自動付与
-      if (!id) {
-        id = "scene-" + index;
-        el.id = id;
-      }
-
-      const label = el.textContent.trim(); // div内のテキスト（例: "白い部屋"）
-
-      // セレクトボックスに追加
-      const option = document.createElement("option");
-      option.value = id;
-      option.textContent = label;
-      select.appendChild(option);
-    });
-
-    // 選択時にその場所にスクロール
-    select.addEventListener("change", function () {
-      const targetId = this.value;
-      if (targetId) {
-        const target = document.getElementById(targetId);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-      }
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  /* ----- セレクトボックス処理 ----- */
+  const select = document.getElementById("image-selector");
+  const elements = document.querySelectorAll(
+    ".heading-item.export.level-1.log-item, .heading-item.export.level-2.log-item"
+  );
+  elements.forEach((el, index) => {
+    let id = el.id;
+    if (!id) {
+      const level = el.classList.contains("level-1") ? "l1" : "l2";
+      id = `scene-${level}-${index}`;
+      el.id = id;
+    }
+    const label = el.textContent.trim();
+    const option = document.createElement("option");
+    option.value = id;
+    option.textContent = label;
+    if (el.classList.contains("level-1")) option.style.fontWeight = "bold";
+    select.appendChild(option);
+  });
+  select.addEventListener("change", function () {
+    const target = document.getElementById(this.value);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
-//allタブにしか表示されない見出しをmainタブにも表示されるように変更
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.heading-item').forEach(item => {
-        if (item.getAttribute('data-tab') === 'all') {
-            item.setAttribute('data-tab', 'main');
-        }
-    });
+  /* ----- 音楽ボタン処理 ----- */
+const audioEl = document.getElementById("bgm");
+const btn = document.getElementById("music-toggle");
+const volumeBar = document.getElementById("volume-bar");
+
+// 音声ファイルが空の場合はボタンとバーを非表示
+const audioSrc = audioEl.getAttribute("src"); // ←これなら空文字を正確に取得可能
+if (!audioSrc || audioSrc.trim() === "") {
+  btn.style.display = "none";
+  volumeBar.style.display = "none";
+} else {
+  btn.addEventListener("click", async () => {
+    try {
+      if (audioEl.paused) {
+        await audioEl.play();
+        btn.innerHTML = "❚❚";
+        btn.classList.add("active");
+      } else {
+        audioEl.pause();
+        btn.innerHTML = "▶";
+        btn.classList.remove("active");
+      }
+    } catch (err) {
+      console.log("再生エラー:", err);
+    }
+  });
+
+  volumeBar.addEventListener("input", () => {
+    audioEl.volume = parseFloat(volumeBar.value);
+  });
+}
 });
 </script>
 
 
+
 <style>
   /* 上部固定ヘッダー */
-  #image-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  }
+#image-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #ffffffcc;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e4e4e4;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;       /* 1行固定 */
+  gap: 8px;                /* アイテム間の間隔 */
+  padding: 0 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;        /* 横幅不足時はスクロール */
+  white-space: nowrap;     /* テキスト改行防止 */
+}
 
   /* セレクトボックスの見た目 */
 .image-selector {
-  padding: 2px 6px;      /* 縦: 2px、横: 6px に調整 */
-  font-size: 12px;       /* 少し小さめの文字 */
-  min-width: 220px;
-  height: auto;          /* 明示的に高さをautoにする（必要に応じて） */
-  line-height: 1.2;      /* 行の高さを詰めることでさらに細くできる */
+  padding: 2px 6px;
+  font-size: 12px;
+  min-width: 120px;    /* 最小幅 */
+  max-width: 60%;      /* 最大幅 */
+  width: auto;
+  flex-shrink: 1;       /* 縮んでもOK */
+  height: auto;
+  line-height: 1.2;
 }
 
   /* ヘッダーと被らないように本文に余白追加 */
   body.export-body {
   padding-top: 60px !important;
   }
+
+.dropdown-label {
+  font-size: 12px;
+  opacity: 0.7;
+  padding-right: 4px;
+  white-space: nowrap;
+}
+
+.music-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 600px) {
+  .music-btn {
+    margin-left: 6px;
+  }
+}
+
+.volume-bar {
+  flex-grow: 1;       /* 空きスペースに広がる */
+  min-width: 60px;
+  max-width: 120px;
+  height: 4px;
+  border-radius: 3px;
+  appearance: none;
+  background: rgba(120,120,120,0.3);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* つまみ部分のカスタム */
+.volume-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(80,80,80,0.8);
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  transition: 0.25s ease;
+}
+
+.volume-bar::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: rgba(50,50,50,0.9);
+}
+
+.volume-bar:hover {
+  background: rgba(80,80,80,0.45);
+}
+
+/* ヘッダーと被らないように本文に余白追加 */
+body.export-body {
+  padding-top: 60px !important;
+}
+
+/* 小さい画面でさらに調整 */
+@media (max-width: 600px) {
+  .image-selector {
+    max-width: 100%;   /* セレクトボックスは可能な限り縮む */
+  }
+  .volume-bar {
+    max-width: 100px;
+  }
+}
+
 </style>
 
 <header id="image-header">
-  <label for="image-selector" style="margin-right: 10px;">シーンを選択 : </label>
+  <label for="image-selector" class="dropdown-label">シーン選択 : </label>
   <select id="image-selector" class="image-selector export">
     <option value="">-- シーン一覧 --</option>
   </select>
+
+  <!-- ★ 追加：音楽コントロールボタン -->
+  <button id="music-toggle" class="music-btn" aria-label="Music Toggle">▶</button>
+<input type="range" id="volume-bar" class="volume-bar" min="0" max="1" step="0.01" value="0.6">
+<audio id="bgm" src="Ghost Waltz 👻💃.mp3" loop></audio>
 </header>
 
 
