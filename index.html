@@ -437,6 +437,8 @@ text-align: left;
 
 .image-link img {
   width: 100%;
+  max-width: 100%;   /* ← 親要素の幅を超えない */
+  height: auto;      /* ← 縦横比を保ったまま縮む */
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 6px;
