@@ -704,29 +704,30 @@ margin-top:10px;
 
 .playlist-link {
   display: inline-block;
-  padding: 6px 14px;
-  margin: 6px 0 12px;
+  padding: 4px 10px;        /* ← 小さく */
+  margin: 4px 0 10px;
   background: #ffffffcc;
-  color: #333;
+  color: #444;
   text-decoration: none;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 4px #00000015;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(6px);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;       /* ← 角丸少し小さく */
+  font-size: 0.8rem;        /* ← 文字小さく */
+  box-shadow: 0 1px 2px #00000015;  /* ← 影控えめ */
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
 }
 
 .playlist-link:hover {
-  background: #f5f5f5;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px #00000025;
+  background: #f3f3f3;
+  transform: translateY(-1px);       /* ← 浮きも控えめ */
+  box-shadow: 0 2px 4px #00000020;
 }
 
 .playlist-link:active {
-  transform: translateY(0px);
-  box-shadow: 0 2px 4px #00000015;
+  transform: translateY(0);
+  box-shadow: 0 1px 2px #00000015;
 }
+
 
   </style>
 </head>
