@@ -1518,7 +1518,7 @@ const videoData = {
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
     ],
     'repsou': [
-      {src:"https://www.youtube.com/embed/videoseries?list=PLQgCbyN5xp_CQ4T-XHw9_rzfoTW4f2iw-", title:"レプリカントの葬列_こすひば"},
+      {src:"https://youtube.com/playlist?list=PLQgCbyN5xp_CQ4T-XHw9_rzfoTW4f2iw-&si=-IIlIebylWZ--aHo", title:"レプリカントの葬列_こすひば"},
       {src:"https://www.youtube.com/embed/f-wjnDEE7LY", title:"レプリカントの葬列(chapter1)_こすひば"},
       {src:"https://www.youtube.com/embed/1h_iAlSelRc", title:"レプリカントの葬列(chapter2)_こすひば"},
       {src:"https://www.youtube.com/embed/-tRhFMnSQ8Y", title:"レプリカントの葬列(chapter3)_こすひば"}
@@ -2343,15 +2343,25 @@ function showLatestItems() {
     e.preventDefault();
 
     // videoDataからタイトル一致のYouTube watchリンクを生成
-    let youtubeUrl = '#';
-    for (const videos of Object.values(videoData)) {
-      const match = videos.find(v => v.title === item.title);
-      if (match && match.src.includes('/embed/')) {
-        const videoId = match.src.split('/embed/')[1];
-        youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        break;
-      }
+let youtubeUrl = '#';
+for (const videos of Object.values(videoData)) {
+  const match = videos.find(v => v.title === item.title);
+  if (match) {
+
+    // ① プレイリストの場合（/playlist?list= が入っている）
+    if (match.src.includes('playlist?list=')) {
+      youtubeUrl = match.src;  // そのままリンクとして利用
+      break;
     }
+
+    // ② 通常の埋め込み動画（/embed/）
+    if (match.src.includes('/embed/')) {
+      const videoId = match.src.split('/embed/')[1];
+      youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      break;
+    }
+  }
+}
 
     // YouTubeタブ切り替え＆iframe更新
     document.querySelectorAll('.tab-button').forEach(btn => {
