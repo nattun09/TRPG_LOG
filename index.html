@@ -1615,7 +1615,7 @@ const charaStats = {
   "宇瑠虎 超望": {
     image: "image/こすも.webp",
     url: "https://iachara.com/view/11013902",
-description: "年齢：24<br>性別：男<br>身長：171<br>誕生日：9/5<br>職業：怪盗<br>関係：贋作師のひばなと怪盗をしている",
+description: "年齢：24<br>性別：男<br>身長：171<br>誕生日：9/26<br>職業：怪盗<br>関係：贋作師のひばなと怪盗をしている",
     stats: {
       STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0
     }
@@ -1683,7 +1683,7 @@ description: "年齢：21<br>性別：男<br>身長：178<br>誕生日：12/22<b
   "星守 緋花": {
     image: "image/ひばな.webp",
     url: "https://iachara.com/view/11027267",
-description: "年齢：23<br>性別：女<br>身長：164<br>誕生日：<br>職業：贋作師<br>関係：怪盗のこすもの贋作師をしている",
+description: "年齢：23<br>性別：女<br>身長：164<br>誕生日：3/10<br>職業：贋作師<br>関係：怪盗のこすもの贋作師をしている",
     stats: {
       STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0
     }
@@ -1774,7 +1774,7 @@ description: "年齢：17<br>性別：女<br>身長：163<br>誕生日：7/24<br
   },
   "チモシー": {
     image: "image/チモシー.webp",
-    url: "",
+    url: "https://iachara.com/view/11692459",
 description: "年齢：14<br>性別：女<br>身長：148<br>誕生日：2/7<br>職業：村の子<br>出身：口渇ルルパ<br>関係：カルアと幼馴染",
     stats: { STR: 0, CON: 0, POW: 0, DEX: 0, APP: 0, SIZ: 0, INT: 0, EDU: 0 }
   },
@@ -1868,6 +1868,13 @@ description: "年齢：21<br>性別：男<br>身長：170<br>職業：信者<br>
 description: "年齢：36<br>性別：女<br>身長：170<br>職業：探偵<br>出身：村ホラーRTA",
     stats: { STR: 9, CON: 9, POW: 13, DEX: 17, APP: 7, SIZ: 15, INT: 15, EDU: 14 }
   }
+};
+
+
+//キャラ差分
+const diffImages = {
+  "image/薮井.webp": "image/薮井_るんるん.webp",
+  "image/こすも.webp": "image/こすも_照れ焦り.webp",
 };
 
 
@@ -3535,6 +3542,28 @@ cocofoSortSelect.addEventListener('change', () => {
 
   // 入力イベントを発火させて検索処理を即時反映
   searchBox.dispatchEvent(new Event('input'));
+});
+
+//キャラ差分処理
+document.getElementById("charaImage").addEventListener("click", () => {
+  const img = document.getElementById("charaImage");
+  const current = img.getAttribute("src");
+
+  // current が差分のファイル名なら → 元画像に戻す
+  for (const original in diffImages) {
+    const diff = diffImages[original];
+
+    // 今表示しているのが差分なら元に戻す
+    if (current.endsWith(diff)) {
+      img.src = original;
+      return;
+    }
+  }
+
+  // 現在が元画像なら差分へ
+  if (diffImages[current]) {
+    img.src = diffImages[current];
+  }
 });
 
 
