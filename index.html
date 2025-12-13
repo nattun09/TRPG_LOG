@@ -816,6 +816,10 @@ margin-top:10px;
 
 <div class="category-title">もなかも</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="ポチ">
+    <img src="image/iぽち.webp">
+    <span>巡</span>
+  </a> 
   <a target="_blank" class="image-link" data-tags="こすも">
     <img src="image/iこすも.webp">
     <span>宇瑠虎 超望</span>
@@ -856,6 +860,10 @@ margin-top:10px;
 
 <div class="category-title">てとせ</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="かなた">
+    <img src="image/iかなた.webp">
+    <span>かなた</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="ひばな">
     <img src="image/iひばな.webp">
     <span>星守 緋花</span>
@@ -1612,10 +1620,18 @@ const videoData = {
 
 //キャラ立ち絵
 const charaStats = {
+  "巡": {
+    image: "image/ぽち.webp",
+    url: "https://iachara.com/view/11062265",
+description: "性別：男<br>身長：160<br>職業：最新アンドロイド<br>出身：VOID<br>関係：椿のバディ",
+    stats: {
+      STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0　
+    }
+  },
   "宇瑠虎 超望": {
     image: "image/こすも.webp",
     url: "https://iachara.com/view/11013902",
-description: "年齢：24<br>性別：男<br>身長：171<br>誕生日：9/26<br>職業：怪盗<br>関係：贋作師のひばなと怪盗をしている",
+description: "年齢：24<br>性別：男<br>身長：171<br>誕生日：9/26<br>職業：怪盗<br>出身：レプリカントの葬列<br>関係：贋作師のひばなと怪盗をしている",
     stats: {
       STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0
     }
@@ -1680,10 +1696,18 @@ description: "年齢：18<br>性別：男<br>身長：170<br>誕生日：7/2<br>
 description: "年齢：21<br>性別：男<br>身長：178<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
     stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
   },
+  "かなた": {
+    image: "image/かなた.webp",
+    url: "",
+description: "性別：不明<br>身長：145<br>職業：旧型アンドロイド<br>出身：VOID<br>関係：しずかのバディ",
+    stats: {
+      STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0
+    }
+  },
   "星守 緋花": {
     image: "image/ひばな.webp",
     url: "https://iachara.com/view/11027267",
-description: "年齢：23<br>性別：女<br>身長：164<br>誕生日：3/10<br>職業：贋作師<br>関係：怪盗のこすもの贋作師をしている",
+description: "年齢：23<br>性別：女<br>身長：164<br>誕生日：3/10<br>職業：贋作師<br>出身：レプリカントの葬列<br>関係：怪盗のこすもの贋作師をしている",
     stats: {
       STR: 0, CON: 0, POW: 0,DEX: 0, APP: 0, SIZ: 0,INT: 0, EDU: 0
     }
