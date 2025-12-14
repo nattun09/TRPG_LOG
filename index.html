@@ -768,6 +768,7 @@ margin-top:10px;
   <ul id="tagList"></ul>
 <select id="charaSortSelect" style="padding:10px 10px; margin-left:10px; border-radius:10px; font-weight:bold; color: #333333; width:50px; height:39px;">
   <option value="folder">👤</option>
+<option value="scenario">シナリオ</option>
 <option value="age">年齢</option>
 <option value="height">身長</option>
 <option value="birthday">誕生日</option>
@@ -1669,7 +1670,7 @@ description: "年齢：36<br>性別：男<br>身長：192<br>誕生日：8/15<br
   "八本木 吉": {
     image: "image/ポン吉.webp",
     url: "https://iachara.com/view/11732740",
-description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br>職業：???<br>出身：初恋性ストックホルム症候群のKPC<br>関係：桃を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br>職業：???<br>出身：初恋性ストックホルム症候群<br>関係：桃を誘拐した。",
     stats: {
       STR: 11, CON: 9, POW: 16,
       DEX: 5, APP: 15, SIZ: 12,
@@ -1679,7 +1680,7 @@ description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：8/10<br
 "檻崎 折": {
     image: "image/折_誘拐犯.webp",
     url: "https://iachara.com/view/10768637",
-description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：11/1<br>職業：大学教授<br>出身：初恋性ストックホルム症候群のKPC<br>関係：悠を誘拐した。",
+description: "年齢：??<br>性別：男<br>身長：171<br>誕生日：11/1<br>職業：大学教授<br>出身：初恋性ストックホルム症候群<br>関係：悠を誘拐した。",
     stats: { STR: 12, CON: 12, POW: 6, DEX: 12, APP: 12, SIZ: 13, INT: 16, EDU: 17 }
   },
   "薮井 社": {
@@ -1839,7 +1840,7 @@ description: "年齢：22<br>性別：男<br>身長：190<br>誕生日：5/5<br>
   "国木田 仁木": {
     image: ["image/仁木.webp","image/仁木_私服.webp"],
     url: "https://iachara.com/view/11020938",
-description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小説家<br>出身：灰になってよかったのKPC<br>関係：うたたね、白を攫った。",
+description: "年齢：??<br>性別：男<br>身長：178?<br>職業：怪奇小説家<br>出身：灰になってよかった<br>関係：うたたね、白を攫った。",
     stats: { STR: 10, CON: 12, POW: 18, DEX: 11, APP: 15, SIZ: 13, INT: 18, EDU: 16 }
   },
   "神崎 猩猩": {
@@ -3189,6 +3190,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 // 共通でクリックイベントを付与する関数
 function addClickEvents(links) {
   links.forEach(link => {
@@ -3241,14 +3243,71 @@ function parseBirthdayValue(description) {
   return 9999;
 }
 
+function parseScenario(description) {
+  if (!description) return '不明';
+  const m = description.match(/出身[:：]\s*([^<]+)/);
+  return m ? m[1].trim() : '不明';
+}
+
 function applyCharaSort(statKey) {
   const charaContainer = document.getElementById("chara");
   if (!charaContainer) return;
+
+/* === ★ シナリオ別表示 === */
+if (statKey === 'scenario') {
+  charaContainer.innerHTML = '';
+
+  const scenarioMap = {};
+
+  Object.entries(charaStats).forEach(([name, data]) => {
+    const scenario = parseScenario(data.description);
+    if (!scenarioMap[scenario]) scenarioMap[scenario] = [];
+    scenarioMap[scenario].push(name);
+  });
+
+Object.keys(scenarioMap)
+  .sort((a, b) => {
+    if (a === '不明') return 1;   // a が不明 → 後ろ
+    if (b === '不明') return -1;  // b が不明 → 前
+    return a.localeCompare(b, 'ja');
+  })
+  .forEach(scenario => {
+    const title = document.createElement('div');
+    title.className = 'category-title';
+    title.textContent = scenario;
+    charaContainer.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'link-grid';
+
+    scenarioMap[scenario].forEach(name => {
+      const link = allCharaLinks.find(
+        l => l.querySelector('span')?.textContent?.trim() === name
+      );
+      if (!link) return;
+
+      const oldBadge = link.querySelector('.stat-badge');
+      if (oldBadge) oldBadge.remove();
+
+      grid.appendChild(link);
+    });
+
+    charaContainer.appendChild(grid);
+  });
+
+
+  currentCharaOrder = Object.values(scenarioMap).flat();
+  addClickEvents(Array.from(charaContainer.querySelectorAll('.image-link')));
+  updateCategoryList();
+  return;
+}
+
 
 const entries = Object.entries(charaStats).map(([name, data]) => {
   let value = 0;
   let originalMonth = null;
   let originalDay = null;
+
 
 if (statKey === 'age') {
     value = parseAge(data.description || '');
