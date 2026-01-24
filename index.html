@@ -2946,23 +2946,22 @@ infoRow.style.color = '#333';
 // 中央：タイトル
 const titleElem = document.createElement('span');
 titleElem.textContent = title || '';
-titleElem.style.flex = '1 1 auto';      // 余った分を使う
+titleElem.style.flex = '1 1 auto';
 titleElem.style.textAlign = 'left';
 titleElem.style.fontWeight = 'bold';
 titleElem.style.color = '#333';
-titleElem.style.minWidth = '0';         // ← これ重要（省略記号が効く）
-titleElem.style.maxWidth = '50%';       // ← MAXは今の半分
-titleElem.style.overflow = 'hidden';
-titleElem.style.textOverflow = 'ellipsis';
-titleElem.style.whiteSpace = 'nowrap';
+titleElem.style.minWidth = '0';      // これ大事（flexで潰れる時のため）
+titleElem.style.whiteSpace = 'normal'; // 折り返して全部表示
+titleElem.style.wordBreak = 'break-word';
 infoRow.appendChild(titleElem);
 
 // 右側：タグ＋日付
 const rightElem = document.createElement('div');
-rightElem.style.flex = '0 0 auto';      // ← 内容幅だけ（小さければ小さく）
+rightElem.style.flex = '0 0 auto';
 rightElem.style.display = 'flex';
 rightElem.style.flexDirection = 'column';
 rightElem.style.alignItems = 'flex-end';
+rightElem.style.marginLeft = '10px';  // 右側とくっつかないように
 rightElem.style.marginRight = '10px';
 rightElem.style.fontSize = '0.85rem';
 rightElem.style.color = '#666';
