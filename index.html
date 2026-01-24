@@ -2933,10 +2933,11 @@ videoList.prepend(titleDiv);
 const infoRow = document.createElement('div');
 infoRow.style.display = 'flex';
 infoRow.style.justifyContent = 'space-between';
-infoRow.style.alignItems = 'center';
+infoRow.style.alignItems = 'flex-start'; // ← 複数行になるので上揃えが自然
 infoRow.style.marginTop = '0.5rem';
 infoRow.style.fontSize = '0.9rem';
 infoRow.style.color = '#333';
+infoRow.style.gap = '10px'; // ← 余白はgapで管理が楽
 
 // 左側：空白
 //const emptyLeft = document.createElement('span');
@@ -2946,25 +2947,27 @@ infoRow.style.color = '#333';
 // 中央：タイトル
 const titleElem = document.createElement('span');
 titleElem.textContent = title || '';
-titleElem.style.flex = '1 1 auto';
+titleElem.style.flex = '1 1 70%';
 titleElem.style.textAlign = 'left';
 titleElem.style.fontWeight = 'bold';
 titleElem.style.color = '#333';
-titleElem.style.minWidth = '0';      // これ大事（flexで潰れる時のため）
-titleElem.style.whiteSpace = 'normal'; // 折り返して全部表示
+titleElem.style.minWidth = '0';
+titleElem.style.whiteSpace = 'normal';
 titleElem.style.wordBreak = 'break-word';
 infoRow.appendChild(titleElem);
 
 // 右側：タグ＋日付
 const rightElem = document.createElement('div');
-rightElem.style.flex = '0 0 auto';
+rightElem.style.flex = '0 1 30%';
+rightElem.style.maxWidth = '30%';
+rightElem.style.minWidth = '0';
 rightElem.style.display = 'flex';
 rightElem.style.flexDirection = 'column';
 rightElem.style.alignItems = 'flex-end';
-rightElem.style.marginLeft = '10px';  // 右側とくっつかないように
-rightElem.style.marginRight = '10px';
 rightElem.style.fontSize = '0.85rem';
 rightElem.style.color = '#666';
+rightElem.style.whiteSpace = 'normal';
+rightElem.style.wordBreak = 'break-word';
 infoRow.appendChild(rightElem);
 
 if (wrapper.dataset.tags) {
