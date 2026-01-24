@@ -729,6 +729,57 @@ margin-top:10px;
 }
 
 
+/* 探索者詳細のタグ（左上） */
+#charaDetail {
+  position: relative;
+}
+
+.chara-tags {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  z-index: 5;
+}
+
+/* タグ風 */
+.chara-tag {
+  color: #ffffff;          /* 文字色 */
+  padding: 0.45em 0.9em;   /* 文字周りの余白 */
+  display: inline-flex;    /* 横並び */
+  align-items: center;
+  line-height: 1.3;        /* 行高 */
+  background: #e26a89;     /* 背景色 */
+  vertical-align: middle;
+  border-radius: 25px 0px 0px 25px; /* 左側だけ丸く */
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.75rem;
+  user-select: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.chara-tag::before {
+  content: "●";
+  color: white;
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
+.chara-tag:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.98);
+}
+
+.chara-tag:active {
+  transform: translateY(0px);
+}
+
+
+
   </style>
 </head>
 <body>
@@ -799,6 +850,7 @@ margin-top:10px;
 
 <div id="charaDetail" style="display:none; text-align:center; margin:20px 0;">
   <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:2em;"></div>
+<div id="charaTags" class="chara-tags"></div>
   <button id="prevChara" style="position:absolute; left:10px; top:300px;font-size:1.5em;">◀</button>
   <button id="nextChara" style="position:absolute; right:10px; top:300px;font-size:1.5em;">▶</button>
   <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; max-height: 500px;max-width:400px;">
@@ -2598,6 +2650,8 @@ imageEl.src = images[currentImageIndex]; // ← 常に最初の画像
 const selectorEl = document.getElementById('imageSelector');
 selectorEl.innerHTML = '';
 
+showCharaTagsFromGrid(name);
+
 if (images.length > 1) {
     images.forEach((_, index) => {
       const btn = document.createElement('button');
@@ -2723,13 +2777,6 @@ document.getElementById('nextChara').addEventListener('click', () => {
   const nextIndex = (currentCharaIndex + 1) % charaNames.length;
   updateCharaDetail(charaNames[nextIndex]);
 });
-
-//番号が1の立ち絵を初期表示
-//window.addEventListener('DOMContentLoaded', () => {
-//  if (charaNames.length > 0) {
-//    updateCharaDetail(charaNames[0]); // 最初の探索者を表示
-//  }
-//});
 
 
 
@@ -3723,6 +3770,50 @@ document.getElementById("charaImage").addEventListener("click", () => {
     img.src = diffImages[current];
   }
 });
+
+
+function showCharaTagsFromGrid(name) {
+  const tagWrap = document.getElementById('charaTags');
+  if (!tagWrap) return;
+
+  // いったん空に
+  tagWrap.innerHTML = '';
+
+  // 探索者一覧(#chara)の中から「同じ名前のキャラ」を探す
+  const charaLink = Array.from(document.querySelectorAll('#chara .image-link'))
+    .find(a => a.querySelector('span')?.textContent?.trim() === name);
+
+  if (!charaLink) return;
+
+  const raw = charaLink.dataset.tags || '';
+  const tags = raw.split(',').map(t => t.trim()).filter(Boolean);
+
+  tags.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chara-tag';
+    btn.textContent = tag;
+
+    btn.addEventListener('click', () => {
+      // ① searchBox に入れる
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) {
+        searchBox.value = tag;
+        searchBox.dispatchEvent(new Event('input'));
+      }
+
+      // ② YouTubeタブに切り替える
+      const youtubeTabBtn = document.querySelector('.tab-button[data-tab="youtube"]');
+      if (youtubeTabBtn) youtubeTabBtn.click();
+
+      // ③ 上に戻す（好み）
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    tagWrap.appendChild(btn);
+  });
+}
+
 
 
 </script>
