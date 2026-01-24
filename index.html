@@ -2939,15 +2939,15 @@ infoRow.style.fontSize = '0.9rem';
 infoRow.style.color = '#333';
 
 // 左側：空白
-const emptyLeft = document.createElement('span');
-emptyLeft.style.flex = '1';
-infoRow.appendChild(emptyLeft);
+//const emptyLeft = document.createElement('span');
+//emptyLeft.style.flex = '1';
+//infoRow.appendChild(emptyLeft);
 
 // 中央：タイトル
 const titleElem = document.createElement('span');
 titleElem.textContent = title || '';
 titleElem.style.flex = '1';
-titleElem.style.textAlign = 'center';
+titleElem.style.textAlign = 'left';
 titleElem.style.fontWeight = 'bold';
 titleElem.style.color = '#333';
 infoRow.appendChild(titleElem);
