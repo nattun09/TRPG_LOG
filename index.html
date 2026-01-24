@@ -746,7 +746,7 @@ margin-top:10px;
 
 /* タグ風 */
 .chara-tag {
-  color: #e26a89;          /* 文字色 */
+  color: #505050;          /* 文字色 */
   padding: 0.45em 0.9em;   /* 文字周りの余白 */
   display: inline-flex;    /* 横並び */
   align-items: center;
@@ -3733,6 +3733,24 @@ window.addEventListener('DOMContentLoaded', () => {
   // 既存の setupTagList(), showLatestItems() 等はそのまま動かしてください
 });
 
+document.querySelectorAll('.tab-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    if (tab !== 'youtube' && tab !== 'text') return;
+
+    // YouTube or テキセを開いたら毎回📂に戻す
+    setTimeout(() => {
+      const sortIcon = document.getElementById('sortIcon');
+      const sortToggleBtn = document.getElementById('sortToggleBtn');
+
+      // ⬇️なら1回押して📂にする
+      if (sortIcon && sortToggleBtn && sortIcon.textContent.trim() === '⬇️') {
+        sortToggleBtn.click();
+      }
+    }, 0);
+  });
+});
+
 
 
 cocofoSortSelect.addEventListener('change', () => {
@@ -3795,20 +3813,31 @@ function showCharaTagsFromGrid(name) {
     btn.textContent = tag;
 
     btn.addEventListener('click', () => {
-      // ① searchBox に入れる
-      const searchBox = document.getElementById('searchBox');
-      if (searchBox) {
-        searchBox.value = tag;
-        searchBox.dispatchEvent(new Event('input'));
-      }
+// ① searchBox に入れる
+  const searchBox = document.getElementById('searchBox');
+  if (searchBox) {
+    searchBox.value = tag;
+    searchBox.dispatchEvent(new Event('input'));
+  }
 
-      // ② YouTubeタブに切り替える
-      const youtubeTabBtn = document.querySelector('.tab-button[data-tab="youtube"]');
-      if (youtubeTabBtn) youtubeTabBtn.click();
+  // ② YouTubeタブに切り替える
+  const youtubeTabBtn = document.querySelector('.tab-button[data-tab="youtube"]');
+  if (youtubeTabBtn) youtubeTabBtn.click();
 
-      // ③ 上に戻す（好み）
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  // ③ YouTubeに移動した直後、📂なら⬇️にする
+  setTimeout(() => {
+    const sortIcon = document.getElementById('sortIcon');
+    const sortToggleBtn = document.getElementById('sortToggleBtn');
+
+    // 📂の時だけトグル押して⬇️にする
+    if (sortIcon && sortToggleBtn && sortIcon.textContent.trim() === '📂') {
+      sortToggleBtn.click();
+    }
+  }, 0);
+
+  // ④ 上に戻す（好み）
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
     tagWrap.appendChild(btn);
   });
