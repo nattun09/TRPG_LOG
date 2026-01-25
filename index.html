@@ -778,6 +778,36 @@ margin-top:10px;
   transform: translateY(0px);
 }
 
+/* タグ + リンク 横並びエリア（中央寄せ） */
+.chara-bottom-row{
+  display: flex;
+  justify-content: center; /* 全体を中央に寄せる */
+  align-items: center;
+  gap: 50px;               /* 中央の隙間10px */
+  margin-top: 12px;
+}
+
+/* タグ側 */
+.chara-bottom-row .chara-tags{
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end; /* タグは右寄せ（中央に向かう） */
+}
+
+/* リンク側 */
+.chara-link{
+  text-align: left; /* リンクは左寄せ（中央に向かう） */
+  color: #e26a89;
+  font-weight: bold;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+
+
+
 
 
   </style>
@@ -850,7 +880,7 @@ margin-top:10px;
 
 <div id="charaDetail" style="display:none; text-align:center; margin:20px 0;">
   <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:2em;"></div>
-<div id="charaTags" class="chara-tags"></div>
+
   <button id="prevChara" style="position:absolute; left:10px; top:300px;font-size:1.5em;">◀</button>
   <button id="nextChara" style="position:absolute; right:10px; top:300px;font-size:1.5em;">▶</button>
   <img id="charaImage" src="" style="all: unset;display: block; margin: 0 auto; max-height: 500px;max-width:400px;">
@@ -860,7 +890,10 @@ margin-top:10px;
     <canvas id="charaChart" width="180" height="180"style="min-width: 180px; flex-shrink: 0;"></canvas>
     <div id="charaDescription" style="text-align:left; max-width:227px; font-size: 0.9em; color:#555;"></div>
   </div>
+<div class="chara-bottom-row">
+<div id="charaTags" class="chara-tags"></div>
   <a id="charaLink" href="#" target="_blank" style="color:#e26a89; font-weight:bold;font-size:13px;"></a>
+</div>
 </div>
 
 
@@ -1860,7 +1893,7 @@ description: "年齢：15<br>性別：女<br>身長：155<br>誕生日：4/20<br
   "狩谷 鈴": {
     image: "image/狩谷.webp",
     url: "https://iachara.com/view/12674639",
-description: "年齢：29<br>性別：女<br>身長：166<br>誕生日：11/3<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：犬神のバディ",
+description: "年齢：29<br>性別：女<br>身長：166<br>職業：刑事<br>出身：プルガトリウムの夜<br>関係：犬神のバディ",
     stats: { STR: 16, CON: 14, POW: 13, DEX: 12, APP: 13, SIZ: 12, INT: 16, EDU: 19 }
   },
   "三上 しずか": {
