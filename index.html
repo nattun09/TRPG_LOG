@@ -828,8 +828,8 @@ margin-top:10px;
 </nav>
 
 <div class="tabs">
-<button class="tab-button" data-tab="chara">探索者</button>
-  <button class="tab-button active" data-tab="text">テキセ</button>
+<button class="tab-button active" data-tab="chara">探索者</button>
+  <button class="tab-button" data-tab="text">テキセ</button>
   <button class="tab-button" data-tab="youtube">YouTube</button>
 <button class="tab-button" data-tab="cocoforia">部屋</button>
 </div>
@@ -876,7 +876,7 @@ margin-top:10px;
 
 
 
-<div id="chara" class="tab-content image-link char-img">
+<div id="chara" class="tab-content image-link char-img active">
 
 <div id="charaDetail" style="display:none; text-align:center; margin:20px 0;">
   <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:2em;"></div>
@@ -902,6 +902,10 @@ margin-top:10px;
 
 <div class="category-title">もなかも</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="夾一郎">
+    <img src="image/ikyo.webp">
+    <span>姦 夾一郎</span>
+  </a> 
   <a target="_blank" class="image-link" data-tags="ポチ">
     <img src="image/iぽち.webp">
     <span>巡</span>
@@ -1034,6 +1038,10 @@ margin-top:10px;
 
 <div class="category-title">めこつ</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="弥生">
+    <img src="image/iyayo.webp">
+    <span>無月 弥生</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="犬神">
     <img src="image/i犬神.webp">
     <span>犬神 心亜</span>
@@ -1116,7 +1124,7 @@ margin-top:10px;
 </div>
 
 
-<div id="text" class="tab-content active">
+<div id="text" class="tab-content">
 
 <div class="category-title">テキセ単発</div>
 <div class="link-grid">
@@ -1810,6 +1818,12 @@ const videoData = {
 
 //キャラ立ち絵
 const charaStats = {
+  "姦 夾一郎": {
+    image: "image/kyo.webp",
+    url: "https://iachara.com/view/13662452",
+description: "年齢：22<br>性別：男<br>身長：179<br>誕生日：7/13<br>職業：大学生<br>出身：父の不倫に感謝しています<br>関係：弥生の義弟",
+    stats: {STR: 14, CON: 17, POW: 13,DEX: 11, APP: 15, SIZ: 15,INT: 17, EDU: 16}
+  },
   "巡": {
     image: ["image/ぽち_ノーマル.webp","image/ぽち_せんとう.webp"],
     url: "https://iachara.com/view/11062265",
@@ -2004,6 +2018,12 @@ description: "年齢：22<br>性別：男<br>身長：150<br>誕生日：2/19<br
 description: "年齢：17<br>性別：女<br>身長：163<br>誕生日：7/24<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：万璃、いのりと同じ学校。",
     stats: { STR: 10, CON: 8, POW: 12, DEX: 11, APP: 16, SIZ: 13, INT: 13, EDU: 13 }
   },
+  "無月 弥生": {
+    image: "image/yayo.webp",
+    url: "https://iachara.com/view/13662439",
+description: "年齢：23<br>性別：男<br>身長：172<br>職業：偽霊媒師<br>出身：父の不倫に感謝しています<br>関係：夾一郎の義兄",
+    stats: { STR: 10, CON: 10, POW: 14, DEX: 15, APP: 17, SIZ: 13, INT: 16, EDU: 15 }
+  },
   "犬神 心亜": {
     image: "image/犬神.webp",
     url: "https://iachara.com/view/12678821",
@@ -2177,7 +2197,10 @@ const cocofoSortSelect = document.getElementById('cocofoSortSelect'); // 追加
   });
 
 // 初期表示に合わせて select を非表示にしておく
-charaSortSelect.style.display = 'none';
+// charaSortSelect.style.display = 'none';
+
+// 初期表示に合わせて select を非表示にしておく
+ sortToggleBtn.style.display = 'none';
 
 // 初期表示に合わせて select を非表示にしておく
 cocofoSortSelect.style.display = 'none';
