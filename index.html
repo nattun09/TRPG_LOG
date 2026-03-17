@@ -950,6 +950,10 @@ margin-top:10px;
 
 <div class="category-title">てとせ</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="赤坂">
+    <img src="image/i赤坂.webp">
+    <span>赤坂 光希</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="周">
     <img src="image/iあまね.webp">
     <span>一色 周</span>
@@ -1090,6 +1094,10 @@ margin-top:10px;
 
 <div class="category-title">ぷわちん</div>
 <div class="link-grid">
+  <a target="_blank" class="image-link" data-tags="青山">
+    <img src="image/i青山.webp">
+    <span>青山 勇人</span>
+  </a>
   <a target="_blank" class="image-link" data-tags="クララ">
     <img src="image/iクララ.webp">
     <span>白石・クララ＝クローネ</span>
@@ -1401,6 +1409,21 @@ margin-top:10px;
 </div>
 
   </div>
+
+  <div class="category" data-category="kirukiru">
+    <div class="category-title">キルキルイキル_ゆうみつ</div>
+<a href="https://www.youtube.com/playlist?list=PLQgCbyN5xp_DKoDu96uJmtcN6LQqGD1UM" target="_blank" class="playlist-link"> ▶ プレイリスト</a>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="青山,赤坂" data-date="2026-03-15" class="active">キルキルイキル（前編）_ゆうみつ</button>
+      <button data-tags="青山,赤坂" data-date="2026-03-15">キルキルイキル（後編）_ゆうみつ</button>
+    </div>
 
   <div class="category" data-category="kuon">
     <div class="category-title">久遠_あさはる</div>
@@ -1763,6 +1786,10 @@ const videoData = {
       {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
     ],
+    'kirukiru': [
+      {src:"https://www.youtube.com/embed/GoU28UXVRbw", title:"キルキルイキル（前編）_ゆうみつ"},
+      {src:"https://www.youtube.com/embed/yM-YhcP2bew", title:"キルキルイキル（後編）_ゆうみつ"}
+    ],
     'kuon': [
       {src:"https://www.youtube.com/embed/2TcpvDQq8-M", title:"久遠(前編)_あさはる"},
       {src:"https://www.youtube.com/embed/vp28cJ79p2o", title:"久遠(後編)_あさはる"}
@@ -1912,10 +1939,18 @@ description: "年齢：18<br>性別：男<br>身長：170<br>誕生日：7/2<br>
 description: "年齢：21<br>性別：男<br>身長：178<br>誕生日：12/22<br>職業：音大生<br>出身：ハイフェッツをなぞる病<br>関係：バイオリニスト。朔は双子の兄。",
     stats: { STR: 10, CON: 11, POW: 11, DEX: 13, APP: 18, SIZ: 15, INT: 16, EDU: 16 }
   },
+  "赤坂 光希": {
+    image: "image/赤坂.webp",
+    url: "https://iachara.com/view/12450583",
+description: "年齢：17<br>性別：男<br>身長：170<br>職業：高校生<br>出身：キルキルイキル<br>関係：青山と幼馴染",
+    stats: {
+      STR: 10, CON: 9, POW: 14,DEX: 10, APP: 15, SIZ: 12,INT: 15, EDU: 12
+    }
+  },
   "一色 周": {
     image: "image/あまね.webp",
     url: "https://iachara.com/view/13520009",
-description: "性別：男<br>出身：父の不倫に感謝しています<br>関係：恭介と腹違いの兄弟",
+description: "年齢：22<br>性別：男<br>身長：175<br>出身：父の不倫に感謝しています<br>関係：恭介と腹違いの兄弟",
     stats: {
       STR: 11, CON: 12, POW: 12,DEX: 16, APP: 17, SIZ: 14,INT: 14, EDU: 15
     }
@@ -2109,6 +2144,12 @@ description: "年齢：29<br>性別：男<br>身長：175<br>誕生日：3/19<br
     url: "https://iachara.com/view/10468122",
 description: "年齢：16<br>性別：女<br>身長：160<br>誕生日：3/31<br>職業：お嬢様<br>出身：脱獄は乙女の嗜み<br>関係：星奈、万璃と同じ学校。叶は父。",
     stats: { STR: 11, CON: 9, POW: 12, DEX: 11, APP: 13, SIZ: 11, INT: 14, EDU: 18 }
+  },
+  "青山 勇人": {
+    image: "image/青山.webp",
+    url: "https://iachara.com/view/12316791",
+description: "年齢：17<br>性別：男<br>身長：165<br>職業：高校生<br>出身：キルキルイキル<br>関係：赤坂と幼馴染",
+    stats: { STR: 7, CON: 11, POW: 9, DEX: 9, APP: 11, SIZ: 11, INT: 16, EDU: 11 }
   },
   "白石・クララ＝クローネ": {
     image: "image/クララ.webp",
