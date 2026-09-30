@@ -988,7 +988,7 @@ header h1 a::before {
 
 
 
-<div id="chara" class="tab-content image-link char-img active">
+<div id="chara" class="tab-content image-link char-img active show">
 
 <div id="charaDetail" style="display:none; text-align:center; margin:20px 0;">
   <div id="charaName" style="font-weight:bold; font-size:1.3em; margin-bottom:0.5em;margin-top:2em;"></div>
@@ -3931,12 +3931,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // 初期タブが探索者なら同期
   if (getActiveTab() === 'chara') {
     syncCharaSortState();
-
-    // 初期表示時、並べ替えでDOMが組み直されるとスクロール監視(IntersectionObserver)が
-    // 効かずアイコンが opacity:0 のままになるため、最初から表示状態にしておく
-    document.querySelectorAll('#chara .image-link').forEach(link => {
-      link.classList.add('show');
-    });
   }
 });
 
