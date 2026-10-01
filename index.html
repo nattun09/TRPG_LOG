@@ -1078,17 +1078,243 @@ header h1 a::before {
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+
+    /* ===== 予定カレンダー（Discordイベント） ===== */
+    .event-calendar {
+      max-width: 400px;
+      margin: 0 auto 1.6rem;
+      text-align: center;
+    }
+    .event-calendar h3 {
+      color: var(--text);
+      font-weight: 700;
+      margin: 10px;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .cal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      padding: 0.7rem 0.6rem 0.6rem;
+      text-align: left;
+    }
+    .cal-head {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+    #calTitle {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .cal-head button {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .cal-head button:hover,
+    .cal-head button:focus-visible {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      outline: none;
+    }
+    .cal-week,
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .cal-week span {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding-bottom: 0.2rem;
+    }
+    .cal-week span:first-child { color: #d9627f; }
+    .cal-week span:last-child  { color: #5f8fcb; }
+    .cal-day {
+      position: relative;
+      height: 2.2rem;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.82rem;
+      cursor: default;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cal-day.empty { visibility: hidden; }
+    .cal-day.has-event {
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--primary-softer);
+    }
+    .cal-day.has-event:hover { background: var(--primary-soft); }
+    .cal-day.today { box-shadow: inset 0 0 0 2px var(--primary); }
+    .cal-day.selected {
+      background: var(--primary);
+      color: #fff;
+    }
+    .cal-day .dot {
+      position: absolute;
+      left: 50%;
+      bottom: 3px;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    .cal-day.selected .dot { background: #fff; }
+    .cal-list {
+      margin-top: 0.6rem;
+      max-height: 10rem;          /* 新着一覧のようにスクロールで表示 */
+      overflow-y: auto;
+      padding-right: 0.2rem;
+    }
+    .cal-list-title {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--surface);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin: 0;
+      padding: 0 0 0.3rem;
+    }
+    .cal-empty {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 0.5rem 0;
+    }
+    .cal-event {
+      border-top: 1px solid var(--border);
+      padding: 0.4rem 0.2rem;
+    }
+    .cal-event.past { opacity: 0.55; }
+    .cal-event-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.6rem;
+    }
+    .cal-event-time {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      font-size: 0.74rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+    .cal-event-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .cal-event-name a {
+      color: var(--primary-dark);
+      text-decoration: none;
+    }
+    .cal-event-name a:hover { text-decoration: underline; }
+    .cal-event-place {
+      flex: 1 1 0;
+      min-width: 0;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .cal-event-desc {
+      margin-top: 0.15rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .cal-event-desc.open {
+      display: block;
+      -webkit-line-clamp: unset;
+    }
+    /* ===== ヘッダー右上：カレンダー表示ボタン ===== */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+    }
+    .calendar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      color: var(--text);
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .calendar-toggle:hover,
+    .calendar-toggle:focus-visible {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      outline: none;
+    }
+    .calendar-toggle.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .event-calendar[hidden] { display: none; }
   </style>
 </head>
 <body>
 
   <header>
     <h1><a href="#" class="scroll-to-top">TRPGログ一覧</a></h1>
-    <button class="menu-toggle" aria-label="カテゴリメニュー">
+    <div class="header-actions">
+      <button type="button" class="calendar-toggle" id="calendarToggle" aria-label="予定カレンダーを表示" aria-expanded="false" aria-controls="eventCalendar">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4.5" width="18" height="16.5" rx="3"></rect>
+          <path d="M3 9.5h18M8 2.5v4M16 2.5v4"></path>
+          <circle cx="8.5" cy="14" r="0.6"></circle><circle cx="12" cy="14" r="0.6"></circle><circle cx="15.5" cy="14" r="0.6"></circle>
+        </svg>
+      </button>
+      <button class="menu-toggle" aria-label="カテゴリメニュー">
   <span></span>
   <span></span>
   <span></span>
 </button>
+    </div>
   </header>
 
 <nav class="category-menu" style="padding-top: 1.5em;">
@@ -1103,6 +1329,21 @@ header h1 a::before {
 </div>
 
 <main>
+
+<section id="eventCalendar" class="event-calendar" aria-label="予定カレンダー" hidden>
+  <h3>予定カレンダー</h3>
+  <div class="cal-card">
+    <div class="cal-head">
+      <button type="button" id="calPrev" aria-label="前の月">‹</button>
+      <span id="calTitle" aria-live="polite"></span>
+      <button type="button" id="calNext" aria-label="次の月">›</button>
+      <button type="button" id="calToday">今日</button>
+    </div>
+    <div class="cal-week" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-list" id="calList"></div>
+  </div>
+</section>
 
 <div id="newItems" style="text-align:center; margin:0px auto; max-width:400px;">
   <h3>新着一覧</h3>
@@ -4859,6 +5100,225 @@ function showCharaTagsFromGrid(name) {
   });
 
   search.addEventListener('input', applySearch);
+})();
+
+// ====== 予定カレンダー（data/events.json を読み込んで表示） ======
+(function () {
+  const grid = document.getElementById('calGrid');
+  const list = document.getElementById('calList');
+  const title = document.getElementById('calTitle');
+  if (!grid || !list || !title) return;
+
+  const TZ = 'Asia/Tokyo';
+  const DATA_URL = 'data/events.json';
+  const pad = n => String(n).padStart(2, '0');
+
+  // 日時を日本時間の各要素に分解
+  const fmt = new Intl.DateTimeFormat('en-GB', {
+    timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+  });
+  function jst(date) {
+    const o = {};
+    fmt.formatToParts(date).forEach(p => { o[p.type] = p.value; });
+    return { y: +o.year, m: +o.month, d: +o.day, h: o.hour, min: o.minute };
+  }
+  const keyOf = t => t.y + '-' + pad(t.m) + '-' + pad(t.d);
+
+  let events = [];
+  let byDay = {};
+  const nowT = jst(new Date());
+  let viewY = nowT.y, viewM = nowT.m;
+  let selected = null;
+
+  function buildIndex() {
+    byDay = {};
+    events.forEach(ev => {
+      const s = jst(ev.startDate);
+      const e = ev.endDate ? jst(ev.endDate) : s;
+      let cur = Date.UTC(s.y, s.m - 1, s.d);
+      const last = Date.UTC(e.y, e.m - 1, e.d);
+      for (let n = 0; n < 31 && cur <= last; n++) {   // 複数日にまたがる予定は最大31日分
+        const c = new Date(cur);
+        const k = c.getUTCFullYear() + '-' + pad(c.getUTCMonth() + 1) + '-' + pad(c.getUTCDate());
+        (byDay[k] = byDay[k] || []).push(ev);
+        cur += 86400000;
+      }
+    });
+  }
+
+  function timeLabel(ev) {
+    const s = jst(ev.startDate);
+    let t = s.m + '/' + s.d + ' ' + s.h + ':' + s.min;
+    if (ev.endDate) {
+      const e = jst(ev.endDate);
+      t += '〜' + (keyOf(s) === keyOf(e) ? '' : e.m + '/' + e.d + ' ') + e.h + ':' + e.min;
+    }
+    return t;
+  }
+
+  function eventNode(ev) {
+    const box = document.createElement('div');
+    box.className = 'cal-event' + ((ev.endDate || ev.startDate) < new Date() ? ' past' : '');
+
+    // 1行目：左に日時、右に場所
+    const head = document.createElement('div');
+    head.className = 'cal-event-head';
+    const time = document.createElement('div');
+    time.className = 'cal-event-time';
+    time.textContent = timeLabel(ev);
+    head.appendChild(time);
+    if (ev.location) {
+      const place = document.createElement('div');
+      place.className = 'cal-event-place';
+      place.textContent = '📍' + ev.location;
+      place.title = ev.location;
+      head.appendChild(place);
+    }
+    box.appendChild(head);
+
+    const name = document.createElement('div');
+    name.className = 'cal-event-name';
+    if (ev.url && ev.url.startsWith('https://discord.com/events/')) {
+      const a = document.createElement('a');
+      a.href = ev.url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = ev.name + ' ↗';
+      name.appendChild(a);
+    } else {
+      name.textContent = ev.name;
+    }
+    box.appendChild(name);
+
+    if (ev.description) {
+      const desc = document.createElement('div');
+      desc.className = 'cal-event-desc';
+      desc.textContent = ev.description;
+      desc.addEventListener('click', () => desc.classList.toggle('open'));
+      box.appendChild(desc);
+    }
+    return box;
+  }
+
+  function renderList() {
+    list.innerHTML = '';
+    const head = document.createElement('p');
+    head.className = 'cal-list-title';
+    let items;
+    if (selected) {
+      const [, m, d] = selected.split('-');
+      head.textContent = (+m) + '月' + (+d) + '日の予定';
+      items = byDay[selected] || [];
+    } else {
+      head.textContent = 'これからの予定';
+      const now = new Date();
+      items = events.filter(ev => (ev.endDate || ev.startDate) >= now).slice(0, 10);
+    }
+    list.appendChild(head);
+    if (!items.length) {
+      const none = document.createElement('div');
+      none.className = 'cal-empty';
+      none.textContent = '予定はありません';
+      list.appendChild(none);
+      return;
+    }
+    items.forEach(ev => list.appendChild(eventNode(ev)));
+  }
+
+  function renderGrid() {
+    title.textContent = viewY + '年' + viewM + '月';
+    grid.innerHTML = '';
+    const first = new Date(Date.UTC(viewY, viewM - 1, 1)).getUTCDay();
+    const days = new Date(Date.UTC(viewY, viewM, 0)).getUTCDate();
+    for (let i = 0; i < first; i++) {
+      const e = document.createElement('div');
+      e.className = 'cal-day empty';
+      grid.appendChild(e);
+    }
+    const todayKey = keyOf(nowT);
+    for (let d = 1; d <= days; d++) {
+      const k = viewY + '-' + pad(viewM) + '-' + pad(d);
+      const has = !!byDay[k];
+      const cell = document.createElement(has ? 'button' : 'div');
+      cell.className = 'cal-day' + (has ? ' has-event' : '') + (k === todayKey ? ' today' : '') + (k === selected ? ' selected' : '');
+      cell.textContent = d;
+      if (has) {
+        cell.type = 'button';
+        cell.setAttribute('aria-label', viewM + '月' + d + '日 予定' + byDay[k].length + '件');
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        cell.appendChild(dot);
+        cell.addEventListener('click', () => {
+          selected = (selected === k) ? null : k;
+          renderGrid();
+          renderList();
+        });
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  function move(delta) {
+    viewM += delta;
+    if (viewM < 1) { viewM = 12; viewY--; }
+    if (viewM > 12) { viewM = 1; viewY++; }
+    selected = null;
+    renderGrid();
+    renderList();
+  }
+  document.getElementById('calPrev').addEventListener('click', () => move(-1));
+  document.getElementById('calNext').addEventListener('click', () => move(1));
+  document.getElementById('calToday').addEventListener('click', () => {
+    viewY = nowT.y; viewM = nowT.m; selected = null;
+    renderGrid(); renderList();
+  });
+
+  function showMessage(msg) {
+    list.innerHTML = '';
+    const p = document.createElement('div');
+    p.className = 'cal-empty';
+    p.textContent = msg;
+    list.appendChild(p);
+  }
+
+  renderGrid();
+  showMessage('読み込み中…');
+
+  fetch(DATA_URL, { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(data => {
+      events = (data.events || [])
+        .map(ev => ({
+          name: String(ev.name || '（無題）'),
+          description: ev.description ? String(ev.description) : '',
+          location: ev.location ? String(ev.location) : '',
+          url: ev.url ? String(ev.url) : '',
+          startDate: new Date(ev.start),
+          endDate: ev.end ? new Date(ev.end) : null
+        }))
+        .filter(ev => !isNaN(ev.startDate))
+        .sort((a, b) => a.startDate - b.startDate);
+      buildIndex();
+      renderGrid();
+      renderList();
+    })
+    .catch(() => showMessage('予定を読み込めませんでした'));
+})();
+
+// ====== 予定カレンダーの表示/非表示（初期は非表示） ======
+(function () {
+  const btn = document.getElementById('calendarToggle');
+  const cal = document.getElementById('eventCalendar');
+  if (!btn || !cal) return;
+  btn.addEventListener('click', () => {
+    const open = cal.hidden;           // 今は非表示なら、これから表示する
+    cal.hidden = !open;
+    btn.classList.toggle('active', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? '予定カレンダーを閉じる' : '予定カレンダーを表示');
+    if (open) window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 })();
 </script>
 
