@@ -1170,11 +1170,37 @@ header h1 a::before {
       background: var(--primary-softer);
     }
     .cal-day.has-event:hover { background: var(--primary-soft); }
+
+    /* 過去卓は予定と区別して落ち着いたグレー */
+    .cal-day.has-past {
+      cursor: pointer;
+      font-weight: 700;
+      background: #f0f1f3;
+      color: #6f7378;
+    }
+    .cal-day.has-past:hover { background: #e6e8eb; }
+
+    /* 予定と過去卓が同じ日にある場合 */
+    .cal-day.has-event.has-past {
+      background: linear-gradient(135deg, var(--primary-softer) 0 50%, #f0f1f3 50% 100%);
+    }
+    .cal-day.has-event.has-past:hover {
+      background: linear-gradient(135deg, var(--primary-soft) 0 50%, #e6e8eb 50% 100%);
+    }
+
     .cal-day.today { box-shadow: inset 0 0 0 2px var(--primary); }
     .cal-day.selected {
       background: var(--primary);
       color: #fff;
     }
+    .cal-day.selected.has-past {
+      background: #8d939a;
+      color: #fff;
+    }
+    .cal-day.selected.has-event.has-past {
+      background: linear-gradient(135deg, var(--primary) 0 50%, #8d939a 50% 100%);
+    }
+
     .cal-day .dot {
       position: absolute;
       left: 50%;
@@ -1185,7 +1211,52 @@ header h1 a::before {
       border-radius: 50%;
       background: var(--primary);
     }
+    .cal-day.has-past .dot {
+      background: #8d939a;
+    }
+    .cal-day.has-event.has-past .dot {
+      background: #a47b89;
+    }
     .cal-day.selected .dot { background: #fff; }
+
+    /* 過去卓の一覧 */
+    .cal-past-log {
+      border-top: 1px solid var(--border);
+      padding: 0.55rem 0.2rem;
+    }
+    .cal-past-log-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+    }
+    .cal-past-log-date {
+      flex: 0 0 auto;
+      font-size: 0.74rem;
+      color: #8d939a;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .cal-past-log-name {
+      min-width: 0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    .cal-past-log-name a {
+      color: #686e75;
+      text-decoration: none;
+    }
+    .cal-past-log-name a:hover {
+      color: #4f555c;
+      text-decoration: underline;
+    }
+    .cal-past-log-pc {
+      margin-top: 0.12rem;
+      padding-left: 0;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      word-break: break-word;
+    }
     .cal-list {
       margin-top: 0.6rem;
       max-height: 10rem;          /* 新着一覧のようにスクロールで表示 */
@@ -1331,7 +1402,7 @@ header h1 a::before {
 <main>
 
 <section id="eventCalendar" class="event-calendar" aria-label="予定カレンダー" hidden>
-  <h3>予定カレンダー</h3>
+  <h3>予定・卓カレンダー</h3>
   <div class="cal-card">
     <div class="cal-head">
       <button type="button" id="calPrev" aria-label="前の月">‹</button>
@@ -2076,6 +2147,23 @@ header h1 a::before {
   </div>
 
 
+  <div class="category" data-category="puwaojo">
+    <div class="category-title">脱獄は乙女の嗜み_たろぷわさだ</div>
+<a href="https://www.youtube.com/playlist?list=PLeOJBrk5IQAE" target="_blank" class="playlist-link"> ▶ プレイリスト</a>
+    <div class="carousel">
+      <iframe allowfullscreen></iframe>
+      <div class="carousel-controls">
+        <button class="prev">&lt;</button>
+        <button class="next">&gt;</button>
+      </div>
+    </div>
+    <div class="video-links">
+      <button data-tags="プワンティーノ" data-date="2026-09-13" class="active">脱獄は乙女の嗜み①</button>
+      <button data-tags="プワンティーノ" data-date="2026-09-23">脱獄は乙女の嗜み②</button>
+    </div>
+  </div>
+
+
   <div class="category" data-category="KK">
     <div class="category-title">K県警K課</div>
 <a href="https://www.youtube.com/playlist?list=PLRmXUCa6i8fE" target="_blank" class="playlist-link"> ▶ プレイリスト</a>
@@ -2087,7 +2175,13 @@ header h1 a::before {
       </div>
     </div>
     <div class="video-links">
-      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-07" class="active">K県警K課</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-07" class="active">K県警K課_第0話</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-10">K県警K課_第1話①</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-17">K県警K課_第1話②</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-18">K県警K課_第1話③</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-22">K県警K課_第2話①</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-26">K県警K課_第2話②</button>
+      <button data-tags="はらめ,かねよ,むゆる,さぎや" data-date="2026-09-26">K県警K課_第3話</button>
     </div>
   </div>
 
@@ -2199,7 +2293,13 @@ header h1 a::before {
       </div>
     </div>
     <div class="video-links">
-      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-28" class="active">VOID_Part1</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-13" class="active">VOID_Part0(個人導入)</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-17">VOID_Part0(ペア導入)</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-20">VOID_Part1</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-24">VOID_Part2</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-26">VOID_Part3</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-27">VOID_Part4</button>
+      <button data-tags="つばき,ポチ,かなた,しずか" data-date="2025-12-27">VOID_Part5</button>
     </div>
   </div>
 
@@ -2514,8 +2614,18 @@ const videoData = {
       {src:"https://www.youtube.com/embed/LpjuOK1C57Y", title:"ハイフェッツをなぞる病"},
       {src:"https://www.youtube.com/embed/YYtzwanwzL0", title:"宇宙船ニル・ノート号の残響"}
     ],
+    'puwaojo': [
+      {src:"https://www.youtube.com/embed/maXfR3YA_pM", title:"脱獄は乙女の嗜み①"},
+      {src:"https://www.youtube.com/embed/sGghtXF-mrg", title:"脱獄は乙女の嗜み②"}
+    ],
     'KK': [
-      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課"}
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第0話"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第1話①"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第1話②"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第1話③"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第2話①"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第2話②"},
+      {src:"https://www.youtube.com/embed/UAuIEPYqKAE", title:"K県警K課_第3話"}
     ],
     'umikare': [
       {src:"https://www.youtube.com/embed/579efy5QPGI", title:"海も枯れるまで（前編）_つきしの"},
@@ -2544,7 +2654,13 @@ const videoData = {
       {src:"https://www.youtube.com/embed/WQaFmndpQ3g", title:"プル夜(後編)_かりここ"}
     ],
     'void': [
+      {src:"https://www.youtube.com/embed/mgVv4MiHSDY", title:"VOID_Part0(個人導入)"},
+      {src:"https://www.youtube.com/embed/x9THA7Gd1ho", title:"VOID_Part0(ペア導入)"},
       {src:"https://www.youtube.com/embed/oMUBQsyneww", title:"VOID_Part1"},
+      {src:"https://www.youtube.com/embed/hBMvcEhz0fE", title:"VOID_Part2"},
+      {src:"https://www.youtube.com/embed/vLIfVt3fuvE", title:"VOID_Part3"},
+      {src:"https://www.youtube.com/embed/VZ82T_1aYQk", title:"VOID_Part4"},
+      {src:"https://www.youtube.com/embed/paahJRulEI8", title:"VOID_Part5"}
     ],
     'repsou': [
       {src:"https://www.youtube.com/embed/f-wjnDEE7LY", title:"レプリカントの葬列(chapter1)_こすひば"},
@@ -5102,7 +5218,7 @@ function showCharaTagsFromGrid(name) {
   search.addEventListener('input', applySearch);
 })();
 
-// ====== 予定カレンダー（data/events.json を読み込んで表示） ======
+// ====== 予定カレンダー（予定 + 新着一覧の過去卓） ======
 (function () {
   const grid = document.getElementById('calGrid');
   const list = document.getElementById('calList');
@@ -5118,18 +5234,94 @@ function showCharaTagsFromGrid(name) {
     timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
   });
+
   function jst(date) {
     const o = {};
     fmt.formatToParts(date).forEach(p => { o[p.type] = p.value; });
     return { y: +o.year, m: +o.month, d: +o.day, h: o.hour, min: o.minute };
   }
+
   const keyOf = t => t.y + '-' + pad(t.m) + '-' + pad(t.d);
 
+  // YYYY-MM-DD の日付をローカルの「その日」として扱う
+  function dateKeyFromString(value) {
+    const m = String(value || '').match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    return m ? `${m[1]}-${pad(m[2])}-${pad(m[3])}` : '';
+  }
+
+  function parseDateKey(key) {
+    const m = String(key || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : null;
+  }
+
+  function todayKey() {
+    return keyOf(jst(new Date()));
+  }
+
+  function isPastLog(log) {
+    return !!log.dateKey && log.dateKey < todayKey();
+  }
+
   let events = [];
+  let pastLogs = [];
   let byDay = {};
+  let pastByDay = {};
+
   const nowT = jst(new Date());
   let viewY = nowT.y, viewM = nowT.m;
   let selected = null;
+
+  // 新着一覧から「過去卓」を拾う
+  // テキセ：spanの1行目をシナリオ名、data-tagsをPCとして使用
+  // YouTube：buttonのタイトルをシナリオ名、data-tagsをPCとして使用
+  function collectPastLogs() {
+    const logs = [];
+
+    document.querySelectorAll('#text .image-link[data-date]').forEach(link => {
+      const dateKey = dateKeyFromString(link.dataset.date);
+      if (!dateKey || dateKey >= todayKey()) return;
+
+      const span = link.querySelector('span');
+      const rawTitle = span ? span.innerText.trim() : '';
+      const title = rawTitle.split(/\r?\n/)[0].trim() || rawTitle;
+
+      logs.push({
+        dateKey,
+        title,
+        tags: (link.dataset.tags || '').trim(),
+        type: 'text',
+        targetLink: link,
+        url: link.href || ''
+      });
+    });
+
+    document.querySelectorAll('#youtube .video-links button[data-date]').forEach(btn => {
+      const dateKey = dateKeyFromString(btn.dataset.date);
+      if (!dateKey || dateKey >= todayKey()) return;
+
+      logs.push({
+        dateKey,
+        title: btn.textContent.trim(),
+        tags: (btn.dataset.tags || '').trim(),
+        type: 'youtube',
+        targetButton: btn
+      });
+    });
+
+    // 同じ日・同じタイトル・同じPCが重複した場合だけまとめる
+    const seen = new Set();
+    return logs
+      .sort((a, b) => {
+        if (a.dateKey !== b.dateKey) return b.dateKey.localeCompare(a.dateKey);
+        return a.title.localeCompare(b.title, 'ja');
+      })
+      .filter(log => {
+        const key = `${log.dateKey}|${log.title}|${log.tags}|${log.type}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+  }
 
   function buildIndex() {
     byDay = {};
@@ -5138,12 +5330,18 @@ function showCharaTagsFromGrid(name) {
       const e = ev.endDate ? jst(ev.endDate) : s;
       let cur = Date.UTC(s.y, s.m - 1, s.d);
       const last = Date.UTC(e.y, e.m - 1, e.d);
-      for (let n = 0; n < 31 && cur <= last; n++) {   // 複数日にまたがる予定は最大31日分
+
+      for (let n = 0; n < 31 && cur <= last; n++) {
         const c = new Date(cur);
         const k = c.getUTCFullYear() + '-' + pad(c.getUTCMonth() + 1) + '-' + pad(c.getUTCDate());
         (byDay[k] = byDay[k] || []).push(ev);
         cur += 86400000;
       }
+    });
+
+    pastByDay = {};
+    pastLogs.forEach(log => {
+      (pastByDay[log.dateKey] = pastByDay[log.dateKey] || []).push(log);
     });
   }
 
@@ -5161,13 +5359,14 @@ function showCharaTagsFromGrid(name) {
     const box = document.createElement('div');
     box.className = 'cal-event' + ((ev.endDate || ev.startDate) < new Date() ? ' past' : '');
 
-    // 1行目：左に日時、右に場所
     const head = document.createElement('div');
     head.className = 'cal-event-head';
+
     const time = document.createElement('div');
     time.className = 'cal-event-time';
     time.textContent = timeLabel(ev);
     head.appendChild(time);
+
     if (ev.location) {
       const place = document.createElement('div');
       place.className = 'cal-event-place';
@@ -5179,6 +5378,7 @@ function showCharaTagsFromGrid(name) {
 
     const name = document.createElement('div');
     name.className = 'cal-event-name';
+
     if (ev.url && ev.url.startsWith('https://discord.com/events/')) {
       const a = document.createElement('a');
       a.href = ev.url;
@@ -5201,60 +5401,196 @@ function showCharaTagsFromGrid(name) {
     return box;
   }
 
+  // 新着一覧のリンクと同じ挙動で開く
+  function openPastLog(log) {
+    if (log.type === 'text') {
+      if (log.targetLink) {
+        log.targetLink.click();
+      } else if (log.url) {
+        window.open(log.url, '_blank');
+      }
+      return;
+    }
+
+    if (log.type === 'youtube') {
+      let youtubeUrl = '#';
+
+      for (const videos of Object.values(videoData)) {
+        const match = videos.find(v => v.title === log.title);
+        if (match) {
+          if (match.src.includes('playlist?list=')) {
+            youtubeUrl = match.src;
+            break;
+          }
+          if (match.src.includes('/embed/')) {
+            const videoId = match.src.split('/embed/')[1];
+            youtubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
+            break;
+          }
+        }
+      }
+
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === 'youtube') btn.classList.add('active');
+      });
+
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.id === 'youtube') tab.classList.add('active');
+      });
+
+      if (log.targetButton) {
+        syncSortState('youtube');
+        log.targetButton.click();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (youtubeUrl !== '#') window.open(youtubeUrl, '_blank');
+    }
+  }
+
+  function pastLogNode(log) {
+    const box = document.createElement('div');
+    box.className = 'cal-past-log';
+
+    const head = document.createElement('div');
+    head.className = 'cal-past-log-head';
+
+    const date = document.createElement('div');
+    date.className = 'cal-past-log-date';
+    const d = parseDateKey(log.dateKey);
+    date.textContent = d ? `${d.getMonth() + 1}/${d.getDate()}` : log.dateKey;
+    head.appendChild(date);
+
+    const name = document.createElement('div');
+    name.className = 'cal-past-log-name';
+
+    const a = document.createElement('a');
+    a.href = '#';
+    a.textContent = log.title;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      openPastLog(log);
+    });
+    name.appendChild(a);
+    head.appendChild(name);
+
+    box.appendChild(head);
+
+    const pc = document.createElement('div');
+    pc.className = 'cal-past-log-pc';
+    pc.textContent = 'PC:' + (log.tags || '—');
+    box.appendChild(pc);
+
+    return box;
+  }
+
   function renderList() {
     list.innerHTML = '';
+
     const head = document.createElement('p');
     head.className = 'cal-list-title';
+
     let items;
+    let logs = [];
+
     if (selected) {
       const [, m, d] = selected.split('-');
-      head.textContent = (+m) + '月' + (+d) + '日の予定';
+      const hasPast = !!pastByDay[selected];
+      const hasEvent = !!byDay[selected];
+
+      if (hasPast && !hasEvent) {
+        head.textContent = (+m) + '月' + (+d) + '日の卓';
+      } else if (hasPast && hasEvent) {
+        head.textContent = (+m) + '月' + (+d) + '日の卓・予定';
+      } else {
+        head.textContent = (+m) + '月' + (+d) + '日の予定';
+      }
+
+      logs = pastByDay[selected] || [];
       items = byDay[selected] || [];
     } else {
+      // 日付未選択時はindex8と同じく、これからの予定を表示
       head.textContent = 'これからの予定';
       const now = new Date();
       items = events.filter(ev => (ev.endDate || ev.startDate) >= now).slice(0, 10);
     }
+
     list.appendChild(head);
-    if (!items.length) {
+
+    if (selected && logs.length) {
+      logs.forEach(log => list.appendChild(pastLogNode(log)));
+    }
+
+    // 日付未選択時も予定を表示する
+    if (items.length) {
+      items.forEach(ev => list.appendChild(eventNode(ev)));
+    }
+
+    if ((!selected && !items.length) || (selected && !logs.length && !items.length)) {
       const none = document.createElement('div');
       none.className = 'cal-empty';
-      none.textContent = '予定はありません';
+      none.textContent = selected && pastByDay[selected] ? '予定はありません' : '予定・卓はありません';
       list.appendChild(none);
-      return;
     }
-    items.forEach(ev => list.appendChild(eventNode(ev)));
   }
 
   function renderGrid() {
+    // カレンダーを開いた時点の新着一覧を再取得
+    pastLogs = collectPastLogs();
+    buildIndex();
+
     title.textContent = viewY + '年' + viewM + '月';
     grid.innerHTML = '';
+
     const first = new Date(Date.UTC(viewY, viewM - 1, 1)).getUTCDay();
     const days = new Date(Date.UTC(viewY, viewM, 0)).getUTCDate();
+
     for (let i = 0; i < first; i++) {
       const e = document.createElement('div');
       e.className = 'cal-day empty';
       grid.appendChild(e);
     }
-    const todayKey = keyOf(nowT);
+
+    const today = todayKey();
+
     for (let d = 1; d <= days; d++) {
       const k = viewY + '-' + pad(viewM) + '-' + pad(d);
-      const has = !!byDay[k];
-      const cell = document.createElement(has ? 'button' : 'div');
-      cell.className = 'cal-day' + (has ? ' has-event' : '') + (k === todayKey ? ' today' : '') + (k === selected ? ' selected' : '');
+      const hasEvent = !!byDay[k];
+      const hasPast = !!pastByDay[k];
+      const hasAny = hasEvent || hasPast;
+
+      const cell = document.createElement(hasAny ? 'button' : 'div');
+
+      cell.className =
+        'cal-day' +
+        (hasEvent ? ' has-event' : '') +
+        (hasPast ? ' has-past' : '') +
+        (k === today ? ' today' : '') +
+        (k === selected ? ' selected' : '');
+
       cell.textContent = d;
-      if (has) {
+
+      if (hasAny) {
         cell.type = 'button';
-        cell.setAttribute('aria-label', viewM + '月' + d + '日 予定' + byDay[k].length + '件');
+
+        const labels = [];
+        if (hasEvent) labels.push('予定' + byDay[k].length + '件');
+        if (hasPast) labels.push('過去卓' + pastByDay[k].length + '件');
+        cell.setAttribute('aria-label', viewM + '月' + d + '日 ' + labels.join('、'));
+
         const dot = document.createElement('span');
         dot.className = 'dot';
         cell.appendChild(dot);
+
         cell.addEventListener('click', () => {
           selected = (selected === k) ? null : k;
           renderGrid();
           renderList();
         });
       }
+
       grid.appendChild(cell);
     }
   }
@@ -5267,11 +5603,16 @@ function showCharaTagsFromGrid(name) {
     renderGrid();
     renderList();
   }
+
   document.getElementById('calPrev').addEventListener('click', () => move(-1));
   document.getElementById('calNext').addEventListener('click', () => move(1));
+
   document.getElementById('calToday').addEventListener('click', () => {
-    viewY = nowT.y; viewM = nowT.m; selected = null;
-    renderGrid(); renderList();
+    viewY = nowT.y;
+    viewM = nowT.m;
+    selected = null;
+    renderGrid();
+    renderList();
   });
 
   function showMessage(msg) {
@@ -5282,11 +5623,17 @@ function showCharaTagsFromGrid(name) {
     list.appendChild(p);
   }
 
+  // 初期描画
+  pastLogs = collectPastLogs();
+  buildIndex();
   renderGrid();
   showMessage('読み込み中…');
 
   fetch(DATA_URL, { cache: 'no-cache' })
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(r => {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
     .then(data => {
       events = (data.events || [])
         .map(ev => ({
@@ -5299,11 +5646,18 @@ function showCharaTagsFromGrid(name) {
         }))
         .filter(ev => !isNaN(ev.startDate))
         .sort((a, b) => a.startDate - b.startDate);
+
+      pastLogs = collectPastLogs();
       buildIndex();
       renderGrid();
       renderList();
     })
-    .catch(() => showMessage('予定を読み込めませんでした'));
+    .catch(() => {
+      pastLogs = collectPastLogs();
+      buildIndex();
+      renderGrid();
+      renderList();
+    });
 })();
 
 // ====== 予定カレンダーの表示/非表示（初期は非表示） ======
