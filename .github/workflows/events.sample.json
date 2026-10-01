@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "id": "1",
+      "name": "卓A <b>テスト</b>",
+      "description": "説明文です。\n2行目\n3行目\n4行目",
+      "start": "2026-10-12T12:00:00+00:00",
+      "end": "2026-10-12T15:00:00+00:00",
+      "location": "🔊 卓ボイス",
+      "url": "https://discord.com/events/999/1"
+    },
+    {
+      "id": "2",
+      "name": "外部イベント",
+      "description": "",
+      "start": "2026-10-03T10:00:00+00:00",
+      "end": null,
+      "location": "https://example.com/room",
+      "url": "https://discord.com/events/999/2"
+    },
+    {
+      "id": "3",
+      "name": "同じ日の2件目",
+      "description": "",
+      "start": "2026-10-12T23:00:00+00:00",
+      "end": "2026-10-13T02:00:00+00:00",
+      "location": "",
+      "url": "javascript:alert(1)"
+    },
+    {
+      "id": "4",
+      "name": "数日またぐ予定",
+      "description": "",
+      "start": "2026-10-20T00:00:00+00:00",
+      "end": "2026-10-22T10:00:00+00:00",
+      "location": "Discord",
+      "url": "https://discord.com/events/999/4"
+    }
+  ]
+}
