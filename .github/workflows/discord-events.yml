@@ -2,7 +2,7 @@ name: Update Discord events
 
 on:
   schedule:
-    - cron: "17,47 * * * *"   # 30分おき（GitHubの混雑で数分〜数十分遅れることがあります）
+    - cron: "55 * * * *"   # 30分おき（GitHubの混雑で数分〜数十分遅れることがあります）
   workflow_dispatch:          # Actionsタブから手動実行もできます
 
 permissions:
