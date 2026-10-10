@@ -12,7 +12,7 @@
   var LS_OVERLAY = 'trpgOverlayLocal';
   var LS_GH = 'trpgGhConfig';
   var SS_EDIT = 'trpgEditMode';
-  var DEFAULT_GH = { repo: 'nattun09/TRPG_LOG', branch: 'main', dataPath: 'data/custom.json', imageDir: 'image/uploads', token: '' };
+  var DEFAULT_GH = { repo: 'nattun09/TRPG_LOG', branch: 'main', dataPath: 'data/custom.json', imageDir: 'image', token: '' };
   var STAT_KEYS = ['STR', 'CON', 'POW', 'DEX', 'APP', 'SIZ', 'INT', 'EDU'];
   var PROFILE_FIELDS = [['age', '年齢'], ['gender', '性別'], ['height', '身長'], ['birthday', '誕生日'], ['job', '職業'], ['origin', '出身'], ['relation', '関係']];
   var FALLBACK_THUMB = 'favicon/favicon.png';
