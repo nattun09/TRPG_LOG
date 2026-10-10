@@ -28,6 +28,32 @@
     "EDU": 15
    },
    "at": 1791605837179
+  },
+  "orig:蝿島 叶": {
+   "id": "orig:蝿島 叶",
+   "category": "めこつ",
+   "name": "蝿島 叶",
+   "thumb": "image/i叶.webp",
+   "images": [
+    "image/叶.webp",
+    "image/叶_初期.webp",
+    "image/中学生かなえ.webp",
+    "image/imv1w52796e96b3-mv1w5279.webp"
+   ],
+   "url": "https://iachara.com/view/10692890",
+   "tags": "叶",
+   "description": "年齢：29<br>性別：男<br>身長：175<br>誕生日：3/19<br>職業：研究者兼院長<br>出身：カタシロ<br>関係：いのりの父。薮井とよく喧嘩している。",
+   "stats": {
+    "STR": 14,
+    "CON": 10,
+    "POW": 15,
+    "DEX": 7,
+    "APP": 18,
+    "SIZ": 13,
+    "INT": 16,
+    "EDU": 19
+   },
+   "at": 1791606312548
   }
  },
  "text": [],
