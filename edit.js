@@ -716,10 +716,27 @@
     wrap.appendChild(el('div', 'te-section', 'プロフィール'));
     var pin = {};
     var g = el('div', 'te-grid2');
-    PROFILE_FIELDS.forEach(function (f) {
-      pin[f[0]] = textInput(prof[f[0]] || '', f[0] === 'birthday' ? '例: 8/21' : '');
-      g.appendChild(field(f[1], pin[f[0]]));
-    });
+
+var placeholders = {
+  age: '例：25',
+gender:'例：男',
+  height: '例：179',
+  birthday: '例：8/21',
+job:'例：ヤブ医者',
+origin:'例：慄け!因習村',
+relation:'例：叶とよく喧嘩してる。',
+
+};
+
+PROFILE_FIELDS.forEach(function (f) {
+  pin[f[0]] = textInput(
+    prof[f[0]] || '',
+    placeholders[f[0]] || '例：'
+  );
+  g.appendChild(field(f[1], pin[f[0]]));
+});
+
+
     wrap.appendChild(g);
     var fExtra = el('textarea', 'te-input');
     fExtra.value = prof.extra.join('\n');
