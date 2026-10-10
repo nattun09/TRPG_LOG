@@ -702,7 +702,7 @@
 
     var cat = categoryPicker(cats.chara, card ? card.dataset.cat : (cats.chara[0] && cats.chara[0].value));
     wrap.appendChild(field('カテゴリ', cat.el));
-    var fName = textInput(name, '例: 中出 孕');
+    var fName = textInput(name, '例: 薮井 社');
     wrap.appendChild(field('名前（一覧に表示される名前）', fName));
     var fThumb = imageField('アイコン画像（一覧用）', thumb, 512);
     wrap.appendChild(fThumb.el);
@@ -717,13 +717,13 @@
     var pin = {};
     var g = el('div', 'te-grid2');
     PROFILE_FIELDS.forEach(function (f) {
-      pin[f[0]] = textInput(prof[f[0]] || '', f[0] === 'birthday' ? '例: 7/13' : '');
+      pin[f[0]] = textInput(prof[f[0]] || '', f[0] === 'birthday' ? '例: 8/21' : '');
       g.appendChild(field(f[1], pin[f[0]]));
     });
     wrap.appendChild(g);
     var fExtra = el('textarea', 'te-input');
     fExtra.value = prof.extra.join('\n');
-    fExtra.placeholder = '1行ずつ「ラベル：内容」 例: 関係：ラビとルームメイト';
+    fExtra.placeholder = '1行ずつ「ラベル：内容」';
     wrap.appendChild(field('その他（1行1項目）', fExtra));
 
     wrap.appendChild(el('div', 'te-section', '能力値'));
