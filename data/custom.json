@@ -2,6 +2,19 @@
  "v": 1,
  "chara": {},
  "text": [],
- "youtube": [],
+ "youtube": [
+  {
+   "id": "y-mv1ulktz3at3",
+   "categoryKey": "puwaojo",
+   "categoryName": "脱獄は乙女の嗜み_たろぷわさだ",
+   "title": "脱獄は乙女の嗜み③",
+   "src": "https://www.youtube.com/embed/zGPTFJ8cDP8",
+   "tags": "プワンティーノ",
+   "playlist": "https://www.youtube.com/playlist?list=PLMRcJ5KCcrdc",
+   "date": "2026-10-04",
+   "pos": "keep",
+   "at": 1791605065629
+  }
+ ],
  "room": []
 }
