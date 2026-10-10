@@ -3,24 +3,8 @@
  "chara": {
   "c-mv1vgy5ac01n": {
    "id": "c-mv1vgy5ac01n",
-   "category": "もなかも",
-   "name": "てすと",
-   "thumb": "image/imv1vgy5aedect-mv1vgy5a.webp",
-   "images": [],
-   "url": "",
-   "tags": "",
-   "description": "",
-   "stats": {
-    "STR": 0,
-    "CON": 0,
-    "POW": 0,
-    "DEX": 0,
-    "APP": 0,
-    "SIZ": 0,
-    "INT": 0,
-    "EDU": 0
-   },
-   "at": 1791605187550
+   "deleted": true,
+   "at": 1791605359442
   }
  },
  "text": [],
