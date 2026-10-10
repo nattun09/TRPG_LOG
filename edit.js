@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  var PASSWORD = 'もなかも';
+  var PASSWORD = 'monakamo';
   var LS_OVERLAY = 'trpgOverlayLocal';
   var LS_GH = 'trpgGhConfig';
   var SS_EDIT = 'trpgEditMode';
@@ -278,9 +278,7 @@
         '<div class="category-title"></div>' +
         '<div class="carousel"><iframe allowfullscreen></iframe><div class="carousel-controls">' +
         '<button class="prev" aria-label="前の動画">&lt;</button><button class="next" aria-label="次の動画">&gt;</button></div></div>' +
-        '<div class="video-links"></div>' +
-        '<div class="video-toc"><ul></ul><div class="toc-pagination" style="text-align:center;margin-top:0.5rem;">' +
-        '<button class="toc-prev">← 前へ</button><button class="toc-next">次へ →</button></div></div>';
+        '<div class="video-links"></div>';
       cat.querySelector('.category-title').textContent = rec.categoryName || key;
       var first = root.querySelector('.category');
       if (first) first.after(cat); else root.appendChild(cat);
@@ -298,13 +296,16 @@
     btn.dataset.tags = rec.tags || '';
     btn.dataset.date = rec.date || '';
     btn.dataset.editId = rec.id;
-    var li = document.createElement('li');
-    var a = el('a', null, rec.title);
-    a.href = '#';
-    li.appendChild(a);
+    var li = null;
+    if (ul) { // 目次(video-toc)があるカテゴリにだけ目次項目を足す。新規カテゴリには目次を作らない
+      li = document.createElement('li');
+      var a = el('a', null, rec.title);
+      a.href = '#';
+      li.appendChild(a);
+    }
     var item = { src: rec.src, title: rec.title };
-    if (rec.pos === 'top') { links.prepend(btn); ul.prepend(li); videoData[key].unshift(item); }
-    else { links.appendChild(btn); ul.appendChild(li); videoData[key].push(item); }
+    if (rec.pos === 'top') { links.prepend(btn); if (ul) ul.prepend(li); videoData[key].unshift(item); }
+    else { links.appendChild(btn); if (ul) ul.appendChild(li); videoData[key].push(item); }
     return btn;
   }
   function ytRemove(btn, li, videoData) {
@@ -331,7 +332,7 @@
       btn.textContent = rec.title;
       btn.dataset.tags = rec.tags || '';
       btn.dataset.date = rec.date || '';
-      if (oldLi) oldLi.querySelector('a').textContent = rec.title;
+      if (oldLi && oldLi.querySelector('a')) oldLi.querySelector('a').textContent = rec.title;
       if (idx >= 0) videoData[key][idx] = { src: rec.src, title: rec.title };
       return;
     }
@@ -866,6 +867,12 @@
     };
   }
 
+  function playlistId(v) {
+    v = (v || '').trim();
+    var m = v.match(/[?&]list=([\w-]+)/);
+    if (m) return m[1];
+    return /^[\w-]+$/.test(v) ? v : '';
+  }
   function ytSrc(v) {
     v = (v || '').trim();
     var m;
@@ -887,12 +894,12 @@
     var wrap = el('div');
     var fTitle = textInput(edit ? btn.textContent.trim() : '', '例: 海も枯れるまで（前編）_つきしの');
     var fTags = tagField('タグ（PC名）', edit ? (btn.dataset.tags || '') : '');
-    var fPlaylist = textInput(edit ? (info0.playlist || '') : '', 'https://www.youtube.com/playlist?list=…');
+    var fPlaylist = textInput(edit ? playlistId(info0.playlist) : '', 'PLxxxxxxxxxxxx');
     function fill(c) {
       var info = !c.isNew && cats.youtube.filter(function (x) { return x.value === c.value; })[0];
       fTitle.value = info ? info.latestTitle : '';
       fTags.set(info ? info.latestTags : '');
-      fPlaylist.value = info ? info.playlist : '';
+      fPlaylist.value = info ? playlistId(info.playlist) : '';
     }
     var cat = categoryPicker(cats.youtube, edit ? key : (cats.youtube[0] && cats.youtube[0].value), function (c) { if (!edit) fill(c); });
     wrap.appendChild(field('カテゴリ（動画シリーズ）', cat.el, edit ? 'カテゴリを変えると別のシリーズへ移動します' : '選ぶと、そのカテゴリの最新動画のタイトル・タグが入ります'));
@@ -900,7 +907,7 @@
     wrap.appendChild(field('YouTubeのURL', fUrl, 'watch / youtu.be / embed 形式、または動画ID'));
     wrap.appendChild(field('タイトル', fTitle));
     wrap.appendChild(fTags.el);
-    wrap.appendChild(field('プレイリストURL（任意）', fPlaylist, '入力するとカテゴリに「▶ プレイリスト」ボタンが付きます'));
+    wrap.appendChild(field('プレイリストID（任意）', fPlaylist, 'list= の後ろのID（PL…）だけでOK。入力するとカテゴリに「▶ プレイリスト」ボタンが付きます'));
     var fDate = textInput(edit ? (btn.dataset.date || todayStr()) : todayStr(), '', 'date');
     wrap.appendChild(field('日付', fDate));
     var fPos = el('select', 'te-input');
@@ -918,8 +925,10 @@
         var src = ytSrc(fUrl.value);
         if (!src) return { error: 'YouTubeのURLを正しく入力してください' };
         if (!fTitle.value.trim()) return { error: 'タイトルを入力してください' };
-        var pl = fPlaylist.value.trim();
-        if (pl && !/^https?:\/\//.test(pl)) return { error: 'プレイリストURLは https:// から入力してください' };
+        var plRaw = fPlaylist.value.trim();
+        var plId = playlistId(plRaw);
+        if (plRaw && !plId) return { error: 'プレイリストIDを正しく入力してください（例: PLxxxxxxxx）' };
+        var pl = plId ? 'https://www.youtube.com/playlist?list=' + plId : '';
         return {
           kind: 'youtube',
           rec: {
