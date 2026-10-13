@@ -100,6 +100,29 @@
     "EDU": 7
    },
    "at": 1791862035684
+  },
+  "orig:蛸島･ウィンストン･七亜子": {
+   "id": "orig:蛸島･ウィンストン･七亜子",
+   "category": "もなかも",
+   "name": "蛸島･ウィンストン･七亜子",
+   "thumb": "image/iたこしま.webp",
+   "images": [
+    "image/たこしま.webp"
+   ],
+   "url": "https://iachara.com/view/15256994",
+   "tags": "たこしま",
+   "description": "年齢：18<br>性別：女<br>身長：170<br>誕生日：8/8<br>職業：お嬢様<br>出身：たこさんウィンナー殺人事件",
+   "stats": {
+    "STR": 7,
+    "CON": 5,
+    "POW": 8,
+    "DEX": 9,
+    "APP": 13,
+    "SIZ": 14,
+    "INT": 17,
+    "EDU": 16
+   },
+   "at": 1791862061039
   }
  },
  "text": [],
