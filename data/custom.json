@@ -54,6 +54,29 @@
     "EDU": 19
    },
    "at": 1791606312548
+  },
+  "orig:セレン": {
+   "id": "orig:セレン",
+   "category": "もなかも",
+   "name": "セレン",
+   "thumb": "image/iセレン.webp",
+   "images": [
+    "image/セレン.webp"
+   ],
+   "url": "https://iachara.com/view/11386420",
+   "tags": "セレン",
+   "description": "年齢：15<br>性別：男<br>身長：170<br>誕生日：11/20<br>出身：花冷えに亡く季節<br>関係：ラビとルームメイト",
+   "stats": {
+    "STR": 12,
+    "CON": 9,
+    "POW": 13,
+    "DEX": 8,
+    "APP": 18,
+    "SIZ": 14,
+    "INT": 16,
+    "EDU": 12
+   },
+   "at": 1791861987023
   }
  },
  "text": [],
