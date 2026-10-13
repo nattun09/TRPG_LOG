@@ -77,6 +77,29 @@
     "EDU": 12
    },
    "at": 1791861987023
+  },
+  "orig:祢住 巧": {
+   "id": "orig:祢住 巧",
+   "category": "もなかも",
+   "name": "祢住 巧",
+   "thumb": "image/iねずみ.webp",
+   "images": [
+    "image/ねずみ.webp"
+   ],
+   "url": "https://iachara.com/view/13181569",
+   "tags": "ねずみ",
+   "description": "年齢：29<br>性別：男<br>身長：186<br>誕生日：8/15<br>職業：詐欺師<br>出身：蛾と踊る",
+   "stats": {
+    "STR": 10,
+    "CON": 4,
+    "POW": 16,
+    "DEX": 13,
+    "APP": 11,
+    "SIZ": 17,
+    "INT": 17,
+    "EDU": 7
+   },
+   "at": 1791862018902
   }
  },
  "text": [],
