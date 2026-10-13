@@ -1259,7 +1259,7 @@ header h1 a::before {
     }
     .cal-list {
       margin-top: 0.6rem;
-      max-height: 10rem;          /* 新着一覧のようにスクロールで表示 */
+      max-height: 13rem;          /* 新着一覧のようにスクロールで表示（誕生日カードの分だけ少し高め） */
       overflow-y: auto;
       padding-right: 0.2rem;
     }
@@ -1335,6 +1335,163 @@ header h1 a::before {
       display: block;
       -webkit-line-clamp: unset;
     }
+    /* ===== 探索者の誕生日 ===== */
+    .event-calendar {
+      --bday: #f1a640;
+      --bday-dark: #b4720f;
+      --bday-soft: #fff1d6;
+      --bday-softer: #fff8ea;
+    }
+    .cal-day.has-bday {
+      cursor: pointer;
+      font-weight: 700;
+    }
+    /* 誕生日だけの日はゴールド系（予定=ピンク、過去卓=グレーと区別） */
+    .cal-day.has-bday:not(.has-event):not(.has-past) {
+      background: var(--bday-softer);
+      box-shadow: inset 0 0 0 1px #fbe3b4;
+    }
+    .cal-day.has-bday:not(.has-event):not(.has-past):hover {
+      background: var(--bday-soft);
+    }
+    .cal-day.has-bday.today:not(.has-event):not(.has-past) {
+      box-shadow: inset 0 0 0 2px var(--primary);
+    }
+    .cal-day.selected.has-bday:not(.has-event):not(.has-past) {
+      background: var(--bday);
+      color: #fff;
+      box-shadow: none;
+    }
+    .cal-day .bday-mark {
+      position: absolute;
+      top: 1px;
+      right: 2px;
+      font-size: 0.62rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .cal-day .bday-mark i {
+      font-style: normal;
+      font-size: 0.5rem;
+      font-weight: 700;
+      color: var(--bday-dark);
+      margin-left: 1px;
+    }
+    .cal-day.selected .bday-mark i { color: #fff; }
+    .cal-day.bday-today .bday-mark {
+      animation: bdayPop 1.8s ease-in-out infinite;
+    }
+    @keyframes bdayPop {
+      0%, 100% { transform: scale(1) rotate(0); }
+      50% { transform: scale(1.3) rotate(-8deg); }
+    }
+    @keyframes bdayIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cal-day.bday-today .bday-mark { animation: none; }
+      .cal-bday { animation: none; }
+    }
+
+    .cal-sub-title {
+      margin: 0.1rem 0 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--bday-dark);
+    }
+    .cal-bdays {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding: 2px 2px 0.45rem;
+    }
+    .cal-bday {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.45rem 0.7rem 0.45rem 0.55rem;
+      border: 1px solid #fbe3b4;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--bday-softer), #fff);
+      color: var(--text);
+      font-family: inherit;
+      text-align: left;
+      cursor: pointer;
+      animation: bdayIn 0.28s ease both;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .cal-bday:hover,
+    .cal-bday:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+      border-color: var(--bday);
+      outline: none;
+    }
+    .cal-bday.is-today {
+      background: linear-gradient(135deg, #fff0cf, #ffe4ea);
+      border-color: var(--bday);
+    }
+    .cal-bday.is-past { opacity: 0.6; }
+    .cal-bday-avatar {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      margin: 0 3px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      background: #fff;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--bday);
+    }
+    .cal-bday-avatar.fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: var(--bday-soft);
+    }
+    .cal-bday-body {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .cal-bday-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+    .cal-bday-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      word-break: break-word;
+    }
+    .cal-bday-badge {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bday-dark);
+      background: var(--bday-soft);
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+    }
+    .cal-bday.is-today .cal-bday-badge {
+      background: var(--bday);
+      color: #fff;
+    }
+    .cal-bday-go {
+      flex: 0 0 auto;
+      color: var(--text-faint);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
     /* ===== ヘッダー右上：カレンダー表示ボタン ===== */
     .header-actions {
       display: flex;
@@ -5281,6 +5438,150 @@ function showCharaTagsFromGrid(name) {
   let viewY = nowT.y, viewM = nowT.m;
   let selected = null;
 
+  // ===== 探索者の誕生日（charaStats の「誕生日：7/13」を読み取る） =====
+  const BDAY_RE = /誕生日[:：]\s*(\d{1,2})\s*[\/月]\s*(\d{1,2})/;
+  const MAX_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let bdayByMD = {};            // 'MM-DD' -> [{name, m, d, age, job, thumb}]
+  const thumbCache = new Map(); // 探索者名 -> 一覧のアイコン画像
+
+  function refreshThumbs() {
+    document.querySelectorAll('#chara .image-link').forEach(link => {
+      const name = link.querySelector('span')?.textContent?.trim();
+      const src = link.querySelector('img')?.getAttribute('src');
+      if (name && src && !thumbCache.has(name)) thumbCache.set(name, src);
+    });
+  }
+
+  // descriptionのHTML（<br>区切り）をテキストにする。DOMParserなので画像読込や実行は起きない
+  function descText(desc) {
+    const html = String(desc || '').replace(/<br\s*\/?>/gi, '\n');
+    return new DOMParser().parseFromString(html, 'text/html').body.textContent || '';
+  }
+
+  function descValue(text, label) {
+    const m = text.match(new RegExp('(?:^|\\n)\\s*' + label + '[:：]\\s*([^\\n]*)'));
+    return m ? m[1].trim() : '';
+  }
+
+  function buildBirthdays() {
+    bdayByMD = {};
+    if (typeof charaStats === 'undefined') return;
+    refreshThumbs();
+    Object.keys(charaStats).forEach(name => {
+      const data = charaStats[name] || {};
+      const text = descText(data.description);
+      const m = text.match(BDAY_RE);
+      if (!m) return;
+      const mm = +m[1], dd = +m[2];
+      if (mm < 1 || mm > 12 || dd < 1 || dd > MAX_DAYS[mm - 1]) return;
+      const age = descValue(text, '年齢');
+      const job = descValue(text, '職業');
+      const img = Array.isArray(data.image) ? data.image[0] : data.image;
+      const key = pad(mm) + '-' + pad(dd);
+      (bdayByMD[key] = bdayByMD[key] || []).push({
+        name, m: mm, d: dd,
+        age: /^\d+$/.test(age) ? age : '',
+        job: /^[?？\s]*$/.test(job) ? '' : job,
+        thumb: thumbCache.get(name) || img || ''
+      });
+    });
+  }
+
+  const isLeap = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+
+  // その日が誕生日の探索者（2/29生まれは平年だと2/28に表示）
+  function bdaysOn(y, m, d) {
+    let arr = bdayByMD[pad(m) + '-' + pad(d)] || [];
+    if (m === 2 && d === 28 && !isLeap(y)) arr = arr.concat(bdayByMD['02-29'] || []);
+    return arr;
+  }
+
+  // 表示中の月の誕生日（日付順）
+  function bdaysOfMonth(y, m) {
+    const days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const out = [];
+    for (let d = 1; d <= days; d++) {
+      bdaysOn(y, m, d).forEach(p => out.push({ p, y, m, d }));
+    }
+    return out;
+  }
+
+  // 今日(JST)から見た日数差
+  function dayDiff(y, m, d) {
+    const t = jst(new Date());
+    return Math.round((Date.UTC(y, m - 1, d) - Date.UTC(t.y, t.m - 1, t.d)) / 86400000);
+  }
+
+  function bdayTag(y, m, d) {
+    const n = dayDiff(y, m, d);
+    if (n === 0) return '今日 🎉';
+    if (n > 0) return 'あと' + n + '日';
+    return m + '/' + d;
+  }
+
+  // 探索者タブへ切り替えて、その探索者の詳細を開く
+  function openChara(name) {
+    const tab = document.querySelector('.tab-button[data-tab="chara"]');
+    if (tab && !tab.classList.contains('active')) tab.click();
+    if (typeof updateCharaDetail === 'function') updateCharaDetail(name);
+  }
+
+  function bdayNode(item) {
+    const { p, y, m, d } = item;
+    const n = dayDiff(y, m, d);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cal-bday' + (n === 0 ? ' is-today' : n < 0 ? ' is-past' : '');
+    btn.title = p.name + ' のプロフィールを見る';
+
+    if (p.thumb) {
+      const img = document.createElement('img');
+      img.className = 'cal-bday-avatar';
+      img.src = p.thumb;
+      img.alt = '';
+      img.loading = 'lazy';
+      btn.appendChild(img);
+    } else {
+      const fb = document.createElement('span');
+      fb.className = 'cal-bday-avatar fallback';
+      fb.textContent = '🎂';
+      btn.appendChild(fb);
+    }
+
+    const body = document.createElement('span');
+    body.className = 'cal-bday-body';
+    const nm = document.createElement('span');
+    nm.className = 'cal-bday-name';
+    nm.textContent = p.name;
+    body.appendChild(nm);
+    const meta = document.createElement('span');
+    meta.className = 'cal-bday-meta';
+    meta.textContent = [p.m + '月' + p.d + '日', p.age ? p.age + '歳' : '', p.job].filter(Boolean).join(' ・ ');
+    body.appendChild(meta);
+    btn.appendChild(body);
+
+    const badge = document.createElement('span');
+    badge.className = 'cal-bday-badge';
+    badge.textContent = bdayTag(y, m, d);
+    btn.appendChild(badge);
+
+    const go = document.createElement('span');
+    go.className = 'cal-bday-go';
+    go.setAttribute('aria-hidden', 'true');
+    go.textContent = '›';
+    btn.appendChild(go);
+
+    btn.addEventListener('click', () => openChara(p.name));
+    return btn;
+  }
+
+  function bdayList(items) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cal-bdays';
+    items.forEach(it => wrap.appendChild(bdayNode(it)));
+    return wrap;
+  }
+
   // 新着一覧から「過去卓」を拾う
   // テキセ：spanの1行目をシナリオ名、data-tagsをPCとして使用
   // YouTube：buttonのタイトルをシナリオ名、data-tagsをPCとして使用
@@ -5504,19 +5805,20 @@ function showCharaTagsFromGrid(name) {
 
     let items;
     let logs = [];
+    let bdays = [];
 
     if (selected) {
-      const [, m, d] = selected.split('-');
+      const [sy, sm, sd] = selected.split('-').map(Number);
       const hasPast = !!pastByDay[selected];
       const hasEvent = !!byDay[selected];
+      bdays = bdaysOn(sy, sm, sd).map(p => ({ p, y: sy, m: sm, d: sd }));
 
-      if (hasPast && !hasEvent) {
-        head.textContent = (+m) + '月' + (+d) + '日の卓';
-      } else if (hasPast && hasEvent) {
-        head.textContent = (+m) + '月' + (+d) + '日の卓・予定';
-      } else {
-        head.textContent = (+m) + '月' + (+d) + '日の予定';
-      }
+      // 誕生日 → 卓 → 予定 の順で見出しに並べる
+      const parts = [];
+      if (bdays.length) parts.push('誕生日');
+      if (hasPast) parts.push('卓');
+      if (hasEvent) parts.push('予定');
+      head.textContent = sm + '月' + sd + '日の' + (parts.join('・') || '予定');
 
       logs = pastByDay[selected] || [];
       items = byDay[selected] || [];
@@ -5525,9 +5827,24 @@ function showCharaTagsFromGrid(name) {
       head.textContent = 'これからの予定';
       const now = new Date();
       items = events.filter(ev => (ev.endDate || ev.startDate) >= now).slice(0, 10);
+
+      // 表示中の月の誕生日を先頭に出す
+      const monthB = bdaysOfMonth(viewY, viewM);
+      if (monthB.length) {
+        const sub = document.createElement('p');
+        sub.className = 'cal-sub-title';
+        sub.textContent = '🎂 ' + (viewY === nowT.y && viewM === nowT.m ? '今月' : viewM + '月') + 'の誕生日';
+        list.appendChild(sub);
+        list.appendChild(bdayList(monthB));
+      }
     }
 
     list.appendChild(head);
+
+    // 選んだ日：誕生日が一番上、その下に卓ログ、予定
+    if (selected && bdays.length) {
+      list.appendChild(bdayList(bdays));
+    }
 
     if (selected && logs.length) {
       logs.forEach(log => list.appendChild(pastLogNode(log)));
@@ -5538,7 +5855,7 @@ function showCharaTagsFromGrid(name) {
       items.forEach(ev => list.appendChild(eventNode(ev)));
     }
 
-    if ((!selected && !items.length) || (selected && !logs.length && !items.length)) {
+    if ((!selected && !items.length) || (selected && !logs.length && !items.length && !bdays.length)) {
       const none = document.createElement('div');
       none.className = 'cal-empty';
       none.textContent = selected && pastByDay[selected] ? '予定はありません' : '予定・卓はありません';
@@ -5569,7 +5886,9 @@ function showCharaTagsFromGrid(name) {
       const k = viewY + '-' + pad(viewM) + '-' + pad(d);
       const hasEvent = !!byDay[k];
       const hasPast = !!pastByDay[k];
-      const hasAny = hasEvent || hasPast;
+      const bdayHere = bdaysOn(viewY, viewM, d);
+      const hasBday = bdayHere.length > 0;
+      const hasAny = hasEvent || hasPast || hasBday;
 
       const cell = document.createElement(hasAny ? 'button' : 'div');
 
@@ -5577,6 +5896,8 @@ function showCharaTagsFromGrid(name) {
         'cal-day' +
         (hasEvent ? ' has-event' : '') +
         (hasPast ? ' has-past' : '') +
+        (hasBday ? ' has-bday' : '') +
+        (hasBday && k === today ? ' bday-today' : '') +
         (k === today ? ' today' : '') +
         (k === selected ? ' selected' : '');
 
@@ -5588,11 +5909,28 @@ function showCharaTagsFromGrid(name) {
         const labels = [];
         if (hasEvent) labels.push('予定' + byDay[k].length + '件');
         if (hasPast) labels.push('過去卓' + pastByDay[k].length + '件');
+        if (hasBday) labels.push('誕生日 ' + bdayHere.map(p => p.name).join('、'));
         cell.setAttribute('aria-label', viewM + '月' + d + '日 ' + labels.join('、'));
 
-        const dot = document.createElement('span');
-        dot.className = 'dot';
-        cell.appendChild(dot);
+        // 予定・過去卓があるときだけ従来の点を出す（誕生日は🎂で区別）
+        if (hasEvent || hasPast) {
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          cell.appendChild(dot);
+        }
+
+        if (hasBday) {
+          const mark = document.createElement('span');
+          mark.className = 'bday-mark';
+          mark.textContent = '🎂';
+          if (bdayHere.length > 1) {
+            const c = document.createElement('i');
+            c.textContent = bdayHere.length;
+            mark.appendChild(c);
+          }
+          mark.title = bdayHere.map(p => p.name).join('、');
+          cell.appendChild(mark);
+        }
 
         cell.addEventListener('click', () => {
           selected = (selected === k) ? null : k;
@@ -5634,6 +5972,7 @@ function showCharaTagsFromGrid(name) {
   }
 
   // 初期描画
+  buildBirthdays();
   pastLogs = collectPastLogs();
   buildIndex();
   renderGrid();
