@@ -123,6 +123,29 @@
     "EDU": 16
    },
    "at": 1791862061039
+  },
+  "c-mvkvc6x7157h": {
+   "id": "c-mvkvc6x7157h",
+   "category": "もなかも",
+   "name": "先生 先生",
+   "thumb": "image/imvkvc6x97xgct-mvkvc6xa.jpg",
+   "images": [
+    "image/imvkvc6x97xgcb0-mvkvc8nl.jpg"
+   ],
+   "url": "https://iachara.com/view/15586165",
+   "tags": "先生",
+   "description": "年齢：32<br>性別：男<br>身長：183<br>誕生日：10/5<br>職業：数学教師<br>出身：先生",
+   "stats": {
+    "STR": 9,
+    "CON": 9,
+    "POW": 10,
+    "DEX": 12,
+    "APP": 12,
+    "SIZ": 16,
+    "INT": 14,
+    "EDU": 15
+   },
+   "at": 1792753822988
   }
  },
  "text": [],
